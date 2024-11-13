@@ -14,9 +14,15 @@ const geistMono = localFont({
   weight: "100 900",
 });
 
+const isProd = process.env.APP_ENV === 'production';
+
 export const metadata: Metadata = {
   title: "Jobmeerkat",
-  description: "Don't miss jour next job",
+  description: "Don't miss your next job",
+  robots: {
+    index: isProd,
+    follow: isProd,
+  }
 };
 
 export default function RootLayout({
