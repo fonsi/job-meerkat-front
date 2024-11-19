@@ -2,6 +2,7 @@
 
 import styled from 'styled-components';
 import { Colors } from '@/shared/styles/constants';
+import Link from 'next/link';
 
 const StyledDiv = styled.div`
     align-items: center;
@@ -15,4 +16,21 @@ const StyledDiv = styled.div`
     width: 100%;
 `;
 
-export const Header = () => <StyledDiv>Jobmeerkat</StyledDiv>;
+const Container = styled.div`
+    display: flex;
+    align-items: center;
+    max-width: 1024px;
+    width: 100%;
+`;
+
+const LogoContainer = styled.div`
+    display: flex;
+`;
+
+export const Header = () => <StyledDiv>
+    <Container>
+        <LogoContainer>
+            <Link href='/'>Jobmeerkat</Link>
+        </LogoContainer>
+    </Container>
+</StyledDiv>;

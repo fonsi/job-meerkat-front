@@ -1,10 +1,7 @@
 import { apiRequest } from '@/shared/http/apiRequest';
+import { Company } from '../company';
 
-type CompaniesResponse = {
-    id: string;
-    name: string;
-    homePage: string;
-}[];
+type CompaniesResponse = Company[];
 
 export const getCompanies = (): Promise<CompaniesResponse> =>
     apiRequest<CompaniesResponse, void>({

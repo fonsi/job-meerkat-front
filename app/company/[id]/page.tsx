@@ -1,7 +1,6 @@
 import { getCompanies } from '@/company/http/getCompanies';
 import { getCompany } from '@/company/http/getCompany';
-import { JobPostsList } from '@/jobPost/layout/JobPostList';
-import { JobPostRow } from '@/jobPost/layout/JobPostRow';
+import { CompanyHome } from '@/pages/company/CompanyHome';
 
 export async function generateStaticParams() {
     const companies = await getCompanies();
@@ -20,16 +19,7 @@ const Company = async ({
     const companyData = await getCompany(id);
     const { company, openJobPosts } = companyData;
 
-    return <div>
-        <p>{company.name}</p>
-        <JobPostsList>
-        {
-            openJobPosts.map(jobPost =>
-                <JobPostRow key={jobPost.id} jobPost={jobPost} />
-            )
-        }
-        </JobPostsList>
-    </div>;
+    return <CompanyHome company={company} openJobPosts={openJobPosts} />;
 }
 
 export default Company;

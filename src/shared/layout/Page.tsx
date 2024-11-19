@@ -11,7 +11,7 @@ const StyledPage = styled.div`
     display: flex;
     height: 100vh;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: flex-start;
     overflow: hidden;
     width: 100%;
 `;

@@ -1,12 +1,9 @@
 import { JobPost } from '@/jobPost/http/getJobPosts';
 import { apiRequest } from '@/shared/http/apiRequest';
+import { Company } from '../company';
 
 type CompanyResponse = {
-    company: {
-        id: string;
-        name: string;
-        homePage: string;
-    },
+    company: Company;
     openJobPosts: JobPost[]
 }
 

@@ -43,9 +43,7 @@ export default function RootLayout({
             <Main>
               {children}
             </Main>
-            <Footer>
-              <span>Made with love by @fonsirs</span>
-            </Footer>
+            <Footer />
           </Page>
         </StyledComponentsRegistry>
       </body>

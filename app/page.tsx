@@ -1,21 +1,11 @@
 import { getJobPosts } from '@/jobPost/http/getJobPosts';
-import { JobPostsList } from '@/jobPost/layout/JobPostList';
-import { JobPostRow } from '@/jobPost/layout/JobPostRow';
+import { HomePage } from '@/pages/home/HomePage';
 
 const Home = async () => {
   const jobPosts = await getJobPosts();
 
   return (
-    <>
-      <p>Welcome to jobmeerkat</p>
-      <JobPostsList>
-        {
-          jobPosts.map((jobPost) =>
-            <JobPostRow key={jobPost.id} jobPost={jobPost}></JobPostRow>
-          )
-        }
-      </JobPostsList>
-    </>
+    <HomePage jobPosts={jobPosts} />
   );
 }
 
