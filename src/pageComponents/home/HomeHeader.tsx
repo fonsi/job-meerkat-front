@@ -21,5 +21,5 @@ const Claim = styled.h1`
 export const HomeHeader = () =>
     <Header>
         <Logo>Jobmeerkat</Logo>
-        <Claim>Don't miss your next job</Claim>
+        <Claim>Don&apos;t miss your next job</Claim>
     </Header>;

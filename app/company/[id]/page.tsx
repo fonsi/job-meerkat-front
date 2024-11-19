@@ -1,6 +1,6 @@
 import { getCompanies } from '@/company/http/getCompanies';
 import { getCompany } from '@/company/http/getCompany';
-import { CompanyHome } from '@/pages/company/CompanyHome';
+import { CompanyHome } from '@/pageComponents/company/CompanyHome';
 
 export async function generateStaticParams() {
     const companies = await getCompanies();
