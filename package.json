@@ -3,11 +3,15 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "cp .env.dev .env.local && next dev --turbopack",
-    "build:dev": "cp .env.dev .env.local && next build",
-    "build:prod": "cp .env.prod .env.local && next build",
+    "copyEnv:dev": "cp .env.dev .env.local",
+    "copyEnv:prod": "cp .env.prod .env.local",
+    "dev": "npm run copyEnv:dev && next dev --turbopack",
+    "build:dev": "npm run copyEnv:dev && next build",
+    "build:prod": "npm run copyEnv:prod && next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "deploy:dev": "npm run build:dev && ./scripts/copy-to-S3.sh",
+    "deploy:prod": "npm run build:prod && ./scripts/copy-to-S3.sh"
   },
   "dependencies": {
     "next": "15.0.3",
