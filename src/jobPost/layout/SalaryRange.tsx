@@ -20,7 +20,7 @@ const beautifySalary = (salary: number): string | number => {
         return salary;
     }
 
-    return `${salary / 1000}K`;
+    return `${(salary / 1000).toFixed()}K`;
 }
 
 const beautifyCurrency = (currency: string): string => currency.toUpperCase();
