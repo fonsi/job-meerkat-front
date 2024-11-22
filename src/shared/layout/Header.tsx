@@ -19,7 +19,7 @@ const StyledDiv = styled.div`
 const Container = styled.div`
     display: flex;
     align-items: center;
-    max-width: 1024px;
+    max-width: 1280px;
     width: 100%;
 `;
 
