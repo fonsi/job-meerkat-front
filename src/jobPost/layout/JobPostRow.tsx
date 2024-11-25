@@ -30,11 +30,7 @@ const InfoContainer = styled.div`
 const TitleContainer = styled.div`
     align-items: baseline;
     display: flex;
-    flex-direction: column-reverse;
-
-    @media ${Device.tablet} {
-        flex-direction: row;
-    }
+    flex-direction: column;
 `;
 
 const Title = styled(Link)`
@@ -46,11 +42,6 @@ const Company = styled(Link)`
     font-size: 14px;
     font-weight: 300;
     margin-bottom: 4px;
-
-    @media ${Device.tablet} {
-        margin-left: 12px;
-        margin-bottom: unset;
-    }
 `;
 
 const SalaryContainer = styled.div`
@@ -67,13 +58,9 @@ const SalaryContainer = styled.div`
     }
 `;
 
-const JobType = styled.span`
+const PublishDate = styled.span`
     color: ${Colors.mediumGrey};
     text-align: right;
-
-    @media ${Device.tablet} {
-        margin-top: 4px;
-    }
 `;
 
 const LocationContainer = styled.div`
@@ -86,12 +73,12 @@ const LocationContainer = styled.div`
 export const JobPostRow = ({ jobPost }: Props) => <StyledJobPostRow>
     <InfoContainer>
         <TitleContainer>
-            <Title target='_blank' href={jobPost.url}>{ jobPost.title }</Title>
             {
                 jobPost.company ?
                     <Company href={`/company/${jobPost.company.id}`}>{jobPost.company.name}</Company> :
                     null
             }
+            <Title target='_blank' href={jobPost.url}>{ jobPost.title }</Title>
         </TitleContainer>
         <LocationContainer>
             <span>{jobPost.workplace}</span>
@@ -100,17 +87,18 @@ export const JobPostRow = ({ jobPost }: Props) => <StyledJobPostRow>
                     <span>&nbsp;-&nbsp;{jobPost.location}</span> :
                     null
             }
+            {
+                jobPost.type ?
+                    <span>&nbsp;-&nbsp;{jobPost.type}</span>:
+                    null
+            }
         </LocationContainer>
     </InfoContainer>
     {
         jobPost.salaryRange ? 
             <SalaryContainer>
                 <SalaryRange salaryRange={jobPost.salaryRange} />
-                {
-                    jobPost.type ?
-                     <JobType>{jobPost.type}</JobType>:
-                     null
-                }
+                <PublishDate>{new Date(jobPost.createdAt).toJSON().split('T')[0]}</PublishDate>
             </SalaryContainer>:
             null
     }

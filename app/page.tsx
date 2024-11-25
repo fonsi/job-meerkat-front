@@ -1,9 +1,9 @@
-import { getJobPosts } from '@/jobPost/http/getJobPosts';
+import { getSortedJobPosts } from '@/jobPost/getSortedJobPosts';
 import { HomePage } from '@/pageComponents/home/HomePage';
 import { Container } from '@/shared/layout/Container';
 
 const Home = async () => {
-  const jobPosts = await getJobPosts();
+  const jobPosts = await getSortedJobPosts();
 
   return (
     <Container>
