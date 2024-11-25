@@ -21,7 +21,7 @@ const Company = async ({
     const { company, openJobPosts } = companyData;
 
     return <Container>
-        <CompanyHome company={company} openJobPosts={openJobPosts} />;
+        <CompanyHome company={company} openJobPosts={openJobPosts} />
     </Container>
 }
 
