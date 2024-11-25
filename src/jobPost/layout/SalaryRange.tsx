@@ -5,6 +5,11 @@ type Props = {
     salaryRange: SalaryRangeType;
 }
 
+const Container = styled.div`
+    align-items: baseline;
+    display: flex;
+`;
+
 const Text = styled.span`
     font-weight: 300;
     font-size: 12px;
@@ -25,20 +30,27 @@ const beautifySalary = (salary: number): string | number => {
 
 const beautifyCurrency = (currency: string): string => currency.toUpperCase();
 
+export const SalaryRangeAmount = ({ salaryRange }: Props) => {
+    const currency = beautifyCurrency(salaryRange.currency);
+
+    if (!salaryRange.min) {
+        return <><Text>Up to&nbsp;</Text><Amount>{beautifySalary(salaryRange.max)} {currency}</Amount></>;
+    }
+
+    if (!salaryRange.max) {
+        return <><Text>From&nbsp;</Text><Amount>{beautifySalary(salaryRange.min)} {currency}</Amount></>;
+    }
+
+    return <Amount>{beautifySalary(salaryRange.min)} - {beautifySalary(salaryRange.max)} {currency}</Amount>;
+}
+
 export const SalaryRange = ({ salaryRange }: Props) => {
     if (!salaryRange || (!salaryRange.min && !salaryRange.max)) {
         return null;
     }
-    
-    const currency = beautifyCurrency(salaryRange.currency);
 
-    if (!salaryRange.min) {
-        return <><Text>Up to</Text><Amount>{beautifySalary(salaryRange.max)} {currency}</Amount></>;
-    }
-
-    if (!salaryRange.max) {
-        return <><Text>From</Text><Amount>{beautifySalary(salaryRange.min)} {currency}</Amount></>;
-    }
-
-    return <Amount>{beautifySalary(salaryRange.min)} - {beautifySalary(salaryRange.max)} {currency}</Amount>;
+    return <Container>
+        <SalaryRangeAmount salaryRange={salaryRange} />
+        <Text>&nbsp;/&nbsp;{ salaryRange.period }</Text>
+    </Container>;
 }
