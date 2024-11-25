@@ -2,7 +2,7 @@
 
 import { Company } from '@/company/company'
 import { placeholder } from '@/shared/image/placeholder';
-import { Colors } from '@/shared/styles/constants';
+import { Colors, Device } from '@/shared/styles/constants';
 import Image from 'next/image';
 import styled from 'styled-components';
 
@@ -12,11 +12,19 @@ type Props = {
 
 const Header = styled.div`
     display: flex;
-    margin: 48px 8px;
+    margin: 24px 8px;
+
+    @media ${Device.tablet} { 
+        margin: 48px 8px;
+    }
 `;
 
 const CompanyName = styled.h1`
-    font-size: 48px;
+    font-size: 24px;
+
+    @media ${Device.tablet} { 
+        font-size: 48px;
+    }
 `;
 
 const CompanyUrl = styled.a`
@@ -32,8 +40,13 @@ const CompanyInfo = styled.div`
 
 const CompanyImage = styled.div`
     background-color: ${Colors.white};
+    flex-shrink: 0;
     position: relative;
-    width: 100px;
+    width: 50px;
+
+    @media ${Device.tablet} { 
+        width: 100px;
+    }
 
     img {
         object-fit: contain;

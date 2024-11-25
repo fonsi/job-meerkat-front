@@ -6,7 +6,7 @@ import { JobPostsList } from '@/jobPost/layout/JobPostList';
 import { JobPostRow } from '@/jobPost/layout/JobPostRow';
 import { CompanyHeader } from './CompanyHeader';
 import styled from 'styled-components';
-import { Colors } from '@/shared/styles/constants';
+import { Colors, Device } from '@/shared/styles/constants';
 
 type Props = {
     company: Company;
@@ -15,8 +15,14 @@ type Props = {
 
 const OpenPositions = styled.h2`
     border-bottom: 1px solid ${Colors.brokenWhite};
+    font-size: 16px;
     margin-bottom: 4px;
-    padding: 0 8px 16px;
+    padding: 8px;
+
+    @media ${Device.tablet} { 
+        font-size: 18px;
+        padding: 0 8px 16px;
+    }
 `;
 
 export const CompanyHome = ({ company, openJobPosts }: Props) =>

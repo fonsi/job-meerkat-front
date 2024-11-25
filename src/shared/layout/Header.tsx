@@ -12,7 +12,7 @@ const StyledDiv = styled.div`
     display: flex;
     font-size: 24px;
     justify-content: center;
-    padding: 8px 0;
+    padding: 8px;
     width: 100%;
 `;
 

@@ -2,7 +2,7 @@
 
 import styled from 'styled-components';
 import Link from 'next/link';
-import { Colors } from '@/shared/styles/constants';
+import { Colors, Device } from '@/shared/styles/constants';
 import { JobPost } from '../http/getJobPosts';
 import { SalaryRange } from './SalaryRange';
 
@@ -13,8 +13,13 @@ type Props = {
 const StyledJobPostRow = styled.li`
     border-bottom: 1px solid ${Colors.mediumGrey};
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
     padding: 16px 8px;
+
+    @media ${Device.tablet} { 
+        flex-direction: row;
+    }
 `;
 
 const InfoContainer = styled.div`
@@ -25,6 +30,11 @@ const InfoContainer = styled.div`
 const TitleContainer = styled.div`
     align-items: baseline;
     display: flex;
+    flex-direction: column-reverse;
+
+    @media ${Device.tablet} {
+        flex-direction: row;
+    }
 `;
 
 const Title = styled(Link)`
@@ -33,19 +43,37 @@ const Title = styled(Link)`
 `;
 
 const Company = styled(Link)`
-    color: ${Colors.mediumGrey};
-    margin-left: 12px;
+    font-size: 14px;
+    font-weight: 300;
+    margin-bottom: 4px;
+
+    @media ${Device.tablet} {
+        margin-left: 12px;
+        margin-bottom: unset;
+    }
 `;
 
 const SalaryContainer = styled.div`
+    align-items: center;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 16px;
+
+    @media ${Device.tablet} {
+        align-items: flex-end;
+        flex-direction: column;
+        margin-top: 0;
+    }
 `;
 
 const JobType = styled.span`
     color: ${Colors.mediumGrey};
     text-align: right;
-    margin-top: 4px;
+
+    @media ${Device.tablet} {
+        margin-top: 4px;
+    }
 `;
 
 const LocationContainer = styled.div`
