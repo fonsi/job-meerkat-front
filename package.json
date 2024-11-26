@@ -5,9 +5,10 @@
   "scripts": {
     "copyEnv:dev": "cp .env.dev .env.local",
     "copyEnv:prod": "cp .env.prod .env.local",
+    "cleanCache": "rm -rf .next",
     "dev": "npm run copyEnv:dev && next dev --turbopack",
-    "build:dev": "npm run copyEnv:dev && next build",
-    "build:prod": "npm run copyEnv:prod && next build",
+    "build:dev": "npm run cleanCache && npm run copyEnv:dev && next build",
+    "build:prod": "npm run cleanCache && npm run copyEnv:prod && next build",
     "start": "next start",
     "lint": "next lint",
     "deploy:dev": "npm run build:dev && ./scripts/copy-to-S3.sh",
