@@ -33,8 +33,9 @@ yarn-error.log*
 .env*
 !.env.dist
 
-# vercel
-.vercel
+# amplify
+.amplify
+amplify_outputs.json
 
 # typescript
 *.tsbuildinfo

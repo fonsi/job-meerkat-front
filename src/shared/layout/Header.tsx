@@ -3,6 +3,7 @@
 import styled from 'styled-components';
 import { Colors } from '@/shared/styles/constants';
 import Link from 'next/link';
+import { UserMenu } from './UserMenu';
 
 const StyledDiv = styled.div`
     align-items: center;
@@ -19,6 +20,7 @@ const StyledDiv = styled.div`
 const Container = styled.div`
     display: flex;
     align-items: center;
+    justify-content: space-between;
     max-width: 1280px;
     width: 100%;
 `;
@@ -32,5 +34,6 @@ export const Header = () => <StyledDiv>
         <LogoContainer>
             <Link href='/'>Jobmeerkat</Link>
         </LogoContainer>
+        <UserMenu />
     </Container>
 </StyledDiv>;
