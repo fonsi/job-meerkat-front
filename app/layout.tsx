@@ -6,6 +6,7 @@ import { Footer } from '@/shared/layout/Footer';
 import { Header } from '@/shared/layout/Header';
 import { Main } from '@/shared/layout/Main';
 import { Page } from '@/shared/layout/Page';
+import Script from 'next/script';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -19,6 +20,7 @@ const geistMono = localFont({
 });
 
 const isProd = process.env.APP_ENV === 'production';
+const UMAMI_ID = process.env.UMAMI_ID;
 
 export const metadata: Metadata = {
   title: 'Jobmeerkat',
@@ -37,6 +39,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        {
+          isProd && UMAMI_ID ? 
+            <Script strategy='afterInteractive' src='https://cloud.umami.is/script.js' data-website-id={UMAMI_ID} /> :
+            null
+        }
         <StyledComponentsRegistry>
           <Page>
             <Header />
