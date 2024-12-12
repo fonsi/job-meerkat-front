@@ -1,9 +1,9 @@
 import { ApiRequestError } from './apiRequestError';
 
 export const buildApiRequestUrl = (path: string): string =>
-    `${process.env.API_ENDPOINT}${path}`;
+    `${process.env.NEXT_PUBLIC_API_ENDPOINT}${path}`;
 
-enum Method { HEAD = 'head', GET = 'get', POST = 'post', PUT = 'put', DELETE = 'delete' }
+export enum Method { HEAD = 'head', GET = 'get', POST = 'post', PUT = 'put', DELETE = 'delete' }
 
 type Params<T> = {
     path: string;

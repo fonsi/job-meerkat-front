@@ -3,6 +3,7 @@ export const Colors = {
     brokenWhite: '#fefefe',
     mediumGrey: '#666',
     white: '#fff',
+    red: '#f33',
 }
 
 const Size = {

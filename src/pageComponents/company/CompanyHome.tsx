@@ -1,11 +1,11 @@
 'use client'
 
+import styled from 'styled-components';
 import { Company } from '@/company/company'
 import { JobPost } from '@/jobPost/http/getJobPosts';
 import { JobPostsList } from '@/jobPost/layout/JobPostList';
 import { JobPostRow } from '@/jobPost/layout/JobPostRow';
-import { CompanyHeader } from './CompanyHeader';
-import styled from 'styled-components';
+import { CompanyHeader } from '@/company/layout/CompanyHeader';
 import { Colors, Device } from '@/shared/styles/constants';
 
 type Props = {
