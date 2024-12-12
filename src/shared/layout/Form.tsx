@@ -6,7 +6,7 @@ type FormGroupProps = {
     error?: string | null;
 }
 
-const StyledLabel = styled.span`
+const StyledLabel = styled.label`
     font-size: 12px;
     margin-bottom: 4px;
 `;
