@@ -1,10 +1,11 @@
 'use client'
 
-import Link from 'next/link';
+import { Link } from 'react-router-dom';
 
 export const DashboardPage = () => {
     return <main>
         <h1>Dashboard</h1>
-        <Link href={'/dashboard/company/create'}>Create company</Link>
+        <Link to={'/companies'}>Companies</Link>
+        <Link to={'/company/create'}>Create company</Link>
     </main>;
 }

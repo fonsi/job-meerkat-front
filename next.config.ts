@@ -8,7 +8,13 @@ const nextConfig: NextConfig = {
   },
   images: {
     unoptimized: true,
-  }
+  },
+  rewrites: async () => [
+    {
+      source: '/dashboard/:any*',
+      destination: '/dashboard',
+    },
+  ]
 };
 
 export default nextConfig;
