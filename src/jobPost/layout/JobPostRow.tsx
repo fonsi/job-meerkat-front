@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { Colors, Device } from '@/shared/styles/constants';
 import { JobPost } from '../http/getJobPosts';
 import { SalaryRange } from './SalaryRange';
+import { CompanyImage } from '@/company/layout/CompanyImage';
 
 type Props = {
     jobPost: JobPost;
@@ -14,7 +15,8 @@ const StyledJobPostRow = styled.li`
     border-bottom: 1px solid ${Colors.mediumGrey};
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    gap: 12px;
+    justify-content: flex-start;
     padding: 16px 8px;
 
     @media ${Device.tablet} { 
@@ -24,6 +26,7 @@ const StyledJobPostRow = styled.li`
 
 const InfoContainer = styled.div`
     display: flex;
+    flex: 1;
     flex-direction: column;
 `;
 
@@ -71,6 +74,11 @@ const LocationContainer = styled.div`
 `;
 
 export const JobPostRow = ({ jobPost }: Props) => <StyledJobPostRow>
+    {
+        jobPost.company ?
+            <CompanyImage company={jobPost.company} $width={50} /> :
+            null
+    }
     <InfoContainer>
         <TitleContainer>
             {

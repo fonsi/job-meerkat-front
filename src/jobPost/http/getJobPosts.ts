@@ -1,3 +1,4 @@
+import { CompanyLogo } from '@/company/company';
 import { apiRequest } from '@/shared/http/apiRequest';
 
 export enum JobType { FullTime = 'fullTime', PartTime = 'partTime', Contract = 'contract', Unknown = 'unknown' };
@@ -18,6 +19,7 @@ export type JobPost = {
     company: {
         id: string;
         name: string;
+        logo: CompanyLogo;
     },
     salaryRange: SalaryRange | null,
     workplace: Workplace;

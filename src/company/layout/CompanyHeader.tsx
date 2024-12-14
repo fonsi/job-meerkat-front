@@ -1,10 +1,9 @@
 'use client'
 
-import { Company } from '@/company/company'
-import { placeholder } from '@/shared/image/placeholder';
-import { Colors, Device } from '@/shared/styles/constants';
-import Image from 'next/image';
 import styled from 'styled-components';
+import { Company } from '@/company/company'
+import { Colors, Device } from '@/shared/styles/constants';
+import { CompanyImage } from './CompanyImage';
 
 type Props = {
     company: Company;
@@ -38,36 +37,9 @@ const CompanyInfo = styled.div`
     margin-left: 24px;
 `;
 
-const CompanyImage = styled.div`
-    background-color: ${Colors.white};
-    flex-shrink: 0;
-    position: relative;
-    width: 50px;
-
-    @media ${Device.tablet} { 
-        width: 100px;
-    }
-
-    img {
-        object-fit: contain;
-        padding: 4px;
-    }
-`;
-
 export const CompanyHeader = ({ company }: Props) =>
     <Header>
-        <CompanyImage>
-            <Image
-                alt={`${company.name} logo`}
-                fill={true}
-                src='https://logowik.com/content/uploads/images/bluesky-social50.logowik.com.webp'
-                placeholder='blur'
-                blurDataURL={placeholder}
-                onError={(props) => {
-                    props.currentTarget.src = placeholder;
-                }}
-            />
-        </CompanyImage>
+        <CompanyImage company={company} />
         <CompanyInfo>
             <CompanyName>{ company.name }</CompanyName>
             <CompanyUrl target='_blank' href={company.homePage}>{ company.homePage }</CompanyUrl>
