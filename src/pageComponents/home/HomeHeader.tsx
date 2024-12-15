@@ -1,5 +1,6 @@
 'use client'
 
+import { delaGothicVarName } from '@/shared/font/constants';
 import { Colors } from '@/shared/styles/constants';
 import styled from 'styled-components';
 
@@ -12,6 +13,7 @@ const Header = styled.div`
 `;
 
 const Claim = styled.h1`
+    font-family: var(${delaGothicVarName});
     font-size: 36px;
     font-weight: 400;
     text-align: center;

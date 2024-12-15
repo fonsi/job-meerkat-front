@@ -12,7 +12,7 @@ type Props = {
 }
 
 const StyledJobPostRow = styled.li`
-    border-bottom: 1px solid ${Colors.mediumGrey};
+    border-bottom: 1px solid ${Colors.darkGrey};
     display: flex;
     flex-direction: column;
     gap: 12px;

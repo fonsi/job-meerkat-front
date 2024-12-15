@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { Colors } from '@/shared/styles/constants';
 import Link from 'next/link';
 import { UserMenu } from './UserMenu';
+import { LogoText } from '../image/LogoText';
 
 const StyledDiv = styled.div`
     align-items: center;
@@ -12,6 +13,7 @@ const StyledDiv = styled.div`
     color: ${Colors.brokenWhite};
     display: flex;
     font-size: 24px;
+    min-height: 54px;
     justify-content: center;
     padding: 8px;
     width: 100%;
@@ -29,10 +31,21 @@ const LogoContainer = styled.div`
     display: flex;
 `;
 
+const StyledLink = styled(Link)`
+    font-size: unset;
+
+    svg {
+        height: 20px;
+        width: 186px;
+    }
+`;
+
 export const Header = () => <StyledDiv>
     <Container>
         <LogoContainer>
-            <Link href='/'>Jobmeerkat</Link>
+            <StyledLink href='/'>
+                <LogoText fill='#fff' />
+            </StyledLink>
         </LogoContainer>
         <UserMenu />
     </Container>
