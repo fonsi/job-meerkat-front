@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link';
 import styled from 'styled-components';
 
 const StyledFooter = styled.footer`
@@ -13,5 +14,5 @@ const StyledFooter = styled.footer`
 
 export const Footer = () =>
     <StyledFooter>
-        <span>Made with love by @fonsirs</span>
+        <span>Made with love by <Link target='_blank' href='https://twitter.com/FonsiRS'>@fonsirs</Link></span>
     </StyledFooter>;
