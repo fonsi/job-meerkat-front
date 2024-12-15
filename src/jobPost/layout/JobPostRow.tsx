@@ -102,12 +102,12 @@ export const JobPostRow = ({ jobPost }: Props) => <StyledJobPostRow>
             }
         </LocationContainer>
     </InfoContainer>
-    {
-        jobPost.salaryRange ? 
-            <SalaryContainer>
-                <SalaryRange salaryRange={jobPost.salaryRange} />
-                <PublishDate>{new Date(jobPost.createdAt).toJSON().split('T')[0]}</PublishDate>
-            </SalaryContainer>:
-            null
-    }
+    <SalaryContainer>
+        {
+            jobPost.salaryRange ? 
+                <SalaryRange salaryRange={jobPost.salaryRange} />:
+                <div></div>
+        }
+        <PublishDate>{new Date(jobPost.createdAt).toJSON().split('T')[0]}</PublishDate>
+    </SalaryContainer>
 </StyledJobPostRow>;
