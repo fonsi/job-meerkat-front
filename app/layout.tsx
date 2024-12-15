@@ -13,7 +13,7 @@ const UMAMI_ID = process.env.UMAMI_ID;
 
 export const metadata: Metadata = {
   title: 'Jobmeerkat',
-  description: 'Don\'t miss your next job',
+  description: 'Don\'t miss your next job. Find here the next step in your career.',
   robots: {
     index: isProd,
     follow: isProd,
