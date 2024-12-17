@@ -1,0 +1,7 @@
+User-Agent: *
+
+Allow: /
+
+Disallow: /_next/
+Disallow: /*index.txt
+Disallow: /*favicon.*
