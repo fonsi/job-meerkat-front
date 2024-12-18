@@ -1,5 +1,6 @@
 import { getCompanies } from '@/company/http/getCompanies';
 import { getCompany } from '@/company/http/getCompany';
+import { getSortedJobPosts } from '@/jobPost/getSortedJobPosts';
 import { CompanyHome } from '@/pageComponents/company/CompanyHome';
 import { Container } from '@/shared/layout/Container';
 import { Metadata, ResolvingMetadata } from 'next';
@@ -37,9 +38,10 @@ const Company = async ({ params }: Props) => {
     const { id } = await params;
     const companyData = await getCompany(id);
     const { company, openJobPosts } = companyData;
+    const sortedJobPosts = getSortedJobPosts(openJobPosts);
 
     return <Container>
-        <CompanyHome company={company} openJobPosts={openJobPosts} />
+        <CompanyHome company={company} openJobPosts={sortedJobPosts} />
     </Container>
 }
 

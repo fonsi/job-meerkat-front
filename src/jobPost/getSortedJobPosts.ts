@@ -1,4 +1,4 @@
-import { getJobPosts, JobPost } from './http/getJobPosts'
+import { JobPost } from './http/getJobPosts'
 
 export enum PublishPeriod { LastDay, LastSevenDays, LastThirtyDays, BeforeLastThirtyDays }
 
@@ -28,8 +28,7 @@ const getPublishPeriodKey = (timeSincePublished: number): PublishPeriod => {
     return PublishPeriod.BeforeLastThirtyDays;
 }
 
-export const getSortedJobPosts = async (): Promise<SortedJobPosts> => {
-    const jobPosts = await getJobPosts();
+export const getSortedJobPosts = (jobPosts: JobPost[]): SortedJobPosts => {
     const sortedJobPosts = jobPosts.toSorted((a, b) => a.createdAt - b.createdAt);
 
     return sortedJobPosts.reduce((acc, jobPost) => {

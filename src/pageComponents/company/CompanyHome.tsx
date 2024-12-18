@@ -2,21 +2,21 @@
 
 import styled from 'styled-components';
 import { Company } from '@/company/company'
-import { JobPost } from '@/jobPost/http/getJobPosts';
 import { JobPostsList } from '@/jobPost/layout/JobPostList';
-import { JobPostRow } from '@/jobPost/layout/JobPostRow';
 import { CompanyHeader } from '@/company/layout/CompanyHeader';
 import { Colors, Device } from '@/shared/styles/constants';
+import { PublishPeriod, SortedJobPosts } from '@/jobPost/getSortedJobPosts';
+import { JobPostsPublishPeriod } from '@/jobPost/layout/JobPostsPublishPeriod';
 
 type Props = {
     company: Company;
-    openJobPosts: JobPost[];
+    openJobPosts: SortedJobPosts;
 }
 
 const OpenPositions = styled.h2`
     border-bottom: 1px solid ${Colors.brokenWhite};
     font-size: 16px;
-    margin-bottom: 4px;
+    margin-bottom: 24px;
     padding: 8px;
 
     @media ${Device.tablet} { 
@@ -30,10 +30,9 @@ export const CompanyHome = ({ company, openJobPosts }: Props) =>
         <CompanyHeader company={company} />
         <OpenPositions>Open positions</OpenPositions>
         <JobPostsList>
-        {
-            openJobPosts.map(jobPost =>
-                <JobPostRow key={jobPost.id} jobPost={jobPost} />
-            )
-        }
+            <JobPostsPublishPeriod jobPosts={openJobPosts[PublishPeriod.LastDay]} title='Last 24 hours' />
+            <JobPostsPublishPeriod jobPosts={openJobPosts[PublishPeriod.LastSevenDays]} title='Last 7 days' />
+            <JobPostsPublishPeriod jobPosts={openJobPosts[PublishPeriod.LastThirtyDays]} title='Last 30 days' />
+            <JobPostsPublishPeriod jobPosts={openJobPosts[PublishPeriod.BeforeLastThirtyDays]} title='More than 30 days ago' />
         </JobPostsList>
     </div>

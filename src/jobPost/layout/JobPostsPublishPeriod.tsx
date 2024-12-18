@@ -3,7 +3,8 @@
 import styled from 'styled-components';
 import { JobPost } from '../http/getJobPosts'
 import { JobPostRow } from './JobPostRow';
-import { Colors } from '@/shared/styles/constants';
+import { Colors, Device } from '@/shared/styles/constants';
+import { Calendar } from '@/shared/image/icons/Calendar';
 
 type Props = {
     jobPosts: JobPost[];
@@ -17,9 +18,23 @@ const PublishPeriod = styled.div`
 `;
 
 const Title = styled.div`
-    color: ${Colors.mediumGrey};
-    font-size: 24px;
-    padding: 0 8px;
+    align-items: center;
+    background-color: ${Colors.brokenWhite};
+    color: ${Colors.darkGrey};
+    display: flex;
+    font-size: 14px;
+    gap: 6px;
+    margin: 12px 0;
+    padding: 12px 8px;
+
+    @media ${Device.laptop} { 
+        border-radius: 2px;
+    }
+
+    svg {
+        height: 20px;
+        width: 20px;
+    }
 `;
 
 export const JobPostsPublishPeriod = ({ jobPosts, title }: Props) => {
@@ -28,7 +43,10 @@ export const JobPostsPublishPeriod = ({ jobPosts, title }: Props) => {
     }
 
     return <PublishPeriod>
-        <Title>{ title }</Title>
+        <Title>
+            <Calendar />
+            { title }
+        </Title>
         {
             jobPosts.map((jobPost) =>
                 <JobPostRow key={jobPost.id} jobPost={jobPost}></JobPostRow>
