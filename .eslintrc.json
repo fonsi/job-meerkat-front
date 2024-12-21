@@ -1,12 +1,7 @@
 {
-  "extends": [
-    "next/core-web-vitals",
-    "next/typescript"
-  ],
-  "rules": {
-    "quotes": [
-      "warn",
-      "single"
-    ]
-  }
+    "extends": ["next/core-web-vitals", "next/typescript"],
+    "rules": {
+        "quotes": ["warn", "single"]
+    },
+    "ignores": [".serverless/", "node_modules/", ".amplify/", ".next/", "out/"]
 }

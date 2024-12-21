@@ -10,5 +10,6 @@ const StyledButton = styled.button`
     padding: 8px 12px;
 `;
 
-export const Button = (props: Props) =>
+export const Button = (props: Props) => (
     <StyledButton {...props}>{props.children}</StyledButton>
+);

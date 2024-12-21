@@ -1,6 +1,6 @@
-'use client'
+'use client';
 
-import styled from 'styled-components'
+import styled from 'styled-components';
 import { Colors } from '../styles/constants';
 import { PropsWithChildren } from 'react';
 
@@ -16,4 +16,6 @@ const StyledPage = styled.div`
     width: 100%;
 `;
 
-export const Page = ({ children }: PropsWithChildren) => <StyledPage>{children}</StyledPage>;
+export const Page = ({ children }: PropsWithChildren) => (
+    <StyledPage>{children}</StyledPage>
+);

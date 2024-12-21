@@ -1,15 +1,31 @@
 import { CompanyLogo } from '@/company/company';
 import { apiRequest } from '@/shared/http/apiRequest';
 
-export enum JobType { FullTime = 'fullTime', PartTime = 'partTime', Contract = 'contract', Unknown = 'unknown' };
-export enum Workplace { Remote = 'remote', OnSite = 'onSite', Hybrid = 'hybrid', Unknown = 'unknown' };
-export enum Period { Year = 'year', Month = 'month', Week = 'week', Day = 'day', Hour = 'hour' };
+export enum JobType {
+    FullTime = 'fullTime',
+    PartTime = 'partTime',
+    Contract = 'contract',
+    Unknown = 'unknown',
+}
+export enum Workplace {
+    Remote = 'remote',
+    OnSite = 'onSite',
+    Hybrid = 'hybrid',
+    Unknown = 'unknown',
+}
+export enum Period {
+    Year = 'year',
+    Month = 'month',
+    Week = 'week',
+    Day = 'day',
+    Hour = 'hour',
+}
 export type SalaryRange = {
-    min?:  number;
-    max:  number;
+    min?: number;
+    max: number;
     currency: string;
     period: Period;
-}
+};
 
 export type JobPost = {
     id: string;
@@ -20,8 +36,8 @@ export type JobPost = {
         id: string;
         name: string;
         logo: CompanyLogo;
-    },
-    salaryRange: SalaryRange | null,
+    };
+    salaryRange: SalaryRange | null;
     workplace: Workplace;
     location: string;
     createdAt: number;
@@ -29,5 +45,5 @@ export type JobPost = {
 
 export const getJobPosts = (): Promise<JobPost[]> =>
     apiRequest<JobPost[], void>({
-        path: '/jobPost'
+        path: '/jobPost',
     });

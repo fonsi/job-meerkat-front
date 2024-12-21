@@ -5,7 +5,7 @@ export const Colors = {
     mediumGrey: '#666',
     white: '#fff',
     red: '#f33',
-}
+};
 
 const Size = {
     mobileS: '320px',
@@ -14,10 +14,10 @@ const Size = {
     tablet: '768px',
     laptop: '1024px',
     laptopL: '1440px',
-    desktop: '2560px'
-  }
+    desktop: '2560px',
+};
 
-  export const Device = {
+export const Device = {
     mobileS: `(min-width: ${Size.mobileS})`,
     mobileM: `(min-width: ${Size.mobileM})`,
     mobileL: `(min-width: ${Size.mobileL})`,
@@ -25,5 +25,5 @@ const Size = {
     laptop: `(min-width: ${Size.laptop})`,
     laptopL: `(min-width: ${Size.laptopL})`,
     desktop: `(min-width: ${Size.desktop})`,
-    desktopL: `(min-width: ${Size.desktop})`
-  }
+    desktopL: `(min-width: ${Size.desktop})`,
+};

@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import styled from 'styled-components';
 import Link from 'next/link';
@@ -9,7 +9,7 @@ import { CompanyImage } from '@/company/layout/CompanyImage';
 
 type Props = {
     jobPost: JobPost;
-}
+};
 
 const StyledJobPostRow = styled.li`
     border-bottom: 1px solid ${Colors.darkGrey};
@@ -19,7 +19,7 @@ const StyledJobPostRow = styled.li`
     justify-content: flex-start;
     padding: 16px 8px;
 
-    @media ${Device.tablet} { 
+    @media ${Device.tablet} {
         flex-direction: row;
     }
 `;
@@ -73,41 +73,39 @@ const LocationContainer = styled.div`
     margin-top: 4px;
 `;
 
-export const JobPostRow = ({ jobPost }: Props) => <StyledJobPostRow>
-    {
-        jobPost.company ?
-            <CompanyImage company={jobPost.company} $width={50} /> :
-            null
-    }
-    <InfoContainer>
-        <TitleContainer>
-            {
-                jobPost.company ?
-                    <Company href={`/company/${jobPost.company.id}`}>{jobPost.company.name}</Company> :
-                    null
-            }
-            <Title target='_blank' href={jobPost.url}>{ jobPost.title }</Title>
-        </TitleContainer>
-        <LocationContainer>
-            <span>{jobPost.workplace}</span>
-            {
-                jobPost.location ?
-                    <span>&nbsp;-&nbsp;{jobPost.location}</span> :
-                    null
-            }
-            {
-                jobPost.type ?
-                    <span>&nbsp;-&nbsp;{jobPost.type}</span>:
-                    null
-            }
-        </LocationContainer>
-    </InfoContainer>
-    <SalaryContainer>
-        {
-            jobPost.salaryRange ? 
-                <SalaryRange salaryRange={jobPost.salaryRange} />:
+export const JobPostRow = ({ jobPost }: Props) => (
+    <StyledJobPostRow>
+        {jobPost.company ? (
+            <CompanyImage company={jobPost.company} $width={50} />
+        ) : null}
+        <InfoContainer>
+            <TitleContainer>
+                {jobPost.company ? (
+                    <Company href={`/company/${jobPost.company.id}`}>
+                        {jobPost.company.name}
+                    </Company>
+                ) : null}
+                <Title target="_blank" href={jobPost.url}>
+                    {jobPost.title}
+                </Title>
+            </TitleContainer>
+            <LocationContainer>
+                <span>{jobPost.workplace}</span>
+                {jobPost.location ? (
+                    <span>&nbsp;-&nbsp;{jobPost.location}</span>
+                ) : null}
+                {jobPost.type ? <span>&nbsp;-&nbsp;{jobPost.type}</span> : null}
+            </LocationContainer>
+        </InfoContainer>
+        <SalaryContainer>
+            {jobPost.salaryRange ? (
+                <SalaryRange salaryRange={jobPost.salaryRange} />
+            ) : (
                 <div></div>
-        }
-        <PublishDate>{new Date(jobPost.createdAt).toJSON().split('T')[0]}</PublishDate>
-    </SalaryContainer>
-</StyledJobPostRow>;
+            )}
+            <PublishDate>
+                {new Date(jobPost.createdAt).toJSON().split('T')[0]}
+            </PublishDate>
+        </SalaryContainer>
+    </StyledJobPostRow>
+);

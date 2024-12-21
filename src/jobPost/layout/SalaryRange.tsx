@@ -1,9 +1,9 @@
 import styled from 'styled-components';
-import { SalaryRange as SalaryRangeType } from '../http/getJobPosts'
+import { SalaryRange as SalaryRangeType } from '../http/getJobPosts';
 
 type Props = {
     salaryRange: SalaryRangeType;
-}
+};
 
 const Container = styled.div`
     align-items: baseline;
@@ -26,7 +26,7 @@ const beautifySalary = (salary: number): string | number => {
     }
 
     return `${(salary / 1000).toFixed()}K`;
-}
+};
 
 const beautifyCurrency = (currency: string): string => currency.toUpperCase();
 
@@ -34,23 +34,44 @@ export const SalaryRangeAmount = ({ salaryRange }: Props) => {
     const currency = beautifyCurrency(salaryRange.currency);
 
     if (!salaryRange.min) {
-        return <><Text>Up to&nbsp;</Text><Amount>{beautifySalary(salaryRange.max)} {currency}</Amount></>;
+        return (
+            <>
+                <Text>Up to&nbsp;</Text>
+                <Amount>
+                    {beautifySalary(salaryRange.max)} {currency}
+                </Amount>
+            </>
+        );
     }
 
     if (!salaryRange.max) {
-        return <><Text>From&nbsp;</Text><Amount>{beautifySalary(salaryRange.min)} {currency}</Amount></>;
+        return (
+            <>
+                <Text>From&nbsp;</Text>
+                <Amount>
+                    {beautifySalary(salaryRange.min)} {currency}
+                </Amount>
+            </>
+        );
     }
 
-    return <Amount>{beautifySalary(salaryRange.min)} - {beautifySalary(salaryRange.max)} {currency}</Amount>;
-}
+    return (
+        <Amount>
+            {beautifySalary(salaryRange.min)} -{' '}
+            {beautifySalary(salaryRange.max)} {currency}
+        </Amount>
+    );
+};
 
 export const SalaryRange = ({ salaryRange }: Props) => {
     if (!salaryRange || (!salaryRange.min && !salaryRange.max)) {
         return null;
     }
 
-    return <Container>
-        <SalaryRangeAmount salaryRange={salaryRange} />
-        <Text>&nbsp;/&nbsp;{ salaryRange.period }</Text>
-    </Container>;
-}
+    return (
+        <Container>
+            <SalaryRangeAmount salaryRange={salaryRange} />
+            <Text>&nbsp;/&nbsp;{salaryRange.period}</Text>
+        </Container>
+    );
+};

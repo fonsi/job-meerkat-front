@@ -4,10 +4,10 @@ import { Company } from '../company';
 
 type CompanyResponse = {
     company: Company;
-    openJobPosts: JobPost[]
-}
+    openJobPosts: JobPost[];
+};
 
 export const getCompany = (companyId: string): Promise<CompanyResponse> =>
     apiRequest<CompanyResponse, void>({
-        path: `/company/${companyId}`
+        path: `/company/${companyId}`,
     });

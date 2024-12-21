@@ -12,37 +12,38 @@ const isProd = process.env.APP_ENV === 'production';
 const UMAMI_ID = process.env.UMAMI_ID;
 
 export const metadata: Metadata = {
-  title: 'Jobmeerkat',
-  description: 'Don\'t miss your next job. Find here the next step in your career.',
-  robots: {
-    index: isProd,
-    follow: isProd,
-  }
+    title: 'Jobmeerkat',
+    description:
+        "Don't miss your next job. Find here the next step in your career.",
+    robots: {
+        index: isProd,
+        follow: isProd,
+    },
 };
 
 export default function RootLayout({
-  children,
+    children,
 }: Readonly<{
-  children: React.ReactNode;
+    children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en">
-      <body className={`${delaGothicOne.variable}`}>
-        {
-          isProd && UMAMI_ID ? 
-            <Script strategy='afterInteractive' src='https://cloud.umami.is/script.js' data-website-id={UMAMI_ID} /> :
-            null
-        }
-        <StyledComponentsRegistry>
-          <Page>
-            <Header />
-            <Main>
-              {children}
-            </Main>
-            <Footer />
-          </Page>
-        </StyledComponentsRegistry>
-      </body>
-    </html>
-  );
+    return (
+        <html lang="en">
+            <body className={`${delaGothicOne.variable}`}>
+                {isProd && UMAMI_ID ? (
+                    <Script
+                        strategy="afterInteractive"
+                        src="https://cloud.umami.is/script.js"
+                        data-website-id={UMAMI_ID}
+                    />
+                ) : null}
+                <StyledComponentsRegistry>
+                    <Page>
+                        <Header />
+                        <Main>{children}</Main>
+                        <Footer />
+                    </Page>
+                </StyledComponentsRegistry>
+            </body>
+        </html>
+    );
 }

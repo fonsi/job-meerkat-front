@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { Authenticator, useAuthenticator } from '@aws-amplify/ui-react';
 import { useState } from 'react';
@@ -22,7 +22,7 @@ const UserIcon = styled.button`
 
     svg {
         :hover {
-            opacity: .9;
+            opacity: 0.9;
         }
     }
 `;
@@ -52,38 +52,42 @@ const UserOption = styled.li`
 `;
 
 const Menu = () => {
-    const { authStatus, signOut } = useAuthenticator(context => [context.authStatus]);
-    const [ isOpen, setIsOpen ] = useState(false);
+    const { authStatus, signOut } = useAuthenticator((context) => [
+        context.authStatus,
+    ]);
+    const [isOpen, setIsOpen] = useState(false);
 
     const handleIconClick = () => {
         setIsOpen(!isOpen);
-    }
+    };
 
     const handleOnDashboard = () => {
         redirect('/dashboard');
-    }
+    };
 
     const handleLogOut = () => {
         signOut();
-    }
+    };
 
-    return authStatus !== 'authenticated' ? null : <>
-        <UserIcon onClick={handleIconClick}>
-            <Person></Person>
-            {
-                isOpen ?
+    return authStatus !== 'authenticated' ? null : (
+        <>
+            <UserIcon onClick={handleIconClick}>
+                <Person></Person>
+                {isOpen ? (
                     <UserOptions>
-                        <UserOption onClick={handleOnDashboard}>Dashboard</UserOption>
+                        <UserOption onClick={handleOnDashboard}>
+                            Dashboard
+                        </UserOption>
                         <UserOption onClick={handleLogOut}>Log out</UserOption>
-                    </UserOptions> :
-                    null
-            }
-        </UserIcon>
-    </>;
-}
+                    </UserOptions>
+                ) : null}
+            </UserIcon>
+        </>
+    );
+};
 
-export const UserMenu = () =>
+export const UserMenu = () => (
     <Authenticator.Provider>
         <Menu />
-    </Authenticator.Provider>;
-    
+    </Authenticator.Provider>
+);

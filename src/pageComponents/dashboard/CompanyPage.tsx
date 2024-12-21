@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { useEffect, useState } from 'react';
 import { Company } from '@/company/company';
@@ -8,7 +8,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 
 export const CompanyPage = () => {
     const navigate = useNavigate();
-    const { id } = useParams<{ id: string; }>();
+    const { id } = useParams<{ id: string }>();
     const [isLoading, setIsLoading] = useState(true);
     const [company, setCompany] = useState<Company | null>(null);
     const [jobPosts, setJobPosts] = useState<JobPost[]>([]);
@@ -29,21 +29,21 @@ export const CompanyPage = () => {
         navigate('/');
     }
 
-    return <main>
-        {
-            isLoading ?
-                <p>Loading...</p> :
+    return (
+        <main>
+            {isLoading ? (
+                <p>Loading...</p>
+            ) : (
                 <>
                     <h1>{company?.name}</h1>
                     <p>{company?.homePage}</p>
                     <ul>
-                        {
-                            jobPosts?.map((jobPost) => 
-                                <li key={jobPost.id}>{jobPost.title}</li>
-                            )
-                        }
+                        {jobPosts?.map((jobPost) => (
+                            <li key={jobPost.id}>{jobPost.title}</li>
+                        ))}
                     </ul>
                 </>
-        }
-    </main>;
-}
+            )}
+        </main>
+    );
+};

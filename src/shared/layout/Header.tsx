@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import styled from 'styled-components';
 import { Colors } from '@/shared/styles/constants';
@@ -40,13 +40,15 @@ const StyledLink = styled(Link)`
     }
 `;
 
-export const Header = () => <StyledDiv>
-    <Container>
-        <LogoContainer>
-            <StyledLink href='/'>
-                <LogoText fill='#fff' />
-            </StyledLink>
-        </LogoContainer>
-        <UserMenu />
-    </Container>
-</StyledDiv>;
+export const Header = () => (
+    <StyledDiv>
+        <Container>
+            <LogoContainer>
+                <StyledLink href="/">
+                    <LogoText fill="#fff" />
+                </StyledLink>
+            </LogoContainer>
+            <UserMenu />
+        </Container>
+    </StyledDiv>
+);

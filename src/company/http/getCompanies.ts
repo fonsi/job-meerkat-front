@@ -5,5 +5,5 @@ type CompaniesResponse = Company[];
 
 export const getCompanies = (): Promise<CompaniesResponse> =>
     apiRequest<CompaniesResponse, void>({
-        path: '/company'
+        path: '/company',
     });

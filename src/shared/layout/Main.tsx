@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { PropsWithChildren } from 'react';
 import styled from 'styled-components';
@@ -13,4 +13,6 @@ const StyledMain = styled.main`
     width: 100%;
 `;
 
-export const Main = ({ children }: PropsWithChildren) => <StyledMain>{ children }</StyledMain>;
+export const Main = ({ children }: PropsWithChildren) => (
+    <StyledMain>{children}</StyledMain>
+);

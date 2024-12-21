@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import Link from 'next/link';
 import styled from 'styled-components';
@@ -12,7 +12,13 @@ const StyledFooter = styled.footer`
     width: 100%;
 `;
 
-export const Footer = () =>
+export const Footer = () => (
     <StyledFooter>
-        <span>Made with love by <Link target='_blank' href='https://twitter.com/FonsiRS'>@fonsirs</Link></span>
-    </StyledFooter>;
+        <span>
+            Made with love by{' '}
+            <Link target="_blank" href="https://twitter.com/FonsiRS">
+                @fonsirs
+            </Link>
+        </span>
+    </StyledFooter>
+);

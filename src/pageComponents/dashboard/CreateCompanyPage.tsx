@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import styled from 'styled-components';
 import { Container } from '@/shared/layout/Container';
@@ -16,28 +16,32 @@ export const CreateCompanyPage = () => {
 
     const handleCreateAnotherClick = () => {
         setResult(null);
-    }
+    };
 
     const handleOnSuccess = (result: Company) => {
         setResult(result);
-    }
+    };
 
-    return <Container $maxWidth='800px' $margin='24px 0 0'>
-        <h1>Create company</h1>
-        <StyledCreateCompanyFormContainer>
-            {
-                result ?
+    return (
+        <Container $maxWidth="800px" $margin="24px 0 0">
+            <h1>Create company</h1>
+            <StyledCreateCompanyFormContainer>
+                {result ? (
                     <>
                         <p>Succesfully created company</p>
                         <ul>
-                            <li>Id: { result.id }</li>
-                            <li>Name: { result.name }</li>
-                            <li>Home Page: { result.homePage }</li>
+                            <li>Id: {result.id}</li>
+                            <li>Name: {result.name}</li>
+                            <li>Home Page: {result.homePage}</li>
                         </ul>
-                        <Button onClick={handleCreateAnotherClick}>Create another company</Button>
-                    </> :
+                        <Button onClick={handleCreateAnotherClick}>
+                            Create another company
+                        </Button>
+                    </>
+                ) : (
                     <CompanyForm onSuccess={handleOnSuccess} />
-            }
-        </StyledCreateCompanyFormContainer>
-    </Container>
-}
+                )}
+            </StyledCreateCompanyFormContainer>
+        </Container>
+    );
+};

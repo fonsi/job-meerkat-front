@@ -1,36 +1,42 @@
 {
-  "name": "jobmeerkat-front",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "copyEnv:dev": "cp .env.dev .env.local",
-    "copyEnv:prod": "cp .env.prod .env.local",
-    "cleanCache": "rm -rf .next",
-    "dev": "npm run copyEnv:dev && next dev --turbopack",
-    "build:dev": "npm run cleanCache && npm run copyEnv:dev && next build",
-    "build:prod": "npm run cleanCache && npm run copyEnv:prod && next build",
-    "start": "next start",
-    "lint": "next lint",
-    "deploy:dev": "npm run build:dev && ./scripts/copy-to-S3.sh",
-    "deploy:prod": "npm run build:prod && ./scripts/copy-to-S3.sh"
-  },
-  "dependencies": {
-    "@aws-amplify/ui-react": "^6.7.2",
-    "aws-amplify": "^6.10.0",
-    "next": "15.1.1",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-router-dom": "^7.0.2",
-    "styled-components": "^6.1.13"
-  },
-  "devDependencies": {
-    "@aws-amplify/backend": "^1.10.0",
-    "@aws-amplify/backend-cli": "^1.4.4",
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "eslint": "^8",
-    "eslint-config-next": "15.1.1",
-    "typescript": "^5"
-  }
+    "name": "jobmeerkat-front",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "copyEnv:dev": "cp .env.dev .env.local",
+        "copyEnv:prod": "cp .env.prod .env.local",
+        "cleanCache": "rm -rf .next",
+        "dev": "npm run copyEnv:dev && next dev --turbopack",
+        "build:dev": "npm run cleanCache && npm run copyEnv:dev && next build",
+        "build:prod": "npm run cleanCache && npm run copyEnv:prod && next build",
+        "start": "next start",
+        "lint": "next lint",
+        "deploy:dev": "npm run build:dev && ./scripts/copy-to-S3.sh",
+        "deploy:prod": "npm run build:prod && ./scripts/copy-to-S3.sh",
+        "prepare": "husky",
+        "typecheck": "tsc --noEmit",
+        "prettier": "prettier --list-different --write './**/*.{js,ts,jsx,tsx,mjs,json}'",
+        "pre-commit": "npm run prettier && npm run typecheck"
+    },
+    "dependencies": {
+        "@aws-amplify/ui-react": "^6.7.2",
+        "aws-amplify": "^6.10.0",
+        "next": "15.1.1",
+        "react": "^18.3.1",
+        "react-dom": "^18.3.1",
+        "react-router-dom": "^7.0.2",
+        "styled-components": "^6.1.13"
+    },
+    "devDependencies": {
+        "@aws-amplify/backend": "^1.10.0",
+        "@aws-amplify/backend-cli": "^1.4.4",
+        "@types/node": "^20",
+        "@types/react": "^18",
+        "@types/react-dom": "^18",
+        "eslint": "^8",
+        "eslint-config-next": "15.1.1",
+        "husky": "^9.1.7",
+        "prettier": "^3.4.2",
+        "typescript": "^5"
+    }
 }

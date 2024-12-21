@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { delaGothicVarName } from '@/shared/font/constants';
 import { Colors } from '@/shared/styles/constants';
@@ -28,8 +28,12 @@ const Text = styled.h2`
     text-align: center;
 `;
 
-export const HomeHeader = () =>
+export const HomeHeader = () => (
     <Header>
         <Claim>Don&apos;t miss your next job</Claim>
-        <Text>Daily updated job posts. Stay tunned and follow your dream companies.</Text>
-    </Header>;
+        <Text>
+            Daily updated job posts. Stay tunned and follow your dream
+            companies.
+        </Text>
+    </Header>
+);

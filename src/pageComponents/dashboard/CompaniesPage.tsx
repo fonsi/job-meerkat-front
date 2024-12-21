@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { useEffect, useState } from 'react';
 import { Company } from '@/company/company';
@@ -16,20 +16,22 @@ export const CompaniesPage = () => {
         });
     }, []);
 
-    return <main>
-        <h1>Companies</h1>
-        {
-            isLoading ?
-                <p>Loading...</p> :
+    return (
+        <main>
+            <h1>Companies</h1>
+            {isLoading ? (
+                <p>Loading...</p>
+            ) : (
                 <ul>
-                    {
-                        companies.map((company) =>
-                            <li key={company.id}>
-                                <Link to={`/company/${company.id}`}>{company.name}</Link>
-                            </li>
-                        )
-                    }
+                    {companies.map((company) => (
+                        <li key={company.id}>
+                            <Link to={`/company/${company.id}`}>
+                                {company.name}
+                            </Link>
+                        </li>
+                    ))}
                 </ul>
-        }
-    </main>;
-}
+            )}
+        </main>
+    );
+};

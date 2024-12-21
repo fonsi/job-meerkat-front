@@ -1,7 +1,7 @@
 'use client';
 
 import styled from 'styled-components';
-import { JobPost } from '../http/getJobPosts'
+import { JobPost } from '../http/getJobPosts';
 import { JobPostRow } from './JobPostRow';
 import { Colors, Device } from '@/shared/styles/constants';
 import { Calendar } from '@/shared/image/icons/Calendar';
@@ -9,7 +9,7 @@ import { Calendar } from '@/shared/image/icons/Calendar';
 type Props = {
     jobPosts: JobPost[];
     title: string;
-}
+};
 
 const PublishPeriod = styled.div`
     display: flex;
@@ -27,7 +27,7 @@ const Title = styled.div`
     margin: 12px 0;
     padding: 12px 8px;
 
-    @media ${Device.laptop} { 
+    @media ${Device.laptop} {
         border-radius: 2px;
     }
 
@@ -42,15 +42,15 @@ export const JobPostsPublishPeriod = ({ jobPosts, title }: Props) => {
         return null;
     }
 
-    return <PublishPeriod>
-        <Title>
-            <Calendar />
-            { title }
-        </Title>
-        {
-            jobPosts.map((jobPost) =>
+    return (
+        <PublishPeriod>
+            <Title>
+                <Calendar />
+                {title}
+            </Title>
+            {jobPosts.map((jobPost) => (
                 <JobPostRow key={jobPost.id} jobPost={jobPost}></JobPostRow>
-            )
-        }
-    </PublishPeriod>
-}
+            ))}
+        </PublishPeriod>
+    );
+};

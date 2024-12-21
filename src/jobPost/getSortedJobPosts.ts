@@ -1,6 +1,11 @@
-import { JobPost } from './http/getJobPosts'
+import { JobPost } from './http/getJobPosts';
 
-export enum PublishPeriod { LastDay, LastSevenDays, LastThirtyDays, BeforeLastThirtyDays }
+export enum PublishPeriod {
+    LastDay,
+    LastSevenDays,
+    LastThirtyDays,
+    BeforeLastThirtyDays,
+}
 
 export type SortedJobPosts = {
     [published in PublishPeriod]: JobPost[];
@@ -13,23 +18,25 @@ const SEVEN_DAYS = TWENTY_FOUR_HOURS * 7;
 const THIRTY_DAYS = TWENTY_FOUR_HOURS * 30;
 
 const getPublishPeriodKey = (timeSincePublished: number): PublishPeriod => {
-    if(timeSincePublished < TWENTY_FOUR_HOURS) {
+    if (timeSincePublished < TWENTY_FOUR_HOURS) {
         return PublishPeriod.LastDay;
     }
 
-    if(timeSincePublished < SEVEN_DAYS) {
+    if (timeSincePublished < SEVEN_DAYS) {
         return PublishPeriod.LastSevenDays;
     }
 
-    if(timeSincePublished < THIRTY_DAYS) {
+    if (timeSincePublished < THIRTY_DAYS) {
         return PublishPeriod.LastThirtyDays;
     }
 
     return PublishPeriod.BeforeLastThirtyDays;
-}
+};
 
 export const getSortedJobPosts = (jobPosts: JobPost[]): SortedJobPosts => {
-    const sortedJobPosts = jobPosts.toSorted((a, b) => a.createdAt - b.createdAt);
+    const sortedJobPosts = jobPosts.toSorted(
+        (a, b) => a.createdAt - b.createdAt,
+    );
 
     return sortedJobPosts.reduce((acc, jobPost) => {
         const timeSincePublished = Date.now() - jobPost.createdAt;
@@ -37,11 +44,7 @@ export const getSortedJobPosts = (jobPosts: JobPost[]): SortedJobPosts => {
 
         return {
             ...acc,
-            [publishPeriodKey]: [
-                jobPost,
-                ...acc[publishPeriodKey] || [],
-            ]
-        }
-
+            [publishPeriodKey]: [jobPost, ...(acc[publishPeriodKey] || [])],
+        };
     }, {} as SortedJobPosts);
-}
+};

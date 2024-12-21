@@ -4,7 +4,7 @@ import { Colors } from '../styles/constants';
 
 type FormGroupProps = {
     error?: string | null;
-}
+};
 
 const StyledLabel = styled.label`
     font-size: 12px;
@@ -49,24 +49,28 @@ export const Input = StyledInput;
 
 export const Error = StyledError;
 
-export const FormGroup = ({ children, error }: PropsWithChildren<FormGroupProps>) => {
-    return <>
-        <StyledFormGroup>
-            { children }
-            {
-                error ?
-                    <Error>{error}</Error> :
-                    null
-            }    
-        </StyledFormGroup>
-    </>
-}
+export const FormGroup = ({
+    children,
+    error,
+}: PropsWithChildren<FormGroupProps>) => {
+    return (
+        <>
+            <StyledFormGroup>
+                {children}
+                {error ? <Error>{error}</Error> : null}
+            </StyledFormGroup>
+        </>
+    );
+};
 
-export const FormRow = ({ children }: PropsWithChildren) => <StyledFormRow>{ children }</StyledFormRow>;
+export const FormRow = ({ children }: PropsWithChildren) => (
+    <StyledFormRow>{children}</StyledFormRow>
+);
 
-export const FormFooter = ({ children }: PropsWithChildren) => <StyledFormFooter>{ children }</StyledFormFooter>;
+export const FormFooter = ({ children }: PropsWithChildren) => (
+    <StyledFormFooter>{children}</StyledFormFooter>
+);
 
-export const Form = (props: HTMLProps<HTMLFormElement>) =>
-    <StyledForm {...props}>
-        {props.children}
-    </StyledForm>
+export const Form = (props: HTMLProps<HTMLFormElement>) => (
+    <StyledForm {...props}>{props.children}</StyledForm>
+);
