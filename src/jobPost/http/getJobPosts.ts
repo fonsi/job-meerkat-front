@@ -41,6 +41,7 @@ export type JobPost = {
     workplace: Workplace;
     location: string;
     createdAt: number;
+    category: string;
 };
 
 export const getJobPosts = (): Promise<JobPost[]> =>
