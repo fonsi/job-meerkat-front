@@ -15,8 +15,7 @@
         "deploy:prod": "npm run build:prod && ./scripts/copy-to-S3.sh",
         "prepare": "husky",
         "typecheck": "tsc --noEmit",
-        "prettier": "prettier --list-different --write './**/*.{js,ts,jsx,tsx,mjs,json}'",
-        "pre-commit": "npm run prettier && npm run typecheck"
+        "pre-commit": "lint-staged && npm run typecheck"
     },
     "dependencies": {
         "@aws-amplify/ui-react": "^6.7.2",
@@ -36,7 +35,11 @@
         "eslint": "^8",
         "eslint-config-next": "15.1.1",
         "husky": "^9.1.7",
+        "lint-staged": "^15.3.0",
         "prettier": "^3.4.2",
         "typescript": "^5"
+    },
+    "lint-staged": {
+        "*.{js,ts,jsx,tsx,mjs,json}": "prettier --list-different --write"
     }
 }
