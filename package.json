@@ -15,7 +15,8 @@
         "deploy:prod": "npm run build:prod && ./scripts/copy-to-S3.sh",
         "prepare": "husky",
         "typecheck": "tsc --noEmit",
-        "pre-commit": "lint-staged && npm run typecheck"
+        "pre-commit": "lint-staged && npm run typecheck && npm test",
+        "test": "jest"
     },
     "dependencies": {
         "@aws-amplify/ui-react": "^6.7.2",
@@ -29,14 +30,21 @@
     "devDependencies": {
         "@aws-amplify/backend": "^1.10.0",
         "@aws-amplify/backend-cli": "^1.4.4",
+        "@testing-library/dom": "^10.4.0",
+        "@testing-library/jest-dom": "^6.6.3",
+        "@testing-library/react": "^16.1.0",
+        "@types/jest": "^29.5.14",
         "@types/node": "^20",
         "@types/react": "^18",
         "@types/react-dom": "^18",
         "eslint": "^8",
         "eslint-config-next": "15.1.1",
         "husky": "^9.1.7",
+        "jest": "^29.7.0",
+        "jest-environment-jsdom": "^29.7.0",
         "lint-staged": "^15.3.0",
         "prettier": "^3.4.2",
+        "ts-node": "^10.9.2",
         "typescript": "^5"
     },
     "lint-staged": {
