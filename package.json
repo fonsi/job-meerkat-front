@@ -28,7 +28,7 @@
         "styled-components": "^6.1.13"
     },
     "devDependencies": {
-        "@aws-amplify/backend": "^1.10.0",
+        "@aws-amplify/backend": "^1.11.0",
         "@aws-amplify/backend-cli": "^1.4.5",
         "@testing-library/dom": "^10.4.0",
         "@testing-library/jest-dom": "^6.6.3",
