@@ -17,8 +17,8 @@ export async function generateMetadata(
     parent: ResolvingMetadata,
 ): Promise<Metadata> {
     const { slug } = await params;
-    const categories = await getCategories();
-    const category = getWebCategoryBySlug({ categories, slug });
+    const categoryTree = await getCategories();
+    const category = getWebCategoryBySlug({ categories: categoryTree, slug });
 
     if (!category) {
         notFound();
@@ -34,8 +34,8 @@ export async function generateMetadata(
 }
 
 export async function generateStaticParams() {
-    const categories = await getCategories();
-    const flattenCategories = flattenCategoryTree(categories);
+    const categoryTree = await getCategories();
+    const flattenCategories = flattenCategoryTree(categoryTree);
 
     return flattenCategories.map((category) => ({
         slug: category.slug,
@@ -44,8 +44,8 @@ export async function generateStaticParams() {
 
 const Category = async ({ params }: Props) => {
     const { slug } = await params;
-    const categories = await getCategories();
-    const category = getWebCategoryBySlug({ categories, slug });
+    const categoryTree = await getCategories();
+    const category = getWebCategoryBySlug({ categories: categoryTree, slug });
 
     if (!category) {
         notFound();
@@ -60,7 +60,10 @@ const Category = async ({ params }: Props) => {
 
     return (
         <Container>
-            <CategoryPage jobPosts={sortedJobPosts} />
+            <CategoryPage
+                jobPosts={sortedJobPosts}
+                categoryTree={categoryTree}
+            />
         </Container>
     );
 };
