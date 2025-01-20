@@ -40,6 +40,10 @@ const StyledLink = styled(Link)`
     }
 `;
 
+const HeaderLinks = styled.nav`
+    font-size: 14px;
+`;
+
 export const Header = () => (
     <StyledDiv>
         <Container>
@@ -48,6 +52,9 @@ export const Header = () => (
                     <LogoText fill="#fff" />
                 </StyledLink>
             </LogoContainer>
+            <HeaderLinks>
+                <Link href="/companies">Companies</Link>
+            </HeaderLinks>
             <UserMenu />
         </Container>
     </StyledDiv>

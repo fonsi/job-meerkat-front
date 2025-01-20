@@ -12,7 +12,7 @@ type Params = {
 
 const List = styled.ul`
     display: grid;
-    grid-auto-rows: minmax(100px, auto);
+    grid-auto-rows: minmax(70px, auto);
     grid-gap: 16px;
     grid-template-columns: repeat(1, 1fr);
     list-style-type: none;
@@ -21,22 +21,32 @@ const List = styled.ul`
         grid-template-columns: repeat(2, 1fr);
     }
 
+    @media ${Device.tablet} {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
     @media ${Device.laptop} {
         grid-template-columns: repeat(4, 1fr);
     }
 `;
 
 const StyledCompanyImage = styled(CompanyImage)`
-    flex-grow: 1;
+    height: 50px;
+    width: 50px;
+
+    @media ${Device.mobileL} {
+        flex-grow: 1;
+        height: 70px;
+        width: 70px;
+    }
 `;
 
 const StyledLink = styled(Link)`
     align-items: center;
-    border: 1px solid ${Colors.mediumGrey};
+    border: 1px solid ${Colors.darkGrey};
     border-radius: 4px;
     display: flex;
-    flex-direction: column;
-    height: 200px;
+    gap: 12px;
     padding: 12px;
     transition: background-color 0.1s ease-in;
 
@@ -44,12 +54,40 @@ const StyledLink = styled(Link)`
         background-color: ${Colors.darkGrey};
         text-decoration: none;
     }
+
+    @media ${Device.mobileL} {
+        flex-direction: column;
+        gap: unset;
+        height: 200px;
+    }
+`;
+
+const CompanyTexts = styled.div`
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+
+    @media ${Device.mobileL} {
+        align-items: center;
+        flex-grow: 0;
+    }
 `;
 
 const CompanyName = styled.h2`
+    font-size: 18px;
     line-height: 100%;
     margin-top: 4px;
-    text-align: center;
+    text-align: left;
+
+    @media ${Device.mobileL} {
+        font-size: 20px;
+        text-align: center;
+    }
+
+    @media ${Device.laptop} {
+        font-size: 24px;
+    }
 `;
 
 const OpenJobPosts = styled.div`
@@ -67,12 +105,14 @@ export const CompanyList = ({ companies }: Params) => {
                         href={createCompanyLink({ companyId: company.id })}
                     >
                         <StyledCompanyImage company={company} $width={80} />
-                        <CompanyName>{company.name}</CompanyName>
-                        <OpenJobPosts>
-                            {company.jobPostsCount
-                                ? `${company.jobPostsCount} open job posts`
-                                : 'No open job posts'}
-                        </OpenJobPosts>
+                        <CompanyTexts>
+                            <CompanyName>{company.name}</CompanyName>
+                            <OpenJobPosts>
+                                {company.jobPostsCount
+                                    ? `${company.jobPostsCount} open job posts`
+                                    : 'No open job posts'}
+                            </OpenJobPosts>
+                        </CompanyTexts>
                     </StyledLink>
                 </li>
             ))}
