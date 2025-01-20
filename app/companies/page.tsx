@@ -1,11 +1,11 @@
 import { sortCompaniesByName } from '@/company/company';
 import { getCompanies } from '@/company/http/getCompanies';
 import { CompaniesPage } from '@/pageComponents/company/CompaniesPage';
-import { CompanyHome } from '@/pageComponents/company/CompanyHome';
 import { Container } from '@/shared/layout/Container';
 import { Metadata, ResolvingMetadata } from 'next';
 
 export async function generateMetadata(
+    {},
     parent: ResolvingMetadata,
 ): Promise<Metadata> {
     const parentMetadata = ((await parent) || {}) as Metadata;
