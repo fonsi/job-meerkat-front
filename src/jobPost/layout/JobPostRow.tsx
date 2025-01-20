@@ -8,6 +8,7 @@ import { SalaryRange } from './SalaryRange';
 import { CompanyImage } from '@/company/layout/CompanyImage';
 import { Badge } from '@/shared/layout/Badge';
 import { Place } from '@/shared/image/icons/Place';
+import { createCompanyLink } from '@/company/company';
 
 type Props = {
     jobPost: JobPost;
@@ -125,7 +126,9 @@ export const JobPostRow = ({ jobPost }: Props) => (
                 {jobPost.title}
             </Title>
             {jobPost.company ? (
-                <Company href={`/company/${jobPost.company.id}`}>
+                <Company
+                    href={createCompanyLink({ companyId: jobPost.company.id })}
+                >
                     at {jobPost.company.name}
                 </Company>
             ) : null}

@@ -7,6 +7,7 @@ import { Device } from '@/shared/styles/constants';
 type Props = {
     company: Omit<Company, 'homePage'>;
     $width?: number;
+    className?: string;
 };
 
 const StyledCompanyImage = styled.div<{ $bg?: string; $width?: number }>`
@@ -25,8 +26,12 @@ const StyledCompanyImage = styled.div<{ $bg?: string; $width?: number }>`
     }
 `;
 
-export const CompanyImage = ({ company, $width }: Props) => (
-    <StyledCompanyImage $bg={company.logo?.background} $width={$width}>
+export const CompanyImage = ({ company, $width, className }: Props) => (
+    <StyledCompanyImage
+        className={className}
+        $bg={company.logo?.background}
+        $width={$width}
+    >
         <Image
             alt={`${company.name} logo`}
             fill={true}
