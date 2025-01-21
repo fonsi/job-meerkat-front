@@ -7,8 +7,8 @@ import { Main } from '@/shared/layout/Main';
 import { Page } from '@/shared/layout/Page';
 import Script from 'next/script';
 import { delaGothicOne } from '@/shared/font/constants';
+import { isProd } from '@/shared/environment/isProd';
 
-const isProd = process.env.APP_ENV === 'production';
 const UMAMI_ID = process.env.UMAMI_ID;
 
 export const metadata: Metadata = {
