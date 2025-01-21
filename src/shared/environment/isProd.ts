@@ -1,1 +1,1 @@
-export const isProd = process.env.APP_ENV === 'production';
+export const isProd = process.env.NEXT_PUBLIC_APP_ENV === 'production';
