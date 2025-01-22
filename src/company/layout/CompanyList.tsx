@@ -5,6 +5,10 @@ import { Company, createCompanyLink } from '../company';
 import { CompanyImage } from './CompanyImage';
 import styled from 'styled-components';
 import { Colors, Device } from '@/shared/styles/constants';
+import { Add } from '@/shared/image/icons/Add';
+import { MouseEventHandler } from 'react';
+import { openSuggestCompaniesForm } from '../browser/openSuggestCompaniesForm';
+import { trackAddCompanyButtonWasClicked } from '../analytics/trackJobPostVisited';
 
 type Params = {
     companies: Company[];
@@ -62,6 +66,38 @@ const StyledLink = styled(Link)`
     }
 `;
 
+const AddCompany = styled(StyledLink)`
+    font-size: 14px;
+    font-weight: 700;
+    justify-content: flex-start;
+    opacity: 0.4;
+    transition: opacity 0.1s ease-in;
+
+    svg {
+        height: 40px;
+        width: 50px;
+    }
+
+    &:hover {
+        opacity: 1;
+    }
+
+    @media ${Device.mobileL} {
+        font-size: 16px;
+        justify-content: space-around;
+
+        svg {
+            height: 60px;
+            margin-top: 24px;
+            width: 60px;
+        }
+
+        span {
+            margin-top: 18px;
+        }
+    }
+`;
+
 const CompanyTexts = styled.div`
     align-items: flex-start;
     display: flex;
@@ -97,8 +133,22 @@ const OpenJobPosts = styled.div`
 `;
 
 export const CompanyList = ({ companies }: Params) => {
+    const handleOnAddCompany: MouseEventHandler<HTMLAnchorElement> = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        openSuggestCompaniesForm();
+        trackAddCompanyButtonWasClicked();
+    };
+
     return (
         <List>
+            <li>
+                <AddCompany onClick={handleOnAddCompany} href="#">
+                    <Add />
+                    <span>Add a company</span>
+                </AddCompany>
+            </li>
             {companies.map((company) => (
                 <li key={company.id}>
                     <StyledLink
