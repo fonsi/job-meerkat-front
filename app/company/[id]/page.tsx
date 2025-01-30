@@ -22,7 +22,7 @@ export async function generateMetadata(
     return {
         ...parentMetadata,
         title: `${company.name} open positions | Jobmeerkat`,
-        description: `Explore open positions at ${company.name}. Find here the next step in your career.`,
+        description: `Discover remote job opportunities at ${company.name} with JobMeerkat! Browse open roles with public salaries and find the perfect fit for your skills. Join the Meerkat community and take the next step in your career with ${company.name} today!`,
     };
 }
 

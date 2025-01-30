@@ -29,7 +29,7 @@ export async function generateMetadata(
     return {
         ...parentMetadata,
         title: `${category.name} open positions | Jobmeerkat`,
-        description: `Explore ${category!.name} open positions. Find here the next step in your ${category.name} career.`,
+        description: `Explore top ${category.name} jobs with JobMeerkat! Find the best remote opportunities tailored to your skills. Most job listings include public salaries, so you know what to expect. Join the Meerkat community and take the next step in your ${category.name} career today!`,
     };
 }
 

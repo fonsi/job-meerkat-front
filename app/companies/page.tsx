@@ -13,7 +13,7 @@ export async function generateMetadata(
     return {
         ...parentMetadata,
         title: `Companies | Jobmeerkat`,
-        description: `List of remote companies with public salaries. Find here the next step in your career.`,
+        description: `Explore top companies hiring for remote jobs on JobMeerkat! Browse a growing list of tracked employers with public salary insights and find your next career move. Join the Meerkat community and discover your perfect workplace today!`,
     };
 }
 
