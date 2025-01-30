@@ -12,8 +12,9 @@ export async function generateMetadata(
 
     return {
         ...parentMetadata,
-        title: `Companies | Jobmeerkat`,
-        description: `Explore top companies hiring for remote jobs on JobMeerkat! Browse a growing list of tracked employers with public salary insights and find your next career move. Join the Meerkat community and discover your perfect workplace today!`,
+        title: 'Companies | Jobmeerkat',
+        description:
+            'Explore top companies hiring for remote jobs on JobMeerkat! Browse a growing list of tracked employers with public salary insights and find your next career move. Join the Meerkat community and discover your perfect workplace today!',
     };
 }
 

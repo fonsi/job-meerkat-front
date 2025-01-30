@@ -2,7 +2,7 @@
 
 import styled from 'styled-components';
 import { Company } from '@/company/company';
-import { Colors, Device } from '@/shared/styles/constants';
+import { Device } from '@/shared/styles/constants';
 import { CompanyList } from '@/company/layout/CompanyList';
 
 type Props = {

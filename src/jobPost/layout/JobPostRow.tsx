@@ -36,12 +36,6 @@ const InfoContainer = styled.div`
     justify-content: space-between;
 `;
 
-const TitleContainer = styled.div`
-    align-items: baseline;
-    display: flex;
-    flex-direction: column;
-`;
-
 const Title = styled(Link)`
     font-size: 18px;
     font-weight: 600;
