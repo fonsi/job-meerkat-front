@@ -19,7 +19,11 @@ const makePath = ({ countJobPosts = false }: { countJobPosts?: boolean }) => {
 
 export const getCompanies = ({
     countJobPosts,
-}: GetCompaniesParams = {}): Promise<CompaniesResponse> =>
-    apiRequest<CompaniesResponse, void>({
+}: GetCompaniesParams = {}): Promise<CompaniesResponse> => {
+    return apiRequest<CompaniesResponse, void>({
         path: makePath({ countJobPosts }),
+    }).catch((error) => {
+        console.error('getCompanies error:', error);
+        throw error;
     });
+};

@@ -7,7 +7,11 @@ type CompanyResponse = {
     openJobPosts: JobPost[];
 };
 
-export const getCompany = (companyId: string): Promise<CompanyResponse> =>
-    apiRequest<CompanyResponse, void>({
+export const getCompany = (companyId: string): Promise<CompanyResponse> => {
+    return apiRequest<CompanyResponse, void>({
         path: `/company/${companyId}`,
+    }).catch((error) => {
+        console.error(`getCompany ${companyId} error:`, error);
+        throw error;
     });
+};

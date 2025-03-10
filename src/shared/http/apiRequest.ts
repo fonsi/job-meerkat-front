@@ -1,3 +1,4 @@
+import pRetry from 'p-retry';
 import { ApiRequestError } from './apiRequestError';
 
 export const buildApiRequestUrl = (path: string): string =>
@@ -15,6 +16,7 @@ type Params<T> = {
     path: string;
     method?: Method;
     data?: T | void;
+    retries?: number;
 };
 
 const UNKNOWN_ERROR_MESSAGE = 'unknown error';
@@ -25,6 +27,7 @@ export const apiRequest = async <R, T>({
     path,
     method = Method.GET,
     data,
+    retries = 3,
 }: Params<T>): Promise<R> => {
     const url = buildApiRequestUrl(path);
     const request: RequestInit = {
@@ -35,9 +38,21 @@ export const apiRequest = async <R, T>({
         request['body'] = JSON.stringify(data);
     }
 
-    const response = await fetch(url, request).catch((error) => {
-        const message = error?.message || UNKNOWN_ERROR_MESSAGE;
-        throw new ApiRequestError(message, UNKNOWN_ERROR_CODE);
+    const makeRequest = (): Promise<Response> =>
+        fetch(url, request).catch((error) => {
+            const message = error?.message || UNKNOWN_ERROR_MESSAGE;
+            throw new ApiRequestError(message, UNKNOWN_ERROR_CODE);
+        });
+
+    const response = await pRetry(makeRequest, {
+        retries,
+        minTimeout: 1000,
+        randomize: true,
+        onFailedAttempt: (error) => {
+            console.error(
+                `Attempt ${error.attemptNumber} to ${url} failed. There are ${error.retriesLeft} retries left.`,
+            );
+        },
     });
 
     if (response?.ok) {

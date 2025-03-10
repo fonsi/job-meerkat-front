@@ -44,7 +44,11 @@ export type JobPost = {
     category: string;
 };
 
-export const getJobPosts = (): Promise<JobPost[]> =>
-    apiRequest<JobPost[], void>({
+export const getJobPosts = (): Promise<JobPost[]> => {
+    return apiRequest<JobPost[], void>({
         path: '/jobPost',
+    }).catch((error) => {
+        console.error('getJobPosts error:', error);
+        throw error;
     });
+};

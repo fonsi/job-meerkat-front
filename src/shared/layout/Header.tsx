@@ -3,7 +3,6 @@
 import styled from 'styled-components';
 import { Colors } from '@/shared/styles/constants';
 import Link from 'next/link';
-import { UserMenu } from './UserMenu';
 import { LogoText } from '../image/LogoText';
 
 const StyledDiv = styled.div`
@@ -55,7 +54,6 @@ export const Header = () => (
             <HeaderLinks>
                 <Link href="/companies">Companies</Link>
             </HeaderLinks>
-            <UserMenu />
         </Container>
     </StyledDiv>
 );

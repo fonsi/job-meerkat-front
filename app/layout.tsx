@@ -1,11 +1,11 @@
 import './globals.css';
 import type { Metadata } from 'next';
+import Script from 'next/script';
 import StyledComponentsRegistry from '@/shared/styles/registry';
 import { Footer } from '@/shared/layout/Footer';
 import { Header } from '@/shared/layout/Header';
 import { Main } from '@/shared/layout/Main';
 import { Page } from '@/shared/layout/Page';
-import Script from 'next/script';
 import { delaGothicOne } from '@/shared/font/constants';
 import { isProd } from '@/shared/environment/isProd';
 
