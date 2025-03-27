@@ -3,5 +3,11 @@
     "rules": {
         "quotes": ["warn", "single"]
     },
-    "ignores": [".serverless/", "node_modules/", ".amplify/", ".next/", "out/"]
+    "ignorePatterns": [
+        ".serverless/",
+        "node_modules/",
+        ".amplify/",
+        ".next/",
+        "out/"
+    ]
 }

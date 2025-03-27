@@ -6,10 +6,26 @@ describe('Footer', () => {
         render(<Footer />);
 
         screen.getByText('Made with love by');
-        const xLink = screen.getByRole('link', {
+        const madeByLink = screen.getByRole('link', {
             name: '@fonsirs',
         }) as HTMLLinkElement;
+        const xLink = screen.getByLabelText(
+            'Follow Jobmeerkat at X',
+        ) as HTMLLinkElement;
+        const blueskyLink = screen.getByLabelText(
+            'Follow Jobmeerkat at Bluesky',
+        ) as HTMLLinkElement;
+        const linkedinLink = screen.getByLabelText(
+            'Follow Jobmeerkat at Linkedin',
+        ) as HTMLLinkElement;
 
-        expect(xLink.href).toEqual('https://twitter.com/FonsiRS');
+        expect(madeByLink.href).toEqual('https://x.com/FonsiRS');
+        expect(xLink.href).toEqual('https://x.com/jobmeerkat');
+        expect(blueskyLink.href).toEqual(
+            'https://bsky.app/profile/jobmeerkat.bsky.social',
+        );
+        expect(linkedinLink.href).toEqual(
+            'https://www.linkedin.com/company/jobmeerkat',
+        );
     });
 });
