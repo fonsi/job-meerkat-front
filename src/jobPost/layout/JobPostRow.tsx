@@ -3,7 +3,7 @@
 import styled from 'styled-components';
 import Link from 'next/link';
 import { Colors, Device } from '@/shared/styles/constants';
-import { JobPost } from '../http/getJobPosts';
+import { JobPost } from '../jobPost';
 import { SalaryRange } from './SalaryRange';
 import { CompanyImage } from '@/company/layout/CompanyImage';
 import { Badge } from '@/shared/layout/Badge';
@@ -124,8 +124,7 @@ export const JobPostRow = ({ jobPost }: Props) => {
             <InfoContainer>
                 <Title
                     onClick={handleOnTitleClick}
-                    target="_blank"
-                    href={jobPost.url}
+                    href={`/job/${jobPost.company.id}_${jobPost.id}`}
                 >
                     {jobPost.title}
                 </Title>
