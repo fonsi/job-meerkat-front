@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { SalaryRange as SalaryRangeType } from '../http/getJobPosts';
+import { SalaryRange as SalaryRangeType } from '../jobPost';
 
 type Props = {
     salaryRange: SalaryRangeType;
