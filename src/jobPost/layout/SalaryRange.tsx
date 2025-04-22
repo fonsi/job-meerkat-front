@@ -2,7 +2,9 @@ import styled from 'styled-components';
 import { SalaryRange as SalaryRangeType } from '../jobPost';
 
 type Props = {
+    className?: string;
     salaryRange: SalaryRangeType;
+    $size?: 'medium' | 'large';
 };
 
 const Container = styled.div`
@@ -10,13 +12,13 @@ const Container = styled.div`
     display: flex;
 `;
 
-const Text = styled.span`
+const Text = styled.span<{ $size: 'medium' | 'large' }>`
     font-weight: 300;
-    font-size: 12px;
+    font-size: ${(props) => (props.$size === 'medium' ? '12px' : '16px')};
 `;
 
-const Amount = styled.span`
-    font-size: 16px;
+const Amount = styled.span<{ $size: 'medium' | 'large' }>`
+    font-size: ${(props) => (props.$size === 'medium' ? '16px' : '24px')};
     font-weight: 600;
 `;
 
@@ -30,14 +32,14 @@ const beautifySalary = (salary: number): string | number => {
 
 const beautifyCurrency = (currency: string): string => currency.toUpperCase();
 
-export const SalaryRangeAmount = ({ salaryRange }: Props) => {
+export const SalaryRangeAmount = ({ salaryRange, $size = 'medium' }: Props) => {
     const currency = beautifyCurrency(salaryRange.currency);
 
     if (!salaryRange.min) {
         return (
             <>
-                <Text>Up to&nbsp;</Text>
-                <Amount>
+                <Text $size={$size}>Up to&nbsp;</Text>
+                <Amount $size={$size}>
                     {beautifySalary(salaryRange.max)} {currency}
                 </Amount>
             </>
@@ -47,8 +49,8 @@ export const SalaryRangeAmount = ({ salaryRange }: Props) => {
     if (!salaryRange.max) {
         return (
             <>
-                <Text>From&nbsp;</Text>
-                <Amount>
+                <Text $size={$size}>From&nbsp;</Text>
+                <Amount $size={$size}>
                     {beautifySalary(salaryRange.min)} {currency}
                 </Amount>
             </>
@@ -56,22 +58,26 @@ export const SalaryRangeAmount = ({ salaryRange }: Props) => {
     }
 
     return (
-        <Amount>
+        <Amount $size={$size}>
             {beautifySalary(salaryRange.min)} -{' '}
             {beautifySalary(salaryRange.max)} {currency}
         </Amount>
     );
 };
 
-export const SalaryRange = ({ salaryRange }: Props) => {
+export const SalaryRange = ({
+    salaryRange,
+    className,
+    $size = 'medium',
+}: Props) => {
     if (!salaryRange || (!salaryRange.min && !salaryRange.max)) {
         return null;
     }
 
     return (
-        <Container>
-            <SalaryRangeAmount salaryRange={salaryRange} />
-            <Text>&nbsp;/&nbsp;{salaryRange.period}</Text>
+        <Container className={className}>
+            <SalaryRangeAmount salaryRange={salaryRange} $size={$size} />
+            <Text $size={$size}>&nbsp;/&nbsp;{salaryRange.period}</Text>
         </Container>
     );
 };

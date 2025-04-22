@@ -9,7 +9,6 @@ import { CompanyImage } from '@/company/layout/CompanyImage';
 import { Badge } from '@/shared/layout/Badge';
 import { Place } from '@/shared/image/icons/Place';
 import { createCompanyLink } from '@/company/company';
-import { trackJobPostVisited } from '../anaytics/trackJobPostVisited';
 
 type Props = {
     jobPost: JobPost;
@@ -112,22 +111,13 @@ const PlaceContainer = styled.span`
 `;
 
 export const JobPostRow = ({ jobPost }: Props) => {
-    const handleOnTitleClick = () => {
-        trackJobPostVisited({ jobPost });
-    };
-
     return (
         <StyledJobPostRow>
             {jobPost.company ? (
                 <CompanyImage company={jobPost.company} $width={50} />
             ) : null}
             <InfoContainer>
-                <Title
-                    onClick={handleOnTitleClick}
-                    href={`/job/${jobPost.company.id}_${jobPost.id}`}
-                >
-                    {jobPost.title}
-                </Title>
+                <Title href={`/job/${jobPost.slug}`}>{jobPost.title}</Title>
                 {jobPost.company ? (
                     <Company
                         href={createCompanyLink({

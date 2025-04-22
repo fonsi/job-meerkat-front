@@ -41,4 +41,5 @@ export type JobPost = {
     location: string;
     createdAt: number;
     category: string;
+    slug: string;
 };
