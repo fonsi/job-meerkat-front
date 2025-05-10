@@ -1,9 +1,9 @@
+import { Metadata } from 'next';
 import { getCompanies } from '@/company/http/getCompanies';
 import { getCompany } from '@/company/http/getCompany';
 import { getSortedJobPosts } from '@/jobPost/getSortedJobPosts';
 import { CompanyHome } from '@/pageComponents/company/CompanyHome';
 import { Container } from '@/shared/layout/Container';
-import { Metadata } from 'next';
 import { isProd } from '@/shared/environment/isProd';
 
 type Props = {
