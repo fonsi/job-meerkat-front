@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import styled from 'styled-components';
 import { X } from '../image/icons/X';
-import { Bluesky } from '../image/icons/Bluesky';
+import { Threads } from '../image/icons/Threads';
 import { Linkedin } from '../image/icons/Linkedin';
 import { Container } from './Container';
 import { Colors } from '../styles/constants';
@@ -18,7 +18,32 @@ const StyledFooter = styled.footer`
     width: 100%;
 `;
 
-const StyledMadeBy = styled.div``;
+const StyledMadeBy = styled.div`
+    text-align: center;
+
+    @media (max-width: 768px) {
+        display: none;
+    }
+`;
+
+const StyledLinks = styled.div`
+    display: flex;
+    gap: 16px;
+    align-items: center;
+`;
+
+const Separator = styled.span`
+    color: ${Colors.mediumGrey};
+`;
+
+const FooterLink = styled(Link)`
+    color: ${Colors.lightGrey};
+    transition: color 0.2s ease-in;
+
+    :hover {
+        color: ${Colors.white};
+    }
+`;
 
 const StyledSocial = styled.div`
     display: flex;
@@ -44,11 +69,20 @@ const StyledContainer = styled(Container)`
     align-items: center;
     flex-direction: row;
     justify-content: space-between;
+
+    @media (max-width: 768px) {
+        justify-content: space-between;
+    }
 `;
 
 export const Footer = () => (
     <StyledFooter>
         <StyledContainer>
+            <StyledLinks>
+                <FooterLink href="/terms">Terms</FooterLink>
+                <Separator>|</Separator>
+                <FooterLink href="/privacy">Privacy</FooterLink>
+            </StyledLinks>
             <StyledMadeBy>
                 Made with love by{' '}
                 <Link target="_blank" href="https://x.com/FonsiRS">
@@ -57,18 +91,18 @@ export const Footer = () => (
             </StyledMadeBy>
             <StyledSocial>
                 <SocialLink
+                    aria-label="Follow Jobmeerkat at Threads"
+                    target="_blank"
+                    href="https://www.threads.net/@jobmeerkat"
+                >
+                    <Threads />
+                </SocialLink>
+                <SocialLink
                     aria-label="Follow Jobmeerkat at X"
                     target="_blank"
                     href="https://x.com/jobmeerkat"
                 >
                     <X />
-                </SocialLink>
-                <SocialLink
-                    aria-label="Follow Jobmeerkat at Bluesky"
-                    target="_blank"
-                    href="https://bsky.app/profile/jobmeerkat.bsky.social"
-                >
-                    <Bluesky />
                 </SocialLink>
                 <SocialLink
                     aria-label="Follow Jobmeerkat at Linkedin"

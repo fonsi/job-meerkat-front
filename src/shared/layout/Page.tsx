@@ -9,7 +9,7 @@ const StyledPage = styled.div`
     background-color: ${Colors.brokenBlack};
     color: ${Colors.brokenWhite};
     display: flex;
-    height: 100vh;
+    height: 100dvh;
     flex-direction: column;
     justify-content: flex-start;
     overflow: hidden;

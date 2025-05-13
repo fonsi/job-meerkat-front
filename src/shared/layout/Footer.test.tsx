@@ -12,8 +12,8 @@ describe('Footer', () => {
         const xLink = screen.getByLabelText(
             'Follow Jobmeerkat at X',
         ) as HTMLLinkElement;
-        const blueskyLink = screen.getByLabelText(
-            'Follow Jobmeerkat at Bluesky',
+        const threadsLink = screen.getByLabelText(
+            'Follow Jobmeerkat at Threads',
         ) as HTMLLinkElement;
         const linkedinLink = screen.getByLabelText(
             'Follow Jobmeerkat at Linkedin',
@@ -21,9 +21,7 @@ describe('Footer', () => {
 
         expect(madeByLink.href).toEqual('https://x.com/FonsiRS');
         expect(xLink.href).toEqual('https://x.com/jobmeerkat');
-        expect(blueskyLink.href).toEqual(
-            'https://bsky.app/profile/jobmeerkat.bsky.social',
-        );
+        expect(threadsLink.href).toEqual('https://www.threads.net/@jobmeerkat');
         expect(linkedinLink.href).toEqual(
             'https://www.linkedin.com/company/jobmeerkat',
         );
