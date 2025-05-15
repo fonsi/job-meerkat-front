@@ -1,6 +1,7 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import Script from 'next/script';
+import { GoogleAnalytics } from '@next/third-parties/google';
 import StyledComponentsRegistry from '@/shared/styles/registry';
 import { Footer } from '@/shared/layout/Footer';
 import { Header } from '@/shared/layout/Header';
@@ -10,6 +11,8 @@ import { delaGothicOne } from '@/shared/font/constants';
 import { isProd } from '@/shared/environment/isProd';
 
 const UMAMI_ID = process.env.UMAMI_ID;
+const GOOGLE_ADSENSE_ACCOUNT = process.env.NEXT_PUBLIC_ADSENSE_ID || '';
+const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || '';
 
 export const metadata: Metadata = {
     title: 'Jobmeerkat',
@@ -19,6 +22,11 @@ export const metadata: Metadata = {
         index: isProd,
         follow: isProd,
     },
+    ...(isProd && {
+        other: {
+            'google-adsense-account': GOOGLE_ADSENSE_ACCOUNT,
+        },
+    }),
 };
 
 export default function RootLayout({
@@ -28,6 +36,9 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en">
+            {isProd && GA_MEASUREMENT_ID ? (
+                <GoogleAnalytics gaId={GA_MEASUREMENT_ID} />
+            ) : null}
             <body className={`${delaGothicOne.variable}`}>
                 {isProd && UMAMI_ID ? (
                     <Script
