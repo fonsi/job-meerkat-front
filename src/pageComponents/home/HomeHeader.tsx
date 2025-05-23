@@ -10,6 +10,7 @@ const Header = styled.div`
     flex-direction: column;
     margin: 48px 0;
     padding: 0 8px;
+    text-wrap: pretty;
 `;
 
 const Claim = styled.h1`
@@ -30,10 +31,10 @@ const Text = styled.h2`
 
 export const HomeHeader = () => (
     <Header>
-        <Claim>Don&apos;t miss your next job</Claim>
+        <Claim>Find Remote Jobs with Public Salaries</Claim>
         <Text>
-            Daily updated job posts. Stay tunned and follow your dream
-            companies.
+            Discover remote opportunities with clear salaries. New jobs added
+            every day.
         </Text>
     </Header>
 );
