@@ -1,5 +1,5 @@
 import { tracker } from '@/shared/analytics/tracker';
-import { JobPost } from '../http/getJobPosts';
+import { JobPost } from '../jobPost';
 
 const JOB_POST_VISITED_EVENT = 'job-post-visited';
 

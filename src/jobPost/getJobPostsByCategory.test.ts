@@ -1,5 +1,5 @@
 import { getJobPostsByCategory } from './getJobPostsByCategory';
-import { JobPost } from './http/getJobPosts';
+import { JobPost } from './jobPost';
 
 const frontendJobPosts: JobPost[] = [
     {

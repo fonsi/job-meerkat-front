@@ -1,7 +1,7 @@
 'use client';
 
 import styled from 'styled-components';
-import { JobPost } from '../http/getJobPosts';
+import { JobPost } from '../jobPost';
 import { JobPostRow } from './JobPostRow';
 import { Colors, Device } from '@/shared/styles/constants';
 import { Calendar } from '@/shared/image/icons/Calendar';

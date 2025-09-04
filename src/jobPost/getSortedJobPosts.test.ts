@@ -1,5 +1,5 @@
 import { getSortedJobPosts, PublishPeriod } from './getSortedJobPosts';
-import { JobPost } from './http/getJobPosts';
+import { JobPost } from './jobPost';
 
 describe('getSortedJobPosts', () => {
     const mockJobPosts: JobPost[] = [
