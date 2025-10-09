@@ -15,17 +15,19 @@ jobs:
 
             - name: Create .env file
               run: |
-                  echo "NEXT_PUBLIC_APP_ENV=production" >> .env.prod
                   echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }}" >> .env.prod
                   echo "AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}" >> .env.prod
                   echo "AWS_REGION=${{ secrets.AWS_REGION }}" >> .env.prod
                   echo "WEB_BUCKET=${{ secrets.WEB_BUCKET }}" >> .env.prod
                   echo "UMAMI_ID=${{ secrets.UMAMI_ID }}" >> .env.prod
+                  echo "SITE_URL=${{ secrets.SITE_URL }}" >> .env.prod
+                  echo "NEXT_PUBLIC_APP_ENV=production" >> .env.prod
                   echo "NEXT_PUBLIC_API_ENDPOINT=${{ secrets.NEXT_PUBLIC_API_ENDPOINT }}" >> .env.prod
                   echo "NEXT_PUBLIC_CONTACT_EMAIL_ADDRESS=${{ secrets.NEXT_PUBLIC_CONTACT_EMAIL_ADDRESS }}" >> .env.prod
                   echo "NEXT_PUBLIC_ADSENSE_ID=${{ secrets.NEXT_PUBLIC_ADSENSE_ID }}" >> .env.prod
                   echo "NEXT_PUBLIC_ADSENSE_PUBLISHER_ID=${{ secrets.NEXT_PUBLIC_ADSENSE_PUBLISHER_ID }}" >> .env.prod
                   echo "NEXT_PUBLIC_GA_MEASUREMENT_ID=${{ secrets.NEXT_PUBLIC_GA_MEASUREMENT_ID }}" >> .env.prod
+                  echo "NEXT_PUBLIC_SUGGEST_COMPANIES_FORM=${{ secrets.NEXT_PUBLIC_SUGGEST_COMPANIES_FORM }}" >> .env.prod
 
             - name: Set up Node.js
               uses: actions/setup-node@v3
