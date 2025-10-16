@@ -20,7 +20,7 @@ jobs:
                   echo "AWS_REGION=${{ secrets.AWS_REGION }}" >> .env.prod
                   echo "WEB_BUCKET=${{ secrets.WEB_BUCKET }}" >> .env.prod
                   echo "UMAMI_ID=${{ secrets.UMAMI_ID }}" >> .env.prod
-                  echo "SITE_URL=${{ secrets.SITE_URL }}" >> .env.prod
+                  echo "NEXT_PUBLIC_SITE_URL=${{ secrets.NEXT_PUBLIC_SITE_URL }}" >> .env.prod
                   echo "NEXT_PUBLIC_APP_ENV=production" >> .env.prod
                   echo "NEXT_PUBLIC_API_ENDPOINT=${{ secrets.NEXT_PUBLIC_API_ENDPOINT }}" >> .env.prod
                   echo "NEXT_PUBLIC_CONTACT_EMAIL_ADDRESS=${{ secrets.NEXT_PUBLIC_CONTACT_EMAIL_ADDRESS }}" >> .env.prod

@@ -9,6 +9,7 @@ import { Main } from '@/shared/layout/Main';
 import { Page } from '@/shared/layout/Page';
 import { delaGothicOne } from '@/shared/font/constants';
 import { isProd } from '@/shared/environment/isProd';
+import { getSiteUrl } from '@/shared/environment/getSiteUrl';
 
 const UMAMI_ID = process.env.UMAMI_ID;
 const GOOGLE_ADSENSE_ACCOUNT = process.env.NEXT_PUBLIC_ADSENSE_ID || '';
@@ -21,6 +22,9 @@ export const metadata: Metadata = {
     robots: {
         index: isProd,
         follow: isProd,
+    },
+    alternates: {
+        canonical: getSiteUrl(),
     },
     ...(isProd && {
         other: {

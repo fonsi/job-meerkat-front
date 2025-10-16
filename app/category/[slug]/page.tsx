@@ -8,6 +8,7 @@ import { Container } from '@/shared/layout/Container';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { isProd } from '@/shared/environment/isProd';
+import { getSiteUrl } from '@/shared/environment/getSiteUrl';
 
 type Props = {
     params: Promise<{ slug: string }>;
@@ -29,6 +30,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         robots: {
             index: isProd,
             follow: isProd,
+        },
+        alternates: {
+            canonical: `${getSiteUrl()}/category/${slug}`,
         },
     };
 }

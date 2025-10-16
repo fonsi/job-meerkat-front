@@ -1,4 +1,5 @@
 import { PrivacyPage } from '@/pageComponents/privacy/PrivacyPage';
+import { getSiteUrl } from '@/shared/environment/getSiteUrl';
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -10,6 +11,9 @@ export const metadata: Metadata = {
         description:
             "Learn about Jobmeerkat's privacy practices, including our use of cookies, analytics, and how we protect your data.",
         type: 'website',
+    },
+    alternates: {
+        canonical: `${getSiteUrl()}/privacy`,
     },
 };
 

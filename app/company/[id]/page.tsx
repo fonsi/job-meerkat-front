@@ -5,6 +5,7 @@ import { CompanyHome } from '@/pageComponents/company/CompanyHome';
 import { Container } from '@/shared/layout/Container';
 import { Metadata } from 'next';
 import { isProd } from '@/shared/environment/isProd';
+import { getSiteUrl } from '@/shared/environment/getSiteUrl';
 
 type Props = {
     params: Promise<{ id: string; name: string }>;
@@ -30,6 +31,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
         robots: {
             index: isProd,
             follow: isProd,
+        },
+        alternates: {
+            canonical: `${getSiteUrl()}/company/${id}`,
         },
     };
 }

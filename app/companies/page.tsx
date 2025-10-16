@@ -4,6 +4,7 @@ import { CompaniesPage } from '@/pageComponents/company/CompaniesPage';
 import { Container } from '@/shared/layout/Container';
 import { Metadata } from 'next';
 import { isProd } from '@/shared/environment/isProd';
+import { getSiteUrl } from '@/shared/environment/getSiteUrl';
 
 export async function generateMetadata(): Promise<Metadata> {
     console.log('Generating metadata for companies page');
@@ -15,6 +16,9 @@ export async function generateMetadata(): Promise<Metadata> {
         robots: {
             index: isProd,
             follow: isProd,
+        },
+        alternates: {
+            canonical: `${getSiteUrl()}/companies`,
         },
     };
 }

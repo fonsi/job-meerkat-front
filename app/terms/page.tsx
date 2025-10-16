@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { TermsPage } from '@/pageComponents/terms/TermsPage';
+import { getSiteUrl } from '@/shared/environment/getSiteUrl';
 
 export const metadata: Metadata = {
     title: 'Terms and Conditions | Jobmeerkat',
@@ -8,6 +9,9 @@ export const metadata: Metadata = {
     openGraph: {
         title: 'Terms and Conditions | Jobmeerkat',
         type: 'website',
+    },
+    alternates: {
+        canonical: `${getSiteUrl()}/terms`,
     },
 };
 
