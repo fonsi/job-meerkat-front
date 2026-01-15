@@ -1,5 +1,3 @@
-import Company from '../../app/company/[id]/page';
-
 export type CompanyLogo = {
     url: string;
     background?: string;

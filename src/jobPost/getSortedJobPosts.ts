@@ -1,4 +1,4 @@
-import { JobPost } from './http/getJobPosts';
+import { JobPost } from './jobPost';
 
 export enum PublishPeriod {
     LastDay,

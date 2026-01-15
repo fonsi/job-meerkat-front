@@ -1,6 +1,6 @@
-import { JobPost } from '@/jobPost/http/getJobPosts';
 import { apiRequest } from '@/shared/http/apiRequest';
 import { Company } from '../company';
+import { JobPost } from '@/jobPost/jobPost';
 
 type CompanyResponse = {
     company: Company;
