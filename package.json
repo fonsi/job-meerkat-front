@@ -21,7 +21,7 @@
     },
     "dependencies": {
         "@next/third-parties": "^15.4.5",
-        "next": "^15.5.7",
+        "next": "^16.1.5",
         "p-retry": "^6.2.1",
         "react": "^19.1.1",
         "react-dom": "^19.1.1",
