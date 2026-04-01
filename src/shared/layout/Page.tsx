@@ -17,5 +17,5 @@ const StyledPage = styled.div`
 `;
 
 export const Page = ({ children }: PropsWithChildren) => (
-    <StyledPage>{children}</StyledPage>
+    <StyledPage className="app-shell">{children}</StyledPage>
 );

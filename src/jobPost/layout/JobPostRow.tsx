@@ -1,7 +1,7 @@
 'use client';
 
 import styled from 'styled-components';
-import Link from 'next/link';
+import { Link } from '@tanstack/react-router';
 import { Colors, Device } from '@/shared/styles/constants';
 import { JobPost } from '../http/getJobPosts';
 import { SalaryRange } from './SalaryRange';
@@ -9,7 +9,6 @@ import { CompanyImage } from '@/company/layout/CompanyImage';
 import { Badge } from '@/shared/layout/Badge';
 import { Place } from '@/shared/image/icons/Place';
 import { createCompanyLink } from '@/company/company';
-import { trackJobPostVisited } from '../anaytics/trackJobPostVisited';
 
 type Props = {
     jobPost: JobPost;
@@ -37,6 +36,11 @@ const InfoContainer = styled.div`
 `;
 
 const Title = styled(Link)`
+    font-size: 18px;
+    font-weight: 600;
+`;
+
+const TitleText = styled.span`
     font-size: 18px;
     font-weight: 600;
 `;
@@ -111,58 +115,52 @@ const PlaceContainer = styled.span`
     }
 `;
 
-export const JobPostRow = ({ jobPost }: Props) => {
-    const handleOnTitleClick = () => {
-        trackJobPostVisited({ jobPost });
-    };
-
-    return (
-        <StyledJobPostRow>
-            {jobPost.company ? (
-                <CompanyImage company={jobPost.company} $width={50} />
-            ) : null}
-            <InfoContainer>
-                <Title
-                    onClick={handleOnTitleClick}
-                    target="_blank"
-                    href={jobPost.url}
-                >
+export const JobPostRow = ({ jobPost }: Props) => (
+    <StyledJobPostRow>
+        {jobPost.company ? (
+            <CompanyImage company={jobPost.company} $width={50} />
+        ) : null}
+        <InfoContainer>
+            {jobPost.closedAt != null ? (
+                <TitleText>{jobPost.title}</TitleText>
+            ) : (
+                <Title to="/job/$slug" params={{ slug: jobPost.slug } as never}>
                     {jobPost.title}
                 </Title>
-                {jobPost.company ? (
-                    <Company
-                        href={createCompanyLink({
-                            companyId: jobPost.company.id,
-                        })}
-                    >
-                        at {jobPost.company.name}
-                    </Company>
-                ) : null}
-                <DetailsContainer>
-                    <Badge>{jobPost.category}</Badge>
-                    <PlaceContainer>
-                        <Place />
-                        {jobPost.workplace}
-                        {jobPost.location ? (
-                            <>&nbsp;-&nbsp;{jobPost.location}</>
-                        ) : null}
-                    </PlaceContainer>
-                </DetailsContainer>
-            </InfoContainer>
-            <SalaryContainer>
-                {jobPost.salaryRange ? (
-                    <SalaryRange salaryRange={jobPost.salaryRange} />
-                ) : (
-                    <div></div>
-                )}
-                <JobType>
-                    {jobPost.type ? <span>{jobPost.type}</span> : null}
-                </JobType>
-                <PublishDate>
-                    <span>published on </span>
-                    {new Date(jobPost.createdAt).toJSON().split('T')[0]}
-                </PublishDate>
-            </SalaryContainer>
-        </StyledJobPostRow>
-    );
-};
+            )}
+            {jobPost.company ? (
+                <Company
+                    to={createCompanyLink({
+                        companyId: jobPost.company.id,
+                    })}
+                >
+                    at {jobPost.company.name}
+                </Company>
+            ) : null}
+            <DetailsContainer>
+                <Badge>{jobPost.category}</Badge>
+                <PlaceContainer>
+                    <Place />
+                    {jobPost.workplace}
+                    {jobPost.location ? (
+                        <>&nbsp;-&nbsp;{jobPost.location}</>
+                    ) : null}
+                </PlaceContainer>
+            </DetailsContainer>
+        </InfoContainer>
+        <SalaryContainer>
+            {jobPost.salaryRange ? (
+                <SalaryRange salaryRange={jobPost.salaryRange} />
+            ) : (
+                <div></div>
+            )}
+            <JobType>
+                {jobPost.type ? <span>{jobPost.type}</span> : null}
+            </JobType>
+            <PublishDate>
+                <span>published on </span>
+                {new Date(jobPost.createdAt).toJSON().split('T')[0]}
+            </PublishDate>
+        </SalaryContainer>
+    </StyledJobPostRow>
+);

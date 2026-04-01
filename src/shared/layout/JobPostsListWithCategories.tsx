@@ -2,7 +2,7 @@
 
 import styled from 'styled-components';
 import { useState } from 'react';
-import { usePathname } from 'next/navigation';
+import { useRouterState } from '@tanstack/react-router';
 import { CategoryTree } from '@/category/category';
 import { PublishPeriod, SortedJobPosts } from '@/jobPost/getSortedJobPosts';
 import { JobPostsList } from '@/jobPost/layout/JobPostList';
@@ -99,7 +99,9 @@ export const JobPostsListWithCategories = ({
     jobPosts,
     categoryTree,
 }: Props) => {
-    const pathname = usePathname();
+    const pathname = useRouterState({
+        select: (state) => state.location.pathname,
+    });
     const [isCategorySelectorUnfolded, setIsCategorySelectorUnfolded] =
         useState(false);
 

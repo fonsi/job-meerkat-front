@@ -1,6 +1,6 @@
 'use client';
 
-import Link from 'next/link';
+import { Link } from '@tanstack/react-router';
 import { Company, createCompanyLink } from '../company';
 import { CompanyImage } from './CompanyImage';
 import styled from 'styled-components';
@@ -66,34 +66,48 @@ const StyledLink = styled(Link)`
     }
 `;
 
-const AddCompany = styled(StyledLink)`
+const AddCompany = styled.a`
+    align-items: center;
+    border: 1px solid ${Colors.darkGrey};
+    border-radius: 4px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
     font-size: 14px;
     font-weight: 700;
-    justify-content: flex-start;
+    justify-content: center;
+    min-height: 70px;
     opacity: 0.4;
-    transition: opacity 0.1s ease-in;
+    padding: 12px;
+    text-align: center;
+    transition:
+        background-color 0.1s ease-in,
+        opacity 0.1s ease-in;
+    width: 100%;
 
     svg {
+        flex-shrink: 0;
         height: 40px;
         width: 50px;
     }
 
+    span {
+        margin-top: 10px;
+    }
+
     &:hover {
+        background-color: ${Colors.darkGrey};
         opacity: 1;
+        text-decoration: none;
     }
 
     @media ${Device.mobileL} {
         font-size: 16px;
-        justify-content: space-around;
+        min-height: 200px;
 
         svg {
             height: 60px;
-            margin-top: 24px;
             width: 60px;
-        }
-
-        span {
-            margin-top: 18px;
         }
     }
 `;
@@ -152,7 +166,7 @@ export const CompanyList = ({ companies }: Params) => {
             {companies.map((company) => (
                 <li key={company.id}>
                     <StyledLink
-                        href={createCompanyLink({ companyId: company.id })}
+                        to={createCompanyLink({ companyId: company.id })}
                     >
                         <StyledCompanyImage company={company} $width={80} />
                         <CompanyTexts>

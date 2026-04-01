@@ -4,7 +4,7 @@ This is the code for the Job Meerkat website -> [jobmeerkat.com](https://jobmeer
 
 ## Tech Stack
 
-It is a **NextJS** project deployed in **AWS S3** and using:
+It is a **TanStack Start** (Vite) project deployed in **AWS S3** and using:
 
 - **Typescript** as main language
 - **React** to create the UI components

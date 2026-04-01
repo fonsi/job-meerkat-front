@@ -2,10 +2,11 @@ type Props = {
     fill?: string;
 };
 
+/** Display size matches Header; viewBox preserves scaling (avoids huge logo before CSS loads). */
 export const LogoText = ({ fill = '#000' }: Props) => (
     <svg
-        width="631.382"
-        height="67.243"
+        width="186"
+        height="20"
         viewBox="0 0 167.053 17.791"
         xmlns="http://www.w3.org/2000/svg"
     >

@@ -1,17 +1,19 @@
-const fs = require('fs');
-const path = require('path');
-require('dotenv').config({ path: '.env.prod' });
+import fs from 'node:fs';
+import path from 'node:path';
+import dotenv from 'dotenv';
 
-const OUTPUT_DIR = 'out';
+dotenv.config({ path: '.env.local' });
+
+const OUTPUT_DIR = '.output/public';
 const OUTPUT_FILE = 'ads.txt';
 
 const publisherId = process.env.NEXT_PUBLIC_ADSENSE_PUBLISHER_ID;
 
 if (!publisherId) {
-    console.error(
-        'NEXT_PUBLIC_ADSENSE_PUBLISHER_ID is not set in environment variables',
+    console.log(
+        'Skipping ads.txt: NEXT_PUBLIC_ADSENSE_PUBLISHER_ID is not set.',
     );
-    process.exit(1);
+    process.exit(0);
 }
 
 const content = `google.com, ${publisherId}, DIRECT, f08c47fec0942fa0`;

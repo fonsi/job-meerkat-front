@@ -9,6 +9,7 @@ const Header = styled.div`
     display: flex;
     flex-direction: column;
     margin: 48px 0;
+    min-height: 168px;
     padding: 0 8px;
     text-wrap: pretty;
 `;
@@ -17,6 +18,8 @@ const Claim = styled.h1`
     font-family: var(${delaGothicVarName});
     font-size: 36px;
     font-weight: 400;
+    line-height: 1.2;
+    min-height: 2.4em;
     text-align: center;
 `;
 
@@ -30,7 +33,7 @@ const Text = styled.h2`
 `;
 
 export const HomeHeader = () => (
-    <Header>
+    <Header className="home-hero">
         <Claim>Find Remote Jobs with Public Salaries</Claim>
         <Text>
             Discover remote opportunities with clear salaries. New jobs added

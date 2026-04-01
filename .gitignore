@@ -16,6 +16,7 @@
 # next.js
 /.next/
 /out/
+/.output/
 
 # production
 /build
@@ -39,4 +40,4 @@ amplify_outputs.json
 
 # typescript
 *.tsbuildinfo
-next-env.d.ts
+src/routeTree.gen.ts

@@ -1,6 +1,6 @@
 'use client';
 
-import Link from 'next/link';
+import { Link } from '@tanstack/react-router';
 import styled from 'styled-components';
 import { X } from '../image/icons/X';
 import { Threads } from '../image/icons/Threads';
@@ -55,7 +55,7 @@ const StyledSocial = styled.div`
     }
 `;
 
-const SocialLink = styled(Link)`
+const SocialLink = styled.a`
     align-items: center;
     display: flex;
     transition: color 0.2s ease-in;
@@ -79,20 +79,25 @@ export const Footer = () => (
     <StyledFooter>
         <StyledContainer>
             <StyledLinks>
-                <FooterLink href="/terms">Terms</FooterLink>
+                <FooterLink to="/terms">Terms</FooterLink>
                 <Separator>|</Separator>
-                <FooterLink href="/privacy">Privacy</FooterLink>
+                <FooterLink to="/privacy">Privacy</FooterLink>
             </StyledLinks>
             <StyledMadeBy>
                 Made with love by{' '}
-                <Link target="_blank" href="https://x.com/FonsiRS">
+                <a
+                    target="_blank"
+                    rel="noreferrer"
+                    href="https://x.com/FonsiRS"
+                >
                     @fonsirs
-                </Link>
+                </a>
             </StyledMadeBy>
             <StyledSocial>
                 <SocialLink
                     aria-label="Follow Jobmeerkat at Threads"
                     target="_blank"
+                    rel="noreferrer"
                     href="https://www.threads.net/@jobmeerkat"
                 >
                     <Threads />
@@ -100,6 +105,7 @@ export const Footer = () => (
                 <SocialLink
                     aria-label="Follow Jobmeerkat at X"
                     target="_blank"
+                    rel="noreferrer"
                     href="https://x.com/jobmeerkat"
                 >
                     <X />
@@ -107,6 +113,7 @@ export const Footer = () => (
                 <SocialLink
                     aria-label="Follow Jobmeerkat at Linkedin"
                     target="_blank"
+                    rel="noreferrer"
                     href="https://www.linkedin.com/company/jobmeerkat"
                 >
                     <Linkedin />

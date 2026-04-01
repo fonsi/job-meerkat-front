@@ -1,5 +1,5 @@
+import type { CSSProperties } from 'react';
 import styled from 'styled-components';
-import Image from 'next/image';
 import { Company } from '../company';
 import { placeholder } from '@/shared/image/placeholder';
 import { Device } from '@/shared/styles/constants';
@@ -21,23 +21,34 @@ const StyledCompanyImage = styled.div<{ $bg?: string; $width?: number }>`
     }
 
     img {
+        height: 100%;
         object-fit: contain;
         padding: 4px;
+        width: 100%;
     }
 `;
+
+/** Matches width math below so critical CSS can size the box before styled-components runs. */
+const companyLogoSizeVars = ($width?: number): CSSProperties => {
+    const wSm = $width != null ? $width / 2 : 50;
+    const wLg = $width != null ? $width : 100;
+    return {
+        '--logo-w-sm': `${wSm}px`,
+        '--logo-w-lg': `${wLg}px`,
+    } as CSSProperties;
+};
 
 export const CompanyImage = ({ company, $width, className }: Props) => (
     <StyledCompanyImage
         className={className}
+        data-company-logo
+        style={companyLogoSizeVars($width)}
         $bg={company.logo?.background}
         $width={$width}
     >
-        <Image
+        <img
             alt={`${company.name} logo`}
-            fill={true}
-            src={company.logo?.url}
-            placeholder="empty"
-            blurDataURL={placeholder}
+            src={company.logo?.url || placeholder}
             onError={(props) => {
                 props.currentTarget.src = placeholder;
             }}

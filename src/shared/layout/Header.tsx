@@ -2,7 +2,7 @@
 
 import styled from 'styled-components';
 import { Colors } from '@/shared/styles/constants';
-import Link from 'next/link';
+import { Link } from '@tanstack/react-router';
 import { LogoText } from '../image/LogoText';
 
 const StyledDiv = styled.div`
@@ -47,12 +47,12 @@ export const Header = () => (
     <StyledDiv>
         <Container>
             <LogoContainer>
-                <StyledLink href="/">
+                <StyledLink to="/">
                     <LogoText fill="#fff" />
                 </StyledLink>
             </LogoContainer>
             <HeaderLinks>
-                <Link href="/companies">Companies</Link>
+                <Link to="/companies">Companies</Link>
             </HeaderLinks>
         </Container>
     </StyledDiv>

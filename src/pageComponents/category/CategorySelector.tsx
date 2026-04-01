@@ -1,8 +1,7 @@
 'use client';
 
 import styled from 'styled-components';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { Link, useRouterState } from '@tanstack/react-router';
 import { CategoryTree } from '@/category/category';
 import {
     isActiveCategory,
@@ -41,7 +40,9 @@ const Category = styled.li<{ $isActive: boolean }>`
 `;
 
 export const CategorySelector = ({ categoryTree, className }: Props) => {
-    const pathname = usePathname();
+    const pathname = useRouterState({
+        select: (state) => state.location.pathname,
+    });
 
     return (
         <CategoryTreeContainer className={className}>
@@ -56,7 +57,7 @@ export const CategorySelector = ({ categoryTree, className }: Props) => {
 
                         return (
                             <Category key={category.slug} $isActive={isActive}>
-                                <Link href={href}>{category.name}</Link>
+                                <Link to={href}>{category.name}</Link>
                             </Category>
                         );
                     })}

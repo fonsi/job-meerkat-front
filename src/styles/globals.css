@@ -1,3 +1,7 @@
+:root {
+  --dela-gothic-one: "Dela Gothic One", Verdana, Arial, Helvetica, sans-serif;
+}
+
 html,
 body {
   max-width: 100vw;
