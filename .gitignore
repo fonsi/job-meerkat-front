@@ -41,3 +41,6 @@ amplify_outputs.json
 # typescript
 *.tsbuildinfo
 src/routeTree.gen.ts
+
+# TanStack Start / Router dev cache (regenerated locally)
+.tanstack/
