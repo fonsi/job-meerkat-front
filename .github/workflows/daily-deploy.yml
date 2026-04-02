@@ -7,7 +7,7 @@ on:
 
 jobs:
     deploy:
-        runs-on: ubuntu-22.04
+        runs-on: ubuntu-24.04
 
         steps:
             - name: Checkout Code
@@ -32,7 +32,7 @@ jobs:
             - name: Set up Node.js
               uses: actions/setup-node@v3
               with:
-                  node-version: '20'
+                  node-version: '24'
 
             - name: Install AWS CLI
               run: |
