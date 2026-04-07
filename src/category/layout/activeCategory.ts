@@ -27,4 +27,4 @@ export const getActiveCategory = ({
 };
 
 export const makeCategoryHref = (category: WebCategory): string =>
-    `/category/${category.slug}`;
+    `/category/${category.slug}/`;

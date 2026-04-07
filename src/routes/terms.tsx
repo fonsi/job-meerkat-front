@@ -16,7 +16,7 @@ export const Route = createFileRoute('/terms')({
                 content: 'Terms and Conditions | Jobmeerkat',
             },
         ],
-        links: [{ rel: 'canonical', href: `${getSiteUrl()}/terms` }],
+        links: [{ rel: 'canonical', href: `${getSiteUrl()}/terms/` }],
     }),
     component: TermsRoute,
 });

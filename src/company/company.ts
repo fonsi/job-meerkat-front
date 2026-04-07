@@ -16,7 +16,7 @@ type CreateCompanyLinkParams = {
 };
 
 export const createCompanyLink = ({ companyId }: CreateCompanyLinkParams) =>
-    `/company/${companyId}`;
+    `/company/${companyId}/`;
 
 export const sortCompaniesByName = ({
     companies,

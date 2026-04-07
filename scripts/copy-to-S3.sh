@@ -3,6 +3,12 @@
 # SPA note — unknown paths must still serve the app shell (same HTML as `/`).
 # Otherwise S3 returns its generic XML error for deep links and refreshes.
 #
+# Query strings + folder URLs: prerendered routes live under e.g. `job/index.html` (URL path
+# `/job/`). A request to `/job?slug=…` (no slash before `?`) often gets a 302 to `/job/` whose
+# Location omits the query — use `/job/?slug=…` in links (see `src/router.tsx`). Do not use
+# `trailingSlash: 'always'` with query URLs: it can append `/` into the slug param. For legacy
+# `/job?…` bookmarks, fix at CloudFront (redirect with query preserved) if needed.
+#
 # Configure one of:
 # - S3 static website hosting: set Error document to `index.html` or `404.html`
 #   (this build copies `index.html` → `404.html` so either name works).

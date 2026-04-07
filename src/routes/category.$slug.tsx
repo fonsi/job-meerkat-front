@@ -62,7 +62,7 @@ export const Route = createFileRoute('/category/$slug')({
             links: [
                 {
                     rel: 'canonical',
-                    href: `${getSiteUrl()}/category/${params.slug}`,
+                    href: `${getSiteUrl()}/category/${params.slug}/`,
                 },
             ],
         };

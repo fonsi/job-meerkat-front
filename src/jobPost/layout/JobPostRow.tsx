@@ -124,7 +124,7 @@ export const JobPostRow = ({ jobPost }: Props) => (
             {jobPost.closedAt != null ? (
                 <TitleText>{jobPost.title}</TitleText>
             ) : (
-                <Title to="/job/$slug" params={{ slug: jobPost.slug } as never}>
+                <Title to={`/job/?slug=${encodeURIComponent(jobPost.slug)}`}>
                     {jobPost.title}
                 </Title>
             )}

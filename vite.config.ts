@@ -37,9 +37,10 @@ export default defineConfig(async ({ mode }) => {
 
     const pages = [
         { path: '/' },
-        { path: '/companies' },
-        { path: '/privacy' },
-        { path: '/terms' },
+        { path: '/companies/' },
+        { path: '/job/' },
+        { path: '/privacy/' },
+        { path: '/terms/' },
     ];
 
     if (apiEndpoint) {
@@ -50,13 +51,13 @@ export default defineConfig(async ({ mode }) => {
 
         pages.push(
             ...companies.map((company) => ({
-                path: toPath(['company', company.id]),
+                path: `${toPath(['company', company.id])}/`,
             })),
         );
         pages.push(
             ...categoryTree.flatMap((group) =>
                 group.categories.map((category) => ({
-                    path: toPath(['category', category.slug]),
+                    path: `${toPath(['category', category.slug])}/`,
                 })),
             ),
         );

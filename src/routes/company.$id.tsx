@@ -52,7 +52,7 @@ export const Route = createFileRoute('/company/$id')({
             links: [
                 {
                     rel: 'canonical',
-                    href: `${getSiteUrl()}/company/${params.id}`,
+                    href: `${getSiteUrl()}/company/${params.id}/`,
                 },
             ],
         };

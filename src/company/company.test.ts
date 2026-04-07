@@ -4,7 +4,7 @@ describe('createCompanyLink', () => {
     it('should create a valid company link given a companyId', () => {
         const companyId = '123';
         const result = createCompanyLink({ companyId });
-        expect(result).toBe('/company/123');
+        expect(result).toBe('/company/123/');
     });
 });
 

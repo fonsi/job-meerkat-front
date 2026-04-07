@@ -13,7 +13,7 @@ export const Route = createFileRoute('/privacy')({
             },
             { property: 'og:title', content: 'Privacy Policy | Jobmeerkat' },
         ],
-        links: [{ rel: 'canonical', href: `${getSiteUrl()}/privacy` }],
+        links: [{ rel: 'canonical', href: `${getSiteUrl()}/privacy/` }],
     }),
     component: PrivacyPage,
 });

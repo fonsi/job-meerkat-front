@@ -15,7 +15,7 @@ if (!apiEndpoint) {
     process.exit(1);
 }
 
-const staticUrls = ['/', '/companies', '/privacy', '/terms'];
+const staticUrls = ['/', '/companies/', '/job/', '/privacy/', '/terms/'];
 
 const getJson = async (url) => {
     const response = await fetch(url);
@@ -45,11 +45,11 @@ const main = async () => {
 
     const dynamicUrls = [
         ...companies.map(
-            (company) => `/company/${encodeURIComponent(company.id)}`,
+            (company) => `/company/${encodeURIComponent(company.id)}/`,
         ),
         ...categoryTree.flatMap((group) =>
             group.categories.map(
-                (category) => `/category/${encodeURIComponent(category.slug)}`,
+                (category) => `/category/${encodeURIComponent(category.slug)}/`,
             ),
         ),
     ];

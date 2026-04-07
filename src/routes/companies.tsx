@@ -26,7 +26,7 @@ export const Route = createFileRoute('/companies')({
                 content: isProd ? 'index,follow' : 'noindex,nofollow',
             },
         ],
-        links: [{ rel: 'canonical', href: `${getSiteUrl()}/companies` }],
+        links: [{ rel: 'canonical', href: `${getSiteUrl()}/companies/` }],
     }),
     component: CompaniesRoute,
 });

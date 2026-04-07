@@ -52,7 +52,7 @@ export const Header = () => (
                 </StyledLink>
             </LogoContainer>
             <HeaderLinks>
-                <Link to="/companies">Companies</Link>
+                <Link to="/companies/">Companies</Link>
             </HeaderLinks>
         </Container>
     </StyledDiv>
