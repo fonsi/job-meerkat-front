@@ -14,12 +14,20 @@ jest.mock('@tanstack/react-router', () => {
 
     const Link = React.forwardRef<
         HTMLAnchorElement,
-        React.AnchorHTMLAttributes<HTMLAnchorElement> & { to?: string }
-    >(({ to, href, children, ...rest }, ref) => (
-        <a ref={ref} href={to ?? href} {...rest}>
-            {children}
-        </a>
-    ));
+        React.AnchorHTMLAttributes<HTMLAnchorElement> & {
+            to?: string;
+            reloadDocument?: boolean;
+        }
+    >(
+        (
+            { to, href, children, reloadDocument: _reloadDocument, ...rest },
+            ref,
+        ) => (
+            <a ref={ref} href={to ?? href} {...rest}>
+                {children}
+            </a>
+        ),
+    );
 
     Link.displayName = 'Link';
 

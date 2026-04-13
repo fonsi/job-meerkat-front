@@ -36,7 +36,7 @@ const Separator = styled.span`
     color: ${Colors.mediumGrey};
 `;
 
-const FooterLink = styled(Link)`
+const FooterLink = styled(Link).attrs({ reloadDocument: true })`
     color: ${Colors.lightGrey};
     transition: color 0.2s ease-in;
 

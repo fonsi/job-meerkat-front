@@ -71,7 +71,7 @@ const CompanyRow = styled.div`
     margin-bottom: 16px;
 `;
 
-const CompanyNameLink = styled(Link)`
+const CompanyNameLink = styled(Link).attrs({ reloadDocument: true })`
     color: inherit;
     font-size: 18px;
     font-weight: 600;

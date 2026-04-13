@@ -35,6 +35,7 @@ const InfoContainer = styled.div`
     justify-content: space-between;
 `;
 
+/** Client navigation so `/job/?slug=` stays the only route that loads job data in-app. */
 const Title = styled(Link)`
     font-size: 18px;
     font-weight: 600;
@@ -45,7 +46,7 @@ const TitleText = styled.span`
     font-weight: 600;
 `;
 
-const Company = styled(Link)`
+const Company = styled(Link).attrs({ reloadDocument: true })`
     font-size: 14px;
     font-weight: 300;
     margin-bottom: 4px;

@@ -30,7 +30,7 @@ const LogoContainer = styled.div`
     display: flex;
 `;
 
-const StyledLink = styled(Link)`
+const StyledLink = styled(Link).attrs({ reloadDocument: true })`
     font-size: unset;
 
     svg {
@@ -52,7 +52,9 @@ export const Header = () => (
                 </StyledLink>
             </LogoContainer>
             <HeaderLinks>
-                <Link to="/companies/">Companies</Link>
+                <Link to="/companies/" reloadDocument>
+                    Companies
+                </Link>
             </HeaderLinks>
         </Container>
     </StyledDiv>

@@ -24,6 +24,8 @@ async function loadHomeData() {
 
 export const Route = createFileRoute('/')({
     loader: () => loadHomeData(),
+    // Static prerender: data comes from HTML; avoid client reloads refetching the API.
+    staleTime: Number.POSITIVE_INFINITY,
     component: HomeRoute,
 });
 

@@ -40,6 +40,7 @@ async function loadCategoryPageData(slug: string) {
 
 export const Route = createFileRoute('/category/$slug')({
     loader: async ({ params }) => loadCategoryPageData(params.slug),
+    staleTime: Number.POSITIVE_INFINITY,
     head: ({ loaderData, params }) => {
         if (!loaderData) {
             return {};

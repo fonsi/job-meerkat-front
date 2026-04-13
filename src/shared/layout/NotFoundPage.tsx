@@ -21,7 +21,7 @@ const Body = styled.p`
     margin: 0 0 20px;
 `;
 
-const HomeLink = styled(Link)`
+const HomeLink = styled(Link).attrs({ reloadDocument: true })`
     color: ${Colors.brokenWhite};
     font-size: 15px;
     font-weight: 600;

@@ -57,7 +57,9 @@ export const CategorySelector = ({ categoryTree, className }: Props) => {
 
                         return (
                             <Category key={category.slug} $isActive={isActive}>
-                                <Link to={href}>{category.name}</Link>
+                                <Link reloadDocument to={href}>
+                                    {category.name}
+                                </Link>
                             </Category>
                         );
                     })}

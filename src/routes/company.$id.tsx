@@ -30,6 +30,7 @@ async function loadCompanyData(id: string) {
 
 export const Route = createFileRoute('/company/$id')({
     loader: async ({ params }) => loadCompanyData(params.id),
+    staleTime: Number.POSITIVE_INFINITY,
     head: ({ loaderData, params }) => {
         if (!loaderData) {
             return {};

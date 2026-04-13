@@ -13,6 +13,7 @@ async function loadCompaniesData() {
 
 export const Route = createFileRoute('/companies')({
     loader: () => loadCompaniesData(),
+    staleTime: Number.POSITIVE_INFINITY,
     head: () => ({
         meta: [
             { title: 'Companies | Jobmeerkat' },

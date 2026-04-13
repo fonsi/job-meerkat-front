@@ -45,7 +45,7 @@ const StyledCompanyImage = styled(CompanyImage)`
     }
 `;
 
-const StyledLink = styled(Link)`
+const StyledLink = styled(Link).attrs({ reloadDocument: true })`
     align-items: center;
     border: 1px solid ${Colors.darkGrey};
     border-radius: 4px;
