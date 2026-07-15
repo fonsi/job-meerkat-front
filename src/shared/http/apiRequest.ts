@@ -36,6 +36,9 @@ export const apiRequest = async <R, T>({
 
     if (data && !METHODS_WITHOUT_BODY.includes(method)) {
         request['body'] = JSON.stringify(data);
+        request['headers'] = {
+            'Content-Type': 'application/json',
+        };
     }
 
     const makeRequest = (): Promise<Response> =>

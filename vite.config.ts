@@ -41,6 +41,10 @@ export default defineConfig(async ({ mode }) => {
         { path: '/job/' },
         { path: '/privacy/' },
         { path: '/terms/' },
+        { path: '/newsletter/' },
+        { path: '/newsletter/settings/' },
+        { path: '/newsletter/confirm/' },
+        { path: '/newsletter/unsubscribe/' },
     ];
 
     if (apiEndpoint) {

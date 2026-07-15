@@ -141,7 +141,20 @@ export const PrivacyPage = () => {
                     </Section>
 
                     <Section>
-                        <SectionTitle>4. Changes to This Policy</SectionTitle>
+                        <SectionTitle>4. Newsletter</SectionTitle>
+                        <SectionText>
+                            If you subscribe to our job digest newsletter, we
+                            store your email address and your filter preferences
+                            (frequency, categories, companies, and salary
+                            visibility). We use this data only to send the
+                            digest you requested. You can update your settings
+                            or unsubscribe at any time using the links in our
+                            emails or on the newsletter pages on this site.
+                        </SectionText>
+                    </Section>
+
+                    <Section>
+                        <SectionTitle>5. Changes to This Policy</SectionTitle>
                         <SectionText>
                             We may update this privacy policy from time to time.
                             We will notify you of any changes by posting the new
@@ -150,7 +163,7 @@ export const PrivacyPage = () => {
                     </Section>
 
                     <Section>
-                        <SectionTitle>5. Contact Us</SectionTitle>
+                        <SectionTitle>6. Contact Us</SectionTitle>
                         <SectionText>
                             If you have any questions about this Privacy Policy,
                             please contact us at{' '}

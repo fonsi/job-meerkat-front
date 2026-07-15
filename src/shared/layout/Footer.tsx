@@ -79,6 +79,8 @@ export const Footer = () => (
     <StyledFooter>
         <StyledContainer>
             <StyledLinks>
+                <FooterLink to="/newsletter/">Newsletter</FooterLink>
+                <Separator>|</Separator>
                 <FooterLink to="/terms/">Terms</FooterLink>
                 <Separator>|</Separator>
                 <FooterLink to="/privacy/">Privacy</FooterLink>
