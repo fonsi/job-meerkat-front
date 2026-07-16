@@ -2,11 +2,13 @@
 
 import { FormEvent, useEffect, useState } from 'react';
 import { Link, useNavigate } from '@tanstack/react-router';
+import { trackNewsletterConfirmed } from '@/newsletter/analytics/trackNewsletterPopup';
 import {
     confirmNewsletter,
     parseTokenError,
     subscribeNewsletter,
 } from '@/newsletter/http/newsletterApi';
+import { markNewsletterPopupSubscribed } from '@/newsletter/popup/newsletterPopupStorage';
 import { Button } from '@/shared/layout/Button';
 import {
     Form,
@@ -48,6 +50,9 @@ export const ConfirmNewsletterPage = ({ token }: Props) => {
                 if (cancelled) {
                     return;
                 }
+
+                markNewsletterPopupSubscribed();
+                trackNewsletterConfirmed();
 
                 await navigate({
                     to: '/newsletter/settings/',

@@ -2,7 +2,9 @@
 
 import { FormEvent, useState } from 'react';
 import { Link } from '@tanstack/react-router';
+import { trackNewsletterSent } from '@/newsletter/analytics/trackNewsletterPopup';
 import { subscribeNewsletter } from '@/newsletter/http/newsletterApi';
+import { markNewsletterPopupSubscribed } from '@/newsletter/popup/newsletterPopupStorage';
 import { Button } from '@/shared/layout/Button';
 import {
     Form,
@@ -29,6 +31,8 @@ export const JoinNewsletterPage = () => {
 
         try {
             await subscribeNewsletter(email.trim());
+            markNewsletterPopupSubscribed();
+            trackNewsletterSent();
             setSubmitted(true);
         } finally {
             setLoading(false);

@@ -4,6 +4,7 @@ import {
     Outlet,
     Scripts,
 } from '@tanstack/react-router';
+import { NewsletterPopup } from '@/newsletter/layout/NewsletterPopup';
 import { Footer } from '@/shared/layout/Footer';
 import { Header } from '@/shared/layout/Header';
 import { Main } from '@/shared/layout/Main';
@@ -103,6 +104,7 @@ function RootComponent() {
                         <Outlet />
                     </Main>
                     <Footer />
+                    <NewsletterPopup />
                 </Page>
                 <Scripts />
             </body>
