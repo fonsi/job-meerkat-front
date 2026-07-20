@@ -2,7 +2,10 @@
 
 import { FormEvent, useEffect, useState } from 'react';
 import { Link, useNavigate } from '@tanstack/react-router';
-import { trackNewsletterConfirmed } from '@/newsletter/analytics/trackNewsletterPopup';
+import {
+    trackNewsletterConfirmed,
+    trackNewsletterConfirmFailed,
+} from '@/newsletter/analytics/trackNewsletterPopup';
 import {
     confirmNewsletter,
     parseTokenError,
@@ -39,6 +42,7 @@ export const ConfirmNewsletterPage = ({ token }: Props) => {
         if (!token) {
             setError('missing');
             setLoading(false);
+            trackNewsletterConfirmFailed('missing');
             return;
         }
 
@@ -64,7 +68,9 @@ export const ConfirmNewsletterPage = ({ token }: Props) => {
                 }
 
                 const tokenError = parseTokenError(err);
-                setError(tokenError ?? 'invalid');
+                const reason = tokenError ?? 'unknown';
+                trackNewsletterConfirmFailed(reason);
+                setError(reason === 'unknown' ? 'invalid' : reason);
                 window.history.replaceState({}, '', '/newsletter/confirm/');
             } finally {
                 if (!cancelled) {
