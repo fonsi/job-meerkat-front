@@ -2,6 +2,7 @@ import { notFound } from '@tanstack/react-router';
 import { createFileRoute } from '@tanstack/react-router';
 import { JobPostDetailView } from '@/jobPost/layout/JobPostDetailView';
 import { getJobPostBySlug, type JobPost } from '@/jobPost/http/getJobPosts';
+import { buildJobPostingJsonLd } from '@/jobPost/seo/buildJobPostingJsonLd';
 import { getSiteUrl } from '@/shared/environment/getSiteUrl';
 import { isProd } from '@/shared/environment/isProd';
 import { ApiRequestError } from '@/shared/http/apiRequestError';
@@ -106,17 +107,23 @@ export const Route = createFileRoute('/job')({
                 ? jobMetaDescription(job)
                 : 'Explore this remote job post on Jobmeerkat with salary and workplace information.';
 
+        const title = `${job?.title ?? 'Job'} | Jobmeerkat`;
+        const isClosed = job?.closedAt != null;
+        const robots =
+            !isProd || isClosed ? 'noindex,nofollow' : 'index,follow';
+
         return {
             meta: [
-                { title: `${job?.title ?? 'Job'} | Jobmeerkat` },
-                {
-                    name: 'description',
-                    content: description,
-                },
-                {
-                    name: 'robots',
-                    content: isProd ? 'index,follow' : 'noindex,nofollow',
-                },
+                { title },
+                { name: 'description', content: description },
+                { name: 'robots', content: robots },
+                { property: 'og:title', content: title },
+                { property: 'og:description', content: description },
+                { property: 'og:url', content: canonical },
+                { property: 'og:type', content: 'website' },
+                ...(job != null
+                    ? [{ 'script:ld+json': buildJobPostingJsonLd(job) }]
+                    : []),
             ],
             links: [{ rel: 'canonical', href: canonical }],
         };

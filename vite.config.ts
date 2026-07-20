@@ -1,10 +1,16 @@
+import fs from 'node:fs';
 import { defineConfig, loadEnv } from 'vite';
 import { tanstackStart } from '@tanstack/react-start/plugin/vite';
 import { TanStackRouterVite } from '@tanstack/router-plugin/vite';
 import react from '@vitejs/plugin-react-swc';
+import {
+    getSitemapSourcesPath,
+    SITEMAP_SOURCES_DIR,
+} from './scripts/sitemapSourcesPath.js';
 
 type CompanyDto = { id: string };
 type CategoryGroupDto = { categories: Array<{ slug: string }> };
+type JobPostDto = { slug?: string; closedAt?: number | null };
 
 const getJson = async <T>(url: string): Promise<T> => {
     const response = await fetch(url);
@@ -16,6 +22,34 @@ const getJson = async <T>(url: string): Promise<T> => {
 
 const toPath = (parts: string[]): string =>
     `/${parts.map((part) => encodeURIComponent(part)).join('/')}`;
+
+const writeSitemapSources = ({
+    companies,
+    categoryTree,
+    jobPosts,
+}: {
+    companies: CompanyDto[];
+    categoryTree: CategoryGroupDto[];
+    jobPosts: JobPostDto[];
+}) => {
+    const jobSlugs = jobPosts
+        .filter((job) => job.closedAt == null && typeof job.slug === 'string')
+        .map((job) => job.slug as string);
+
+    const payload = {
+        companyIds: companies.map((company) => company.id),
+        categorySlugs: categoryTree.flatMap((group) =>
+            group.categories.map((category) => category.slug),
+        ),
+        jobSlugs,
+    };
+
+    fs.mkdirSync(SITEMAP_SOURCES_DIR, { recursive: true });
+    fs.writeFileSync(getSitemapSourcesPath(), JSON.stringify(payload, null, 2));
+    console.log(
+        `[sitemap-sources] wrote ${payload.companyIds.length} companies, ${payload.categorySlugs.length} categories, ${payload.jobSlugs.length} job slugs`,
+    );
+};
 
 export default defineConfig(async ({ mode }) => {
     const env = loadEnv(mode, process.cwd(), '');
@@ -48,10 +82,13 @@ export default defineConfig(async ({ mode }) => {
     ];
 
     if (apiEndpoint) {
-        const [companies, categoryTree] = await Promise.all([
+        const [companies, categoryTree, jobPosts] = await Promise.all([
             getJson<CompanyDto[]>(`${apiEndpoint}/company`),
             getJson<CategoryGroupDto[]>(`${apiEndpoint}/category`),
+            getJson<JobPostDto[]>(`${apiEndpoint}/jobPost`),
         ]);
+
+        writeSitemapSources({ companies, categoryTree, jobPosts });
 
         pages.push(
             ...companies.map((company) => ({

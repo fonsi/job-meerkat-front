@@ -6,7 +6,7 @@
     "scripts": {
         "copyEnv:dev": "cp .env.dev .env.local",
         "copyEnv:prod": "cp .env.prod .env.local",
-        "cleanCache": "rm -rf .next .output out",
+        "cleanCache": "rm -rf .next .output out .build-cache",
         "dev": "npm run copyEnv:dev && vite dev",
         "build:dev": "npm run cleanCache && npm run copyEnv:dev && vite build && node scripts/generate-sitemap.js && node scripts/generate-ads-txt.js",
         "build:prod": "npm run cleanCache && npm run copyEnv:prod && vite build && node scripts/generate-sitemap.js && node scripts/generate-ads-txt.js",

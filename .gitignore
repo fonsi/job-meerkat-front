@@ -18,6 +18,9 @@
 /out/
 /.output/
 
+# build cache (sitemap sources written by vite.config; not deployed)
+/.build-cache/
+
 # production
 /build
 

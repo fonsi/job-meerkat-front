@@ -36,26 +36,31 @@ export const Route = createFileRoute('/company/$id')({
             return {};
         }
 
+        const { company, openJobPosts } = loaderData;
+        const openCount = openJobPosts.filter(
+            (job) => job.closedAt == null,
+        ).length;
+        const canonical = `${getSiteUrl()}/company/${params.id}/`;
+        const title = `${company.name} open positions | Jobmeerkat`;
+        const description =
+            openCount > 0
+                ? `Explore ${openCount} remote role${openCount === 1 ? '' : 's'} at ${company.name} with public salaries on Jobmeerkat.`
+                : `Discover remote roles at ${company.name} with public salaries and flexible options.`;
+
         return {
             meta: [
-                {
-                    title: `${loaderData.company.name} open positions | Jobmeerkat`,
-                },
-                {
-                    name: 'description',
-                    content: `Discover remote roles at ${loaderData.company.name} with public salaries and flexible options.`,
-                },
+                { title },
+                { name: 'description', content: description },
                 {
                     name: 'robots',
                     content: isProd ? 'index,follow' : 'noindex,nofollow',
                 },
+                { property: 'og:title', content: title },
+                { property: 'og:description', content: description },
+                { property: 'og:url', content: canonical },
+                { property: 'og:type', content: 'website' },
             ],
-            links: [
-                {
-                    rel: 'canonical',
-                    href: `${getSiteUrl()}/company/${params.id}/`,
-                },
-            ],
+            links: [{ rel: 'canonical', href: canonical }],
         };
     },
     component: CompanyRoute,

@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import dotenv from 'dotenv';
+import { getSitemapSourcesPath } from './sitemapSourcesPath.js';
 
 dotenv.config({ path: '.env.local' });
 
@@ -8,22 +9,15 @@ const OUTPUT_DIR = '.output/public';
 const OUTPUT_FILE = 'sitemap.xml';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
-const apiEndpoint = process.env.NEXT_PUBLIC_API_ENDPOINT;
 
-if (!apiEndpoint) {
-    console.error('NEXT_PUBLIC_API_ENDPOINT is not set');
-    process.exit(1);
-}
-
-const staticUrls = ['/', '/companies/', '/job/', '/privacy/', '/terms/'];
-
-const getJson = async (url) => {
-    const response = await fetch(url);
-    if (!response.ok) {
-        throw new Error(`Request failed for ${url}: ${response.status}`);
-    }
-    return response.json();
-};
+const staticUrls = [
+    '/',
+    '/companies/',
+    '/job/',
+    '/newsletter/',
+    '/privacy/',
+    '/terms/',
+];
 
 const escapeXml = (input) =>
     input
@@ -37,21 +31,41 @@ const toUrlNode = (url) => {
     return `<url><loc>${escapeXml(url)}</loc></url>`;
 };
 
-const main = async () => {
-    const [companies, categoryTree] = await Promise.all([
-        getJson(`${apiEndpoint}/company`),
-        getJson(`${apiEndpoint}/category`),
-    ]);
+const readSitemapSources = () => {
+    const sourcesPath = getSitemapSourcesPath();
+    if (!fs.existsSync(sourcesPath)) {
+        throw new Error(
+            `Missing ${sourcesPath}. Run \`vite build\` first so sitemap sources (company ids, category slugs, job slugs) are written during config.`,
+        );
+    }
+
+    const parsed = JSON.parse(fs.readFileSync(sourcesPath, 'utf8'));
+    if (
+        !Array.isArray(parsed.companyIds) ||
+        !Array.isArray(parsed.categorySlugs) ||
+        !Array.isArray(parsed.jobSlugs)
+    ) {
+        throw new Error(
+            `Invalid sitemap sources at ${sourcesPath}: expected companyIds, categorySlugs, and jobSlugs arrays.`,
+        );
+    }
+
+    return parsed;
+};
+
+const main = () => {
+    const { companyIds, categorySlugs, jobSlugs } = readSitemapSources();
+
+    const activeJobUrls = jobSlugs.map(
+        (slug) => `/job/?slug=${encodeURIComponent(slug)}`,
+    );
 
     const dynamicUrls = [
-        ...companies.map(
-            (company) => `/company/${encodeURIComponent(company.id)}/`,
+        ...companyIds.map((id) => `/company/${encodeURIComponent(id)}/`),
+        ...categorySlugs.map(
+            (slug) => `/category/${encodeURIComponent(slug)}/`,
         ),
-        ...categoryTree.flatMap((group) =>
-            group.categories.map(
-                (category) => `/category/${encodeURIComponent(category.slug)}/`,
-            ),
-        ),
+        ...activeJobUrls,
     ];
 
     const allPaths = [...staticUrls, ...dynamicUrls];
@@ -67,10 +81,14 @@ ${allPaths.map((pathName) => toUrlNode(`${siteUrl}${pathName}`)).join('\n')}
     }
 
     fs.writeFileSync(path.join(outDir, OUTPUT_FILE), xml);
-    console.log(`Generated ${OUTPUT_FILE} with ${allPaths.length} URLs`);
+    console.log(
+        `Generated ${OUTPUT_FILE} with ${allPaths.length} URLs (${activeJobUrls.length} active jobs) from build-cache slugs`,
+    );
 };
 
-main().catch((error) => {
+try {
+    main();
+} catch (error) {
     console.error('Failed to generate sitemap', error);
     process.exit(1);
-});
+}
