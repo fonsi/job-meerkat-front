@@ -11,6 +11,7 @@ import { Place } from '@/shared/image/icons/Place';
 import { Colors, Device } from '@/shared/styles/constants';
 import { Container } from '@/shared/layout/Container';
 import { JobPostOriginalApplyLink } from '@/jobPost/layout/JobPostOriginalApplyLink';
+import { NewsletterInlineSubscribe } from '@/newsletter/layout/NewsletterInlineSubscribe';
 
 type Props = {
     jobPost: JobPost;
@@ -25,6 +26,42 @@ const workplaceLabel = (w: Workplace): string => {
     };
     return map[w] ?? String(w);
 };
+
+const JobPostDetailWrap = styled.div`
+    margin: 24px 8px;
+
+    @media ${Device.tablet} {
+        margin: 48px 8px;
+    }
+`;
+
+const Layout = styled.div`
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+
+    @media ${Device.laptop} {
+        flex-direction: row;
+        gap: 40px;
+    }
+`;
+
+const Main = styled.div`
+    flex: 1;
+    min-width: 0;
+`;
+
+const Aside = styled.aside`
+    flex-shrink: 0;
+    width: 100%;
+
+    @media ${Device.laptop} {
+        position: sticky;
+        top: 24px;
+        width: 280px;
+    }
+`;
 
 const TopRow = styled.div`
     align-items: flex-start;
@@ -134,63 +171,78 @@ const OriginalPostClosedText = styled.span`
     font-weight: 400;
 `;
 
-/** Matches `CompanyHeader` spacing on the company page */
-const JobPostDetailWrap = styled.div`
-    margin: 24px 8px;
-
-    @media ${Device.tablet} {
-        margin: 48px 8px;
-    }
-`;
-
 export const JobPostDetailView = ({ jobPost }: Props) => (
     <Container>
         <JobPostDetailWrap>
-            <CompanyRow>
-                <CompanyImage company={jobPost.company} $width={56} />
-                <CompanyNameLink
-                    to={createCompanyLink({ companyId: jobPost.company.id })}
-                >
-                    {jobPost.company.name}
-                </CompanyNameLink>
-            </CompanyRow>
-            <TopRow>
-                <Title>{jobPost.title}</Title>
-                <SalarySide>
-                    {jobPost.salaryRange ? (
-                        <SalaryRange salaryRange={jobPost.salaryRange} />
-                    ) : (
-                        <span
-                            style={{ color: Colors.mediumGrey, fontSize: 14 }}
+            <Layout>
+                <Main>
+                    <CompanyRow>
+                        <CompanyImage company={jobPost.company} $width={56} />
+                        <CompanyNameLink
+                            to={createCompanyLink({
+                                companyId: jobPost.company.id,
+                            })}
                         >
-                            Salary not listed
-                        </span>
+                            {jobPost.company.name}
+                        </CompanyNameLink>
+                    </CompanyRow>
+                    <TopRow>
+                        <Title>{jobPost.title}</Title>
+                        <SalarySide>
+                            {jobPost.salaryRange ? (
+                                <SalaryRange
+                                    salaryRange={jobPost.salaryRange}
+                                />
+                            ) : (
+                                <span
+                                    style={{
+                                        color: Colors.mediumGrey,
+                                        fontSize: 14,
+                                    }}
+                                >
+                                    Salary not listed
+                                </span>
+                            )}
+                        </SalarySide>
+                    </TopRow>
+                    <MetaRow>
+                        <Badge>{jobPost.category}</Badge>
+                        <PlaceWrap>
+                            <Place />
+                            <span>
+                                {workplaceLabel(jobPost.workplace)}
+                                {jobPost.location
+                                    ? ` — ${jobPost.location}`
+                                    : ''}
+                            </span>
+                        </PlaceWrap>
+                    </MetaRow>
+                    <Published>
+                        Published on{' '}
+                        {
+                            new Date(jobPost.createdAt)
+                                .toISOString()
+                                .split('T')[0]
+                        }
+                    </Published>
+                    {jobPost.closedAt != null ? (
+                        <OriginalPostClosedText>
+                            This job post is closed.
+                        </OriginalPostClosedText>
+                    ) : (
+                        <ApplyButton jobPost={jobPost}>
+                            View original job post
+                        </ApplyButton>
                     )}
-                </SalarySide>
-            </TopRow>
-            <MetaRow>
-                <Badge>{jobPost.category}</Badge>
-                <PlaceWrap>
-                    <Place />
-                    <span>
-                        {workplaceLabel(jobPost.workplace)}
-                        {jobPost.location ? ` — ${jobPost.location}` : ''}
-                    </span>
-                </PlaceWrap>
-            </MetaRow>
-            <Published>
-                Published on{' '}
-                {new Date(jobPost.createdAt).toISOString().split('T')[0]}
-            </Published>
-            {jobPost.closedAt != null ? (
-                <OriginalPostClosedText>
-                    This job post is closed.
-                </OriginalPostClosedText>
-            ) : (
-                <ApplyButton jobPost={jobPost}>
-                    View original job post
-                </ApplyButton>
-            )}
+                </Main>
+                <Aside>
+                    <NewsletterInlineSubscribe
+                        compact
+                        title="Get jobs like this"
+                        description="Remote roles with public salaries — daily or weekly."
+                    />
+                </Aside>
+            </Layout>
         </JobPostDetailWrap>
     </Container>
 );
