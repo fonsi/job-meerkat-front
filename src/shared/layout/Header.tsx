@@ -40,7 +40,19 @@ const StyledLink = styled(Link).attrs({ reloadDocument: true })`
 `;
 
 const HeaderLinks = styled.nav`
+    align-items: center;
+    display: flex;
     font-size: 14px;
+    gap: 20px;
+`;
+
+const NavLink = styled(Link).attrs({ reloadDocument: true })`
+    color: ${Colors.brokenWhite};
+    transition: color 0.2s ease-in;
+
+    &:hover {
+        color: ${Colors.lightGrey};
+    }
 `;
 
 export const Header = () => (
@@ -52,9 +64,8 @@ export const Header = () => (
                 </StyledLink>
             </LogoContainer>
             <HeaderLinks>
-                <Link to="/companies/" reloadDocument>
-                    Companies
-                </Link>
+                <NavLink to="/companies/">Companies</NavLink>
+                <NavLink to="/newsletter/">Newsletter</NavLink>
             </HeaderLinks>
         </Container>
     </StyledDiv>
