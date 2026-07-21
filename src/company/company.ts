@@ -8,6 +8,7 @@ export type Company = {
     name: string;
     homePage: string;
     logo: CompanyLogo;
+    description?: string;
     jobPostsCount?: number;
 };
 

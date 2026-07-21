@@ -3,6 +3,7 @@
 import styled from 'styled-components';
 import { Company } from '@/company/company';
 import { getCompanyJobStats } from '@/company/getCompanyJobStats';
+import { CompanyDescription } from '@/company/layout/CompanyDescription';
 import { CompanyStats } from '@/company/layout/CompanyStats';
 import { JobPostsList } from '@/jobPost/layout/JobPostList';
 import { CompanyHeader } from '@/company/layout/CompanyHeader';
@@ -71,6 +72,9 @@ export const CompanyHome = ({ company, openJobPosts }: Props) => {
             <CompanyHeader company={company} />
             <ContentLayout>
                 <JobsColumn>
+                    {company.description ? (
+                        <CompanyDescription description={company.description} />
+                    ) : null}
                     <CompanyStats stats={stats} />
                     <div>
                         <OpenPositions>Open positions</OpenPositions>

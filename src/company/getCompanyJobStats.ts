@@ -154,21 +154,37 @@ export const formatSalaryCompact = (
 export const buildCompanyMetaDescription = ({
     companyName,
     stats,
+    companyDescription,
 }: {
     companyName: string;
     stats: CompanyJobStats;
+    companyDescription?: string | null;
 }): string => {
-    if (stats.openCount === 0) {
-        return `Discover remote roles at ${companyName} with public salaries and flexible options.`;
+    const statsDescription = (() => {
+        if (stats.openCount === 0) {
+            return `Discover remote roles at ${companyName} with public salaries and flexible options.`;
+        }
+
+        const rolePart = `${stats.openCount} remote role${stats.openCount === 1 ? '' : 's'}`;
+        if (stats.salary) {
+            const { min, max, currency } = stats.salary;
+            return `Explore ${rolePart} at ${companyName}. Public salaries from ${formatSalaryCompact(min, currency)}–${formatSalaryCompact(max, currency)} / year on Jobmeerkat.`;
+        }
+
+        return `Explore ${rolePart} at ${companyName} with public salaries on Jobmeerkat.`;
+    })();
+
+    const blurb = companyDescription?.trim();
+    if (!blurb) {
+        return statsDescription;
     }
 
-    const rolePart = `${stats.openCount} remote role${stats.openCount === 1 ? '' : 's'}`;
-    if (stats.salary) {
-        const { min, max, currency } = stats.salary;
-        return `Explore ${rolePart} at ${companyName}. Public salaries from ${formatSalaryCompact(min, currency)}–${formatSalaryCompact(max, currency)} / year on Jobmeerkat.`;
+    const combined = `${blurb} ${statsDescription}`;
+    if (combined.length <= 160) {
+        return combined;
     }
 
-    return `Explore ${rolePart} at ${companyName} with public salaries on Jobmeerkat.`;
+    return blurb.length <= 160 ? blurb : `${blurb.slice(0, 157)}...`;
 };
 
 export const buildCompanyMetaTitle = ({

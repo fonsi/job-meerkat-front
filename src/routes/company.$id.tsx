@@ -51,6 +51,7 @@ export const Route = createFileRoute('/company/$id')({
         const description = buildCompanyMetaDescription({
             companyName: company.name,
             stats,
+            companyDescription: company.description,
         });
 
         return {

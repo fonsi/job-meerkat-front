@@ -165,6 +165,15 @@ describe('getCompanyJobStats', () => {
         expect(
             buildCompanyMetaDescription({ companyName: 'Acme', stats }),
         ).toContain('from 90K USD–160K USD / year');
+        expect(
+            buildCompanyMetaDescription({
+                companyName: 'Acme',
+                stats,
+                companyDescription: 'Acme builds collaboration tools.',
+            }),
+        ).toBe(
+            'Acme builds collaboration tools. Explore 2 remote roles at Acme. Public salaries from 90K USD–160K USD / year on Jobmeerkat.',
+        );
         expect(formatSalaryCompact(90000, 'USD')).toBe('90K USD');
     });
 });
