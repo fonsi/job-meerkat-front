@@ -172,8 +172,8 @@ export const NewsletterInlineSubscribe = ({
             {submitted ? (
                 <Success>
                     <strong>Check your inbox</strong>
-                    Confirm your email and we&apos;ll start sending curated
-                    remote roles your way.
+                    Confirm via the email we sent (check spam/junk too) and
+                    we&apos;ll start sending curated remote roles your way.
                 </Success>
             ) : (
                 <>
@@ -185,6 +185,7 @@ export const NewsletterInlineSubscribe = ({
                             aria-label="Email"
                             placeholder="you@company.com"
                             value={email}
+                            disabled={loading}
                             onChange={(e) => setEmail(e.target.value)}
                         />
                         <SubmitButton type="submit" disabled={loading}>

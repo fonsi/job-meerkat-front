@@ -11,6 +11,8 @@ export const subscribeNewsletter = (email: string) =>
         path: '/newsletter/subscribe',
         method: Method.POST,
         data: { email },
+        // Subscribe waits on email send; retries multiply confirm emails.
+        retries: 0,
     });
 
 export const confirmNewsletter = (token: string) =>

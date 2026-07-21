@@ -36,6 +36,7 @@ export const ConfirmNewsletterPage = ({ token }: Props) => {
     const [error, setError] = useState<string | null>(null);
     const [email, setEmail] = useState('');
     const [resent, setResent] = useState(false);
+    const [resending, setResending] = useState(false);
     const [loading, setLoading] = useState(!!token);
 
     useEffect(() => {
@@ -88,8 +89,13 @@ export const ConfirmNewsletterPage = ({ token }: Props) => {
 
     const onResend = async (event: FormEvent) => {
         event.preventDefault();
-        await subscribeNewsletter(email.trim());
-        setResent(true);
+        setResending(true);
+        try {
+            await subscribeNewsletter(email.trim());
+            setResent(true);
+        } finally {
+            setResending(false);
+        }
     };
 
     if (loading) {
@@ -111,8 +117,8 @@ export const ConfirmNewsletterPage = ({ token }: Props) => {
 
                 {resent ? (
                     <NewsletterBanner $variant="success">
-                        Check your inbox. If this email can receive our
-                        newsletter, we sent a new link.
+                        Check your inbox (and spam/junk folder). If this email
+                        can receive our newsletter, we sent a confirmation link.
                     </NewsletterBanner>
                 ) : (
                     <Form onSubmit={onResend}>
@@ -122,12 +128,15 @@ export const ConfirmNewsletterPage = ({ token }: Props) => {
                                 id="email"
                                 type="email"
                                 required
+                                disabled={resending}
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                             />
                         </FormGroup>
                         <FormFooter>
-                            <Button type="submit">Resend confirmation</Button>
+                            <Button type="submit" disabled={resending}>
+                                {resending ? 'Sending…' : 'Resend confirmation'}
+                            </Button>
                         </FormFooter>
                     </Form>
                 )}

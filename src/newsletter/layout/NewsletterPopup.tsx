@@ -324,8 +324,9 @@ export const NewsletterPopup = () => {
                 {submitted ? (
                     <SuccessBanner>
                         <strong>You&apos;re almost in!</strong>
-                        Check your inbox and confirm — then we&apos;ll start
-                        sending curated remote roles your way.
+                        Check your inbox (and spam/junk folder) for the
+                        confirmation email — then we&apos;ll start sending
+                        curated remote roles your way.
                     </SuccessBanner>
                 ) : (
                     <>
@@ -347,6 +348,7 @@ export const NewsletterPopup = () => {
                                     autoComplete="email"
                                     placeholder="you@company.com"
                                     value={email}
+                                    disabled={loading}
                                     onChange={(e) => setEmail(e.target.value)}
                                 />
                             </Field>
