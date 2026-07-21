@@ -1,5 +1,10 @@
 import { notFound } from '@tanstack/react-router';
 import { createFileRoute } from '@tanstack/react-router';
+import {
+    buildCompanyMetaDescription,
+    buildCompanyMetaTitle,
+    getCompanyJobStats,
+} from '@/company/getCompanyJobStats';
 import { getSortedJobPosts } from '@/jobPost/getSortedJobPosts';
 import { CompanyHome } from '@/pageComponents/company/CompanyHome';
 import { getSiteUrl } from '@/shared/environment/getSiteUrl';
@@ -37,15 +42,16 @@ export const Route = createFileRoute('/company/$id')({
         }
 
         const { company, openJobPosts } = loaderData;
-        const openCount = openJobPosts.filter(
-            (job) => job.closedAt == null,
-        ).length;
+        const stats = getCompanyJobStats(openJobPosts);
         const canonical = `${getSiteUrl()}/company/${params.id}/`;
-        const title = `${company.name} open positions | Jobmeerkat`;
-        const description =
-            openCount > 0
-                ? `Explore ${openCount} remote role${openCount === 1 ? '' : 's'} at ${company.name} with public salaries on Jobmeerkat.`
-                : `Discover remote roles at ${company.name} with public salaries and flexible options.`;
+        const title = buildCompanyMetaTitle({
+            companyName: company.name,
+            stats,
+        });
+        const description = buildCompanyMetaDescription({
+            companyName: company.name,
+            stats,
+        });
 
         return {
             meta: [

@@ -2,6 +2,8 @@
 
 import styled from 'styled-components';
 import { Company } from '@/company/company';
+import { getCompanyJobStats } from '@/company/getCompanyJobStats';
+import { CompanyStats } from '@/company/layout/CompanyStats';
 import { JobPostsList } from '@/jobPost/layout/JobPostList';
 import { CompanyHeader } from '@/company/layout/CompanyHeader';
 import { Colors, Device } from '@/shared/styles/constants';
@@ -40,7 +42,10 @@ const ContentLayout = styled.div`
 `;
 
 const JobsColumn = styled.div`
+    display: flex;
     flex: 1;
+    flex-direction: column;
+    gap: 48px;
     min-width: 0;
     width: 100%;
 `;
@@ -58,41 +63,54 @@ const Aside = styled.aside`
     }
 `;
 
-export const CompanyHome = ({ company, openJobPosts }: Props) => (
-    <div>
-        <CompanyHeader company={company} />
-        <ContentLayout>
-            <JobsColumn>
-                <OpenPositions>Open positions</OpenPositions>
-                <JobPostsList>
-                    <JobPostsPublishPeriod
-                        jobPosts={openJobPosts[PublishPeriod.LastDay]}
-                        title="Last 24 hours"
+export const CompanyHome = ({ company, openJobPosts }: Props) => {
+    const stats = getCompanyJobStats(Object.values(openJobPosts).flat());
+
+    return (
+        <div>
+            <CompanyHeader company={company} />
+            <ContentLayout>
+                <JobsColumn>
+                    <CompanyStats stats={stats} />
+                    <div>
+                        <OpenPositions>Open positions</OpenPositions>
+                        <JobPostsList>
+                            <JobPostsPublishPeriod
+                                jobPosts={openJobPosts[PublishPeriod.LastDay]}
+                                title="Last 24 hours"
+                            />
+                            <JobPostsPublishPeriod
+                                jobPosts={
+                                    openJobPosts[PublishPeriod.LastSevenDays]
+                                }
+                                title="Last 7 days"
+                            />
+                            <JobPostsPublishPeriod
+                                jobPosts={
+                                    openJobPosts[PublishPeriod.LastThirtyDays]
+                                }
+                                title="Last 30 days"
+                            />
+                            <JobPostsPublishPeriod
+                                jobPosts={
+                                    openJobPosts[
+                                        PublishPeriod.BeforeLastThirtyDays
+                                    ]
+                                }
+                                title="More than 30 days ago"
+                            />
+                        </JobPostsList>
+                    </div>
+                </JobsColumn>
+                <Aside>
+                    <NewsletterInlineSubscribe
+                        compact
+                        title={`Alert me when ${company.name} posts`}
+                        description="Handpicked remote roles with public salaries. Filter for this company after you confirm."
+                        submitLabel="Send me alerts"
                     />
-                    <JobPostsPublishPeriod
-                        jobPosts={openJobPosts[PublishPeriod.LastSevenDays]}
-                        title="Last 7 days"
-                    />
-                    <JobPostsPublishPeriod
-                        jobPosts={openJobPosts[PublishPeriod.LastThirtyDays]}
-                        title="Last 30 days"
-                    />
-                    <JobPostsPublishPeriod
-                        jobPosts={
-                            openJobPosts[PublishPeriod.BeforeLastThirtyDays]
-                        }
-                        title="More than 30 days ago"
-                    />
-                </JobPostsList>
-            </JobsColumn>
-            <Aside>
-                <NewsletterInlineSubscribe
-                    compact
-                    title={`Alert me when ${company.name} posts`}
-                    description="Handpicked remote roles with public salaries. Filter for this company after you confirm."
-                    submitLabel="Send me alerts"
-                />
-            </Aside>
-        </ContentLayout>
-    </div>
-);
+                </Aside>
+            </ContentLayout>
+        </div>
+    );
+};
