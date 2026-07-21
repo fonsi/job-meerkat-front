@@ -50,11 +50,17 @@ const readSitemapSources = () => {
         );
     }
 
-    return parsed;
+    return {
+        ...parsed,
+        intentPaths: Array.isArray(parsed.intentPaths)
+            ? parsed.intentPaths
+            : [],
+    };
 };
 
 const main = () => {
-    const { companyIds, categorySlugs, jobSlugs } = readSitemapSources();
+    const { companyIds, categorySlugs, jobSlugs, intentPaths } =
+        readSitemapSources();
 
     const activeJobUrls = jobSlugs.map(
         (slug) => `/job/?slug=${encodeURIComponent(slug)}`,
@@ -65,6 +71,7 @@ const main = () => {
         ...categorySlugs.map(
             (slug) => `/category/${encodeURIComponent(slug)}/`,
         ),
+        ...(Array.isArray(intentPaths) ? intentPaths : []),
         ...activeJobUrls,
     ];
 

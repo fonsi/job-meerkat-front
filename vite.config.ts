@@ -3,6 +3,7 @@ import { defineConfig, loadEnv } from 'vite';
 import { tanstackStart } from '@tanstack/react-start/plugin/vite';
 import { TanStackRouterVite } from '@tanstack/router-plugin/vite';
 import react from '@vitejs/plugin-react-swc';
+import { INTENT_PATHS } from './scripts/intentPaths.js';
 import {
     getSitemapSourcesPath,
     SITEMAP_SOURCES_DIR,
@@ -42,12 +43,13 @@ const writeSitemapSources = ({
             group.categories.map((category) => category.slug),
         ),
         jobSlugs,
+        intentPaths: [...INTENT_PATHS],
     };
 
     fs.mkdirSync(SITEMAP_SOURCES_DIR, { recursive: true });
     fs.writeFileSync(getSitemapSourcesPath(), JSON.stringify(payload, null, 2));
     console.log(
-        `[sitemap-sources] wrote ${payload.companyIds.length} companies, ${payload.categorySlugs.length} categories, ${payload.jobSlugs.length} job slugs`,
+        `[sitemap-sources] wrote ${payload.companyIds.length} companies, ${payload.categorySlugs.length} categories, ${payload.jobSlugs.length} job slugs, ${payload.intentPaths.length} intent pages`,
     );
 };
 
@@ -79,6 +81,7 @@ export default defineConfig(async ({ mode }) => {
         { path: '/newsletter/settings/' },
         { path: '/newsletter/confirm/' },
         { path: '/newsletter/unsubscribe/' },
+        ...INTENT_PATHS.map((path) => ({ path })),
     ];
 
     if (apiEndpoint) {
@@ -102,6 +105,12 @@ export default defineConfig(async ({ mode }) => {
                 })),
             ),
         );
+    } else {
+        writeSitemapSources({
+            companies: [],
+            categoryTree: [],
+            jobPosts: [],
+        });
     }
 
     return {
