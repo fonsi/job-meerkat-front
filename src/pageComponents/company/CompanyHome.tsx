@@ -1,7 +1,7 @@
 'use client';
 
 import styled from 'styled-components';
-import { Company } from '@/company/company';
+import { Company, isCompanyDisabled } from '@/company/company';
 import { getCompanyJobStats } from '@/company/getCompanyJobStats';
 import { CompanyDescription } from '@/company/layout/CompanyDescription';
 import { CompanyStats } from '@/company/layout/CompanyStats';
@@ -64,7 +64,41 @@ const Aside = styled.aside`
     }
 `;
 
+const DisabledContent = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 0 8px 48px;
+`;
+
+const StatusMessage = styled.p`
+    color: ${Colors.mediumGrey};
+    font-size: 15px;
+    line-height: 1.55;
+    margin: 0;
+
+    @media ${Device.tablet} {
+        font-size: 16px;
+    }
+`;
+
 export const CompanyHome = ({ company, openJobPosts }: Props) => {
+    if (isCompanyDisabled(company)) {
+        return (
+            <div>
+                <CompanyHeader company={company} showHomePage={false} />
+                <DisabledContent>
+                    {company.description ? (
+                        <CompanyDescription description={company.description} />
+                    ) : null}
+                    {company.statusMessage ? (
+                        <StatusMessage>{company.statusMessage}</StatusMessage>
+                    ) : null}
+                </DisabledContent>
+            </div>
+        );
+    }
+
     const stats = getCompanyJobStats(Object.values(openJobPosts).flat());
 
     return (

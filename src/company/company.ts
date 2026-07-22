@@ -3,6 +3,8 @@ export type CompanyLogo = {
     background?: string;
 };
 
+export type CompanyStatus = 'active' | 'disabled';
+
 export type Company = {
     id: string;
     name: string;
@@ -10,7 +12,14 @@ export type Company = {
     logo: CompanyLogo;
     description?: string;
     jobPostsCount?: number;
+    /** Missing status means active (backwards compatible). */
+    status?: CompanyStatus;
+    statusMessage?: string;
+    disabledAt?: number;
 };
+
+export const isCompanyDisabled = (company: Company): boolean =>
+    company.status === 'disabled';
 
 type CreateCompanyLinkParams = {
     companyId: string;

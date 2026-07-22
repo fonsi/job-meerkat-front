@@ -176,4 +176,24 @@ describe('getCompanyJobStats', () => {
         );
         expect(formatSalaryCompact(90000, 'USD')).toBe('90K USD');
     });
+
+    it('builds meta for disabled companies without hiring copy', () => {
+        const stats = getCompanyJobStats([]);
+
+        expect(
+            buildCompanyMetaTitle({
+                companyName: 'Rec Room',
+                stats,
+                isDisabled: true,
+            }),
+        ).toBe('Rec Room — no longer hiring | Jobmeerkat');
+        expect(
+            buildCompanyMetaDescription({
+                companyName: 'Rec Room',
+                stats,
+                isDisabled: true,
+                statusMessage: 'Rec Room shut down in June 2026.',
+            }),
+        ).toBe('Rec Room shut down in June 2026.');
+    });
 });

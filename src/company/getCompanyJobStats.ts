@@ -155,11 +155,29 @@ export const buildCompanyMetaDescription = ({
     companyName,
     stats,
     companyDescription,
+    statusMessage,
+    isDisabled,
 }: {
     companyName: string;
     stats: CompanyJobStats;
     companyDescription?: string | null;
+    statusMessage?: string | null;
+    isDisabled?: boolean;
 }): string => {
+    if (isDisabled) {
+        const message = statusMessage?.trim();
+        if (message) {
+            return message.length <= 160
+                ? message
+                : `${message.slice(0, 157)}...`;
+        }
+        const blurb = companyDescription?.trim();
+        if (blurb) {
+            return blurb.length <= 160 ? blurb : `${blurb.slice(0, 157)}...`;
+        }
+        return `${companyName} is no longer hiring on Jobmeerkat.`;
+    }
+
     const statsDescription = (() => {
         if (stats.openCount === 0) {
             return `Discover remote roles at ${companyName} with public salaries and flexible options.`;
@@ -190,10 +208,16 @@ export const buildCompanyMetaDescription = ({
 export const buildCompanyMetaTitle = ({
     companyName,
     stats,
+    isDisabled,
 }: {
     companyName: string;
     stats: CompanyJobStats;
+    isDisabled?: boolean;
 }): string => {
+    if (isDisabled) {
+        return `${companyName} — no longer hiring | Jobmeerkat`;
+    }
+
     if (stats.openCount === 0) {
         return `${companyName} open positions | Jobmeerkat`;
     }

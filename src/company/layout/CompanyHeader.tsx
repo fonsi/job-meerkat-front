@@ -7,6 +7,7 @@ import { CompanyImage } from './CompanyImage';
 
 type Props = {
     company: Company;
+    showHomePage?: boolean;
 };
 
 const Header = styled.div`
@@ -37,14 +38,16 @@ const CompanyInfo = styled.div`
     margin-left: 24px;
 `;
 
-export const CompanyHeader = ({ company }: Props) => (
+export const CompanyHeader = ({ company, showHomePage = true }: Props) => (
     <Header>
         <CompanyImage company={company} />
         <CompanyInfo>
             <CompanyName>{company.name}</CompanyName>
-            <CompanyUrl target="_blank" href={company.homePage}>
-                {company.homePage}
-            </CompanyUrl>
+            {showHomePage ? (
+                <CompanyUrl target="_blank" href={company.homePage}>
+                    {company.homePage}
+                </CompanyUrl>
+            ) : null}
         </CompanyInfo>
     </Header>
 );

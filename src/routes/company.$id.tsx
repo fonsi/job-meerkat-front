@@ -1,5 +1,6 @@
 import { notFound } from '@tanstack/react-router';
 import { createFileRoute } from '@tanstack/react-router';
+import { isCompanyDisabled } from '@/company/company';
 import {
     buildCompanyMetaDescription,
     buildCompanyMetaTitle,
@@ -16,14 +17,20 @@ import {
 import { Container } from '@/shared/layout/Container';
 
 async function loadCompanyData(id: string) {
-    const [company, jobPosts] = await Promise.all([
-        getCachedCompanyDetail(id),
-        getCachedJobPosts(),
-    ]);
+    const company = await getCachedCompanyDetail(id);
 
     if (!company) {
         return null;
     }
+
+    if (isCompanyDisabled(company)) {
+        return {
+            company,
+            openJobPosts: [],
+        };
+    }
+
+    const jobPosts = await getCachedJobPosts();
 
     return {
         company,
@@ -42,16 +49,20 @@ export const Route = createFileRoute('/company/$id')({
         }
 
         const { company, openJobPosts } = loaderData;
+        const disabled = isCompanyDisabled(company);
         const stats = getCompanyJobStats(openJobPosts);
         const canonical = `${getSiteUrl()}/company/${params.id}/`;
         const title = buildCompanyMetaTitle({
             companyName: company.name,
             stats,
+            isDisabled: disabled,
         });
         const description = buildCompanyMetaDescription({
             companyName: company.name,
             stats,
             companyDescription: company.description,
+            statusMessage: company.statusMessage,
+            isDisabled: disabled,
         });
 
         return {

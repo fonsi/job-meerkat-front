@@ -12,6 +12,8 @@ import { trackAddCompanyButtonWasClicked } from '../analytics/trackJobPostVisite
 
 type Params = {
     companies: Company[];
+    showAddCompany?: boolean;
+    showJobPostsCount?: boolean;
 };
 
 const List = styled.ul`
@@ -146,7 +148,11 @@ const OpenJobPosts = styled.div`
     margin-top: 6px;
 `;
 
-export const CompanyList = ({ companies }: Params) => {
+export const CompanyList = ({
+    companies,
+    showAddCompany = true,
+    showJobPostsCount = true,
+}: Params) => {
     const handleOnAddCompany: MouseEventHandler<HTMLAnchorElement> = (e) => {
         e.preventDefault();
         e.stopPropagation();
@@ -157,12 +163,14 @@ export const CompanyList = ({ companies }: Params) => {
 
     return (
         <List>
-            <li>
-                <AddCompany onClick={handleOnAddCompany} href="#">
-                    <Add />
-                    <span>Add a company</span>
-                </AddCompany>
-            </li>
+            {showAddCompany ? (
+                <li>
+                    <AddCompany onClick={handleOnAddCompany} href="#">
+                        <Add />
+                        <span>Add a company</span>
+                    </AddCompany>
+                </li>
+            ) : null}
             {companies.map((company) => (
                 <li key={company.id}>
                     <StyledLink
@@ -171,11 +179,13 @@ export const CompanyList = ({ companies }: Params) => {
                         <StyledCompanyImage company={company} $width={80} />
                         <CompanyTexts>
                             <CompanyName>{company.name}</CompanyName>
-                            <OpenJobPosts>
-                                {company.jobPostsCount
-                                    ? `${company.jobPostsCount} open job posts`
-                                    : 'No open job posts'}
-                            </OpenJobPosts>
+                            {showJobPostsCount ? (
+                                <OpenJobPosts>
+                                    {company.jobPostsCount
+                                        ? `${company.jobPostsCount} open job posts`
+                                        : 'No open job posts'}
+                                </OpenJobPosts>
+                            ) : null}
                         </CompanyTexts>
                     </StyledLink>
                 </li>

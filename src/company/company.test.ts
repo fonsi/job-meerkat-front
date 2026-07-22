@@ -1,10 +1,49 @@
-import { createCompanyLink, sortCompaniesByName, Company } from './company';
+import {
+    createCompanyLink,
+    sortCompaniesByName,
+    isCompanyDisabled,
+    Company,
+} from './company';
 
 describe('createCompanyLink', () => {
     it('should create a valid company link given a companyId', () => {
         const companyId = '123';
         const result = createCompanyLink({ companyId });
         expect(result).toBe('/company/123/');
+    });
+});
+
+describe('isCompanyDisabled', () => {
+    it('returns false when status is missing or active', () => {
+        expect(
+            isCompanyDisabled({
+                id: '1',
+                name: 'Acme',
+                homePage: '',
+                logo: { url: '' },
+            }),
+        ).toBe(false);
+        expect(
+            isCompanyDisabled({
+                id: '1',
+                name: 'Acme',
+                homePage: '',
+                logo: { url: '' },
+                status: 'active',
+            }),
+        ).toBe(false);
+    });
+
+    it('returns true when status is disabled', () => {
+        expect(
+            isCompanyDisabled({
+                id: '1',
+                name: 'Acme',
+                homePage: '',
+                logo: { url: '' },
+                status: 'disabled',
+            }),
+        ).toBe(true);
     });
 });
 
