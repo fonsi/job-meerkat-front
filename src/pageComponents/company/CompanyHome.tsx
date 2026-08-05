@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import styled from 'styled-components';
 import { Company, isCompanyDisabled } from '@/company/company';
 import { getCompanyJobStats } from '@/company/getCompanyJobStats';
@@ -11,6 +12,14 @@ import { Colors, Device } from '@/shared/styles/constants';
 import { PublishPeriod, SortedJobPosts } from '@/jobPost/getSortedJobPosts';
 import { JobPostsPublishPeriod } from '@/jobPost/layout/JobPostsPublishPeriod';
 import { NewsletterInlineSubscribe } from '@/newsletter/layout/NewsletterInlineSubscribe';
+import {
+    countJobsMatchingFilters,
+    flattenSortedJobPosts,
+    JobListFilters,
+    resolveInitialJobListFilters,
+} from '@/jobPost/jobListFilters';
+import { JobListFiltersControls } from '@/jobPost/layout/JobListFiltersControls';
+import { EmptyJobListFiltersMessage } from '@/jobPost/layout/EmptyJobListFiltersMessage';
 
 type Props = {
     company: Company;
@@ -82,7 +91,15 @@ const StatusMessage = styled.p`
     }
 `;
 
+const FiltersBar = styled.div`
+    margin-bottom: 24px;
+`;
+
 export const CompanyHome = ({ company, openJobPosts }: Props) => {
+    const [filters, setFilters] = useState<JobListFilters>(() =>
+        resolveInitialJobListFilters(flattenSortedJobPosts(openJobPosts)),
+    );
+
     if (isCompanyDisabled(company)) {
         return (
             <div>
@@ -99,7 +116,10 @@ export const CompanyHome = ({ company, openJobPosts }: Props) => {
         );
     }
 
-    const stats = getCompanyJobStats(Object.values(openJobPosts).flat());
+    const flatJobPosts = flattenSortedJobPosts(openJobPosts);
+    const stats = getCompanyJobStats(flatJobPosts);
+    const hasVisibleJobPosts =
+        countJobsMatchingFilters(flatJobPosts, filters) > 0;
 
     return (
         <div>
@@ -109,25 +129,42 @@ export const CompanyHome = ({ company, openJobPosts }: Props) => {
                     {company.description ? (
                         <CompanyDescription description={company.description} />
                     ) : null}
-                    <CompanyStats stats={stats} />
+                    <CompanyStats
+                        stats={stats}
+                        filters={filters}
+                        jobPosts={flatJobPosts}
+                        onCategoryChange={(category) =>
+                            setFilters((current) => ({ ...current, category }))
+                        }
+                    />
                     <div>
                         <OpenPositions>Open positions</OpenPositions>
+                        <FiltersBar>
+                            <JobListFiltersControls
+                                filters={filters}
+                                jobPosts={flatJobPosts}
+                                onChange={setFilters}
+                            />
+                        </FiltersBar>
                         <JobPostsList>
                             <JobPostsPublishPeriod
                                 jobPosts={openJobPosts[PublishPeriod.LastDay]}
                                 title="Last 24 hours"
+                                filters={filters}
                             />
                             <JobPostsPublishPeriod
                                 jobPosts={
                                     openJobPosts[PublishPeriod.LastSevenDays]
                                 }
                                 title="Last 7 days"
+                                filters={filters}
                             />
                             <JobPostsPublishPeriod
                                 jobPosts={
                                     openJobPosts[PublishPeriod.LastThirtyDays]
                                 }
                                 title="Last 30 days"
+                                filters={filters}
                             />
                             <JobPostsPublishPeriod
                                 jobPosts={
@@ -136,8 +173,12 @@ export const CompanyHome = ({ company, openJobPosts }: Props) => {
                                     ]
                                 }
                                 title="More than 30 days ago"
+                                filters={filters}
                             />
                         </JobPostsList>
+                        {!hasVisibleJobPosts && flatJobPosts.length > 0 ? (
+                            <EmptyJobListFiltersMessage />
+                        ) : null}
                     </div>
                 </JobsColumn>
                 <Aside>

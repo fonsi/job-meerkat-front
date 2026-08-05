@@ -35,7 +35,8 @@ async function loadCompanyData(id: string) {
     return {
         company,
         openJobPosts: jobPosts.filter(
-            (jobPost) => jobPost.company?.id === company.id,
+            (jobPost) =>
+                jobPost.company?.id === company.id && jobPost.closedAt == null,
         ),
     };
 }

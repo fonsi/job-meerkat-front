@@ -5,14 +5,16 @@ import { JobPost } from '../http/getJobPosts';
 import { JobPostRow } from './JobPostRow';
 import { Colors, Device } from '@/shared/styles/constants';
 import { Calendar } from '@/shared/image/icons/Calendar';
+import { JobListFilters, matchesJobListFilters } from '../jobListFilters';
 
 type Props = {
     jobPosts: JobPost[];
     title: string;
+    filters: JobListFilters;
 };
 
-const PublishPeriod = styled.div`
-    display: flex;
+const PublishPeriod = styled.div<{ $hidden: boolean }>`
+    display: ${(props) => (props.$hidden ? 'none' : 'flex')};
     flex-direction: column;
     margin-bottom: 48px;
 `;
@@ -37,19 +39,27 @@ const Title = styled.div`
     }
 `;
 
-export const JobPostsPublishPeriod = ({ jobPosts, title }: Props) => {
+export const JobPostsPublishPeriod = ({ jobPosts, title, filters }: Props) => {
     if (!jobPosts?.length) {
         return null;
     }
 
+    const hasVisibleJobPosts = jobPosts.some((jobPost) =>
+        matchesJobListFilters(jobPost, filters),
+    );
+
     return (
-        <PublishPeriod>
+        <PublishPeriod $hidden={!hasVisibleJobPosts}>
             <Title>
                 <Calendar />
                 {title}
             </Title>
             {jobPosts.map((jobPost) => (
-                <JobPostRow key={jobPost.id} jobPost={jobPost}></JobPostRow>
+                <JobPostRow
+                    key={jobPost.id}
+                    jobPost={jobPost}
+                    isFilteredOut={!matchesJobListFilters(jobPost, filters)}
+                />
             ))}
         </PublishPeriod>
     );

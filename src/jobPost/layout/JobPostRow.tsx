@@ -12,11 +12,12 @@ import { createCompanyLink } from '@/company/company';
 
 type Props = {
     jobPost: JobPost;
+    isFilteredOut?: boolean;
 };
 
-const StyledJobPostRow = styled.li`
+const StyledJobPostRow = styled.li<{ $isFilteredOut: boolean }>`
     border-bottom: 1px solid ${Colors.darkGrey};
-    display: flex;
+    display: ${(props) => (props.$isFilteredOut ? 'none' : 'flex')};
     flex-direction: column;
     gap: 12px;
     justify-content: flex-start;
@@ -116,8 +117,8 @@ const PlaceContainer = styled.span`
     }
 `;
 
-export const JobPostRow = ({ jobPost }: Props) => (
-    <StyledJobPostRow>
+export const JobPostRow = ({ jobPost, isFilteredOut = false }: Props) => (
+    <StyledJobPostRow $isFilteredOut={isFilteredOut}>
         {jobPost.company ? (
             <CompanyImage company={jobPost.company} $width={50} />
         ) : null}

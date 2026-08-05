@@ -6,9 +6,18 @@ import {
     formatSalaryCompact,
 } from '@/company/getCompanyJobStats';
 import { Colors } from '@/shared/styles/constants';
+import type { JobPost } from '@/jobPost/http/getJobPosts';
+import {
+    CategoryFilter,
+    countJobsMatchingFilters,
+    JobListFilters,
+} from '@/jobPost/jobListFilters';
 
 type Props = {
     stats: CompanyJobStats;
+    filters: JobListFilters;
+    jobPosts: JobPost[];
+    onCategoryChange: (category: CategoryFilter) => void;
 };
 
 const Wrap = styled.section`
@@ -53,21 +62,28 @@ const SectionTitle = styled.h2`
     margin: 0 0 10px;
 `;
 
-const CategoryList = styled.ul`
+const CategoryList = styled.div`
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-    list-style: none;
-    margin: 0;
-    padding: 0;
 `;
 
-const CategoryItem = styled.li`
-    border: 1px solid ${Colors.mediumGrey};
+const CategoryBadge = styled.button<{ $selected: boolean }>`
+    background: transparent;
+    border: 1px solid
+        ${(props) => (props.$selected ? Colors.brokenWhite : Colors.mediumGrey)};
     border-radius: 999px;
-    color: ${Colors.lightGrey};
+    color: ${(props) =>
+        props.$selected ? Colors.brokenWhite : Colors.lightGrey};
+    cursor: pointer;
     font-size: 12px;
+    font-weight: ${(props) => (props.$selected ? 600 : 400)};
     padding: 4px 10px;
+
+    &:hover {
+        border-color: ${Colors.brokenWhite};
+        color: ${Colors.brokenWhite};
+    }
 `;
 
 const formatCategory = (category: string): string =>
@@ -77,7 +93,12 @@ const formatCategory = (category: string): string =>
         .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
         .join(' ');
 
-export const CompanyStats = ({ stats }: Props) => {
+export const CompanyStats = ({
+    stats,
+    filters,
+    jobPosts,
+    onCategoryChange,
+}: Props) => {
     if (stats.openCount === 0) {
         return null;
     }
@@ -85,6 +106,11 @@ export const CompanyStats = ({ stats }: Props) => {
     const salaryLabel = stats.salary
         ? `${formatSalaryCompact(stats.salary.min, stats.salary.currency)}–${formatSalaryCompact(stats.salary.max, stats.salary.currency)}`
         : '—';
+
+    const allCount = countJobsMatchingFilters(jobPosts, {
+        ...filters,
+        category: 'all',
+    });
 
     return (
         <Wrap aria-label="Company hiring stats">
@@ -113,13 +139,35 @@ export const CompanyStats = ({ stats }: Props) => {
 
             {stats.categories.length > 0 ? (
                 <div>
-                    <SectionTitle>Open by category</SectionTitle>
+                    <SectionTitle>Filter by category</SectionTitle>
                     <CategoryList>
-                        {stats.categories.map(({ category, count }) => (
-                            <CategoryItem key={category}>
-                                {formatCategory(category)} · {count}
-                            </CategoryItem>
-                        ))}
+                        <CategoryBadge
+                            type="button"
+                            $selected={filters.category === 'all'}
+                            aria-pressed={filters.category === 'all'}
+                            onClick={() => onCategoryChange('all')}
+                        >
+                            All · {allCount}
+                        </CategoryBadge>
+                        {stats.categories.map(({ category }) => {
+                            const selected = filters.category === category;
+                            const count = countJobsMatchingFilters(jobPosts, {
+                                ...filters,
+                                category,
+                            });
+
+                            return (
+                                <CategoryBadge
+                                    key={category}
+                                    type="button"
+                                    $selected={selected}
+                                    aria-pressed={selected}
+                                    onClick={() => onCategoryChange(category)}
+                                >
+                                    {formatCategory(category)} · {count}
+                                </CategoryBadge>
+                            );
+                        })}
                     </CategoryList>
                 </div>
             ) : null}

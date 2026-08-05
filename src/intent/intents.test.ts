@@ -69,6 +69,7 @@ describe('intent filters', () => {
             job({ id: '2', salaryRange: null }),
             job({ id: '3', workplace: Workplace.OnSite }),
             job({ id: '4', closedAt: Date.now() }),
+            job({ id: '5', workplace: Workplace.Unknown }),
         ];
 
         expect(

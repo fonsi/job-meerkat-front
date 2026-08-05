@@ -112,9 +112,7 @@ export const annualSalaryMax = (jobPost: JobPost): number => {
 
 const hasPublicSalary = (jobPost: JobPost) => jobPost.salaryRange?.max != null;
 
-const isRemote = (jobPost: JobPost) =>
-    jobPost.workplace === Workplace.Remote ||
-    jobPost.workplace === Workplace.Unknown;
+const isRemote = (jobPost: JobPost) => jobPost.workplace === Workplace.Remote;
 
 export const filterJobPostsByIntent = (
     slug: IntentSlug,

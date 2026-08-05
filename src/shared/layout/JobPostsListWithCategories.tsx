@@ -11,10 +11,20 @@ import { CategorySelector } from '@/pageComponents/category/CategorySelector';
 import { Colors, Device } from '../styles/constants';
 import { Segment } from '../image/icons/Segment';
 import { getActiveCategory } from '@/category/layout/activeCategory';
+import {
+    countJobsMatchingFilters,
+    flattenSortedJobPosts,
+    JobListFilters,
+    PASSTHROUGH_JOB_LIST_FILTERS,
+    resolveInitialJobListFilters,
+} from '@/jobPost/jobListFilters';
+import { JobListFiltersControls } from '@/jobPost/layout/JobListFiltersControls';
+import { EmptyJobListFiltersMessage } from '@/jobPost/layout/EmptyJobListFiltersMessage';
 
 type Props = {
     jobPosts: SortedJobPosts;
     categoryTree: CategoryTree;
+    showJobListFilters?: boolean;
 };
 
 const foldableCategorySelectorBreakpoint = Device.tablet;
@@ -77,18 +87,41 @@ const FoldableCategoriesTitle = styled.div<{ $isUnfolded: boolean }>`
     }
 `;
 
-const StyledCategorySelector = styled(CategorySelector)<{
-    $isUnfolded: boolean;
-}>`
+const FiltersPanel = styled.div<{ $isUnfolded: boolean }>`
     background-color: ${Colors.darkGrey};
     display: ${(props) => (props.$isUnfolded ? 'flex' : 'none')};
-    padding: 8px 24px;
+    flex-direction: column;
 
     @media ${foldableCategorySelectorBreakpoint} {
         background-color: unset;
         display: flex;
+    }
+`;
+
+const StyledCategorySelector = styled(CategorySelector)`
+    padding: 8px 24px;
+
+    @media ${foldableCategorySelectorBreakpoint} {
         padding: 0;
     }
+`;
+
+const StyledJobListFiltersControls = styled(JobListFiltersControls)`
+    border-bottom: 1px solid ${Colors.darkGrey};
+    margin: 8px 12px 16px;
+    padding-bottom: 16px;
+
+    @media ${foldableCategorySelectorBreakpoint} {
+        margin: 0 0 20px;
+        padding-bottom: 20px;
+    }
+`;
+
+const JobsColumn = styled.div`
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-width: 0;
 `;
 
 const StyledJobPostList = styled(JobPostsList)`
@@ -98,27 +131,40 @@ const StyledJobPostList = styled(JobPostsList)`
 export const JobPostsListWithCategories = ({
     jobPosts,
     categoryTree,
+    showJobListFilters = false,
 }: Props) => {
     const pathname = useRouterState({
         select: (state) => state.location.pathname,
     });
     const [isCategorySelectorUnfolded, setIsCategorySelectorUnfolded] =
         useState(false);
+    const [filters, setFilters] = useState<JobListFilters>(() =>
+        showJobListFilters
+            ? resolveInitialJobListFilters(flattenSortedJobPosts(jobPosts))
+            : PASSTHROUGH_JOB_LIST_FILTERS,
+    );
 
     const activeCategory = getActiveCategory({ categoryTree, pathname });
+    const flatJobPosts = flattenSortedJobPosts(jobPosts);
+    const activeFilters = showJobListFilters
+        ? filters
+        : PASSTHROUGH_JOB_LIST_FILTERS;
+    const hasVisibleJobPosts =
+        countJobsMatchingFilters(flatJobPosts, activeFilters) > 0;
 
     return (
         <Container>
-            <CategoriesContainer
-                onClick={() =>
-                    setIsCategorySelectorUnfolded(!isCategorySelectorUnfolded)
-                }
-            >
+            <CategoriesContainer>
                 <CategoriesTitle>
                     <Segment /> Filter
                 </CategoriesTitle>
                 <FoldableCategoriesTitle
                     $isUnfolded={isCategorySelectorUnfolded}
+                    onClick={() =>
+                        setIsCategorySelectorUnfolded(
+                            !isCategorySelectorUnfolded,
+                        )
+                    }
                 >
                     <Segment />
                     {activeCategory ? (
@@ -130,29 +176,46 @@ export const JobPostsListWithCategories = ({
                         'Filter job posts...'
                     )}
                 </FoldableCategoriesTitle>
-                <StyledCategorySelector
-                    $isUnfolded={isCategorySelectorUnfolded}
-                    categoryTree={categoryTree}
-                />
+                <FiltersPanel $isUnfolded={isCategorySelectorUnfolded}>
+                    {showJobListFilters ? (
+                        <StyledJobListFiltersControls
+                            filters={filters}
+                            jobPosts={flatJobPosts}
+                            onChange={setFilters}
+                        />
+                    ) : null}
+                    <StyledCategorySelector categoryTree={categoryTree} />
+                </FiltersPanel>
             </CategoriesContainer>
-            <StyledJobPostList>
-                <JobPostsPublishPeriod
-                    jobPosts={jobPosts[PublishPeriod.LastDay]}
-                    title="Last 24 hours"
-                />
-                <JobPostsPublishPeriod
-                    jobPosts={jobPosts[PublishPeriod.LastSevenDays]}
-                    title="Last 7 days"
-                />
-                <JobPostsPublishPeriod
-                    jobPosts={jobPosts[PublishPeriod.LastThirtyDays]}
-                    title="Last 30 days"
-                />
-                <JobPostsPublishPeriod
-                    jobPosts={jobPosts[PublishPeriod.BeforeLastThirtyDays]}
-                    title="More than 30 days ago"
-                />
-            </StyledJobPostList>
+            <JobsColumn>
+                <StyledJobPostList>
+                    <JobPostsPublishPeriod
+                        jobPosts={jobPosts[PublishPeriod.LastDay]}
+                        title="Last 24 hours"
+                        filters={activeFilters}
+                    />
+                    <JobPostsPublishPeriod
+                        jobPosts={jobPosts[PublishPeriod.LastSevenDays]}
+                        title="Last 7 days"
+                        filters={activeFilters}
+                    />
+                    <JobPostsPublishPeriod
+                        jobPosts={jobPosts[PublishPeriod.LastThirtyDays]}
+                        title="Last 30 days"
+                        filters={activeFilters}
+                    />
+                    <JobPostsPublishPeriod
+                        jobPosts={jobPosts[PublishPeriod.BeforeLastThirtyDays]}
+                        title="More than 30 days ago"
+                        filters={activeFilters}
+                    />
+                </StyledJobPostList>
+                {showJobListFilters &&
+                !hasVisibleJobPosts &&
+                flatJobPosts.length > 0 ? (
+                    <EmptyJobListFiltersMessage />
+                ) : null}
+            </JobsColumn>
         </Container>
     );
 };
