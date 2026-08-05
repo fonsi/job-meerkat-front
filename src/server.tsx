@@ -27,7 +27,10 @@ const styledSsrHandler = defineHandlerCallback(
                 html = html.replace('</head>', () => `${styleTags}</head>`);
             }
             return new Response(`<!DOCTYPE html>${html}`, {
-                status: router.stores.statusCode.state,
+                status:
+                    router._serverResult?.type === 'render'
+                        ? router._serverResult.status
+                        : 200,
                 headers: responseHeaders,
             });
         } catch (error) {
