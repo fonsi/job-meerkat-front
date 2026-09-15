@@ -2,7 +2,7 @@ name: Daily Deploy to Production
 
 on:
     schedule:
-        - cron: '0 4 * * *' # Runs at 4:00 AM UTC daily
+        - cron: '0 1 * * *' # Runs at 1:00 AM UTC daily (after scrape, before emails)
     workflow_dispatch: # Allows manual triggering of the workflow
 
 jobs:
