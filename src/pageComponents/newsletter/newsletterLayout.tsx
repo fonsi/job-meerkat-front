@@ -119,32 +119,171 @@ export const CompanyGrid = styled.div`
     }
 `;
 
-export const CompanyOption = styled.label<{ $selected: boolean }>`
-    align-items: center;
-    background: ${(props) =>
-        props.$selected ? Colors.darkGrey : 'transparent'};
-    border: 1px solid
-        ${(props) => (props.$selected ? Colors.lightGrey : Colors.darkGrey)};
+export const CompanyOption = styled.div<{ $selected: boolean }>`
+    align-items: stretch;
+    background: transparent;
+    border: 1px solid ${Colors.darkGrey};
     border-radius: 4px;
     color: ${Colors.lightGrey};
-    cursor: pointer;
     display: flex;
-    gap: 8px;
+    flex-direction: column;
+    gap: 6px;
     min-width: 0;
+    opacity: ${(props) => (props.$selected ? 1 : 0.4)};
     padding: 8px 10px;
     transition:
-        background-color 0.15s ease,
-        border-color 0.15s ease;
+        border-color 0.15s ease,
+        opacity 0.15s ease;
 
     &:hover {
-        background: ${Colors.darkGrey};
         border-color: ${Colors.mediumGrey};
+        opacity: 1;
     }
 
     input {
         accent-color: ${Colors.white};
         flex-shrink: 0;
     }
+`;
+
+export const CompanyOptionMain = styled.label`
+    align-items: center;
+    cursor: pointer;
+    display: flex;
+    gap: 8px;
+    min-width: 0;
+    width: 100%;
+`;
+
+export const CompanyOptionAction = styled.button`
+    align-self: flex-start;
+    background: none;
+    border: none;
+    color: ${Colors.mediumGrey};
+    cursor: pointer;
+    font-size: 12px;
+    padding: 0;
+    text-align: left;
+    text-decoration: underline;
+
+    &:hover {
+        color: ${Colors.white};
+    }
+`;
+
+export const CompanyRuleSection = styled.div`
+    background: ${Colors.darkGrey};
+    border: 1px solid ${Colors.mediumGrey};
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 0 0 16px;
+    min-width: 0;
+    padding: 0;
+`;
+
+export const CompanyRuleHeader = styled.div`
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    padding: 12px;
+`;
+
+export const CompanyRuleIdentity = styled.div`
+    align-items: center;
+    display: flex;
+    flex: 1;
+    gap: 8px;
+    min-width: 0;
+`;
+
+export const CompanyRuleActions = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+`;
+
+export const RuleAction = styled.button`
+    background: transparent;
+    border: 1px solid ${Colors.mediumGrey};
+    border-radius: 4px;
+    color: ${Colors.lightGrey};
+    cursor: pointer;
+    font-size: 12px;
+    padding: 4px 8px;
+
+    &:hover {
+        border-color: ${Colors.lightGrey};
+        color: ${Colors.white};
+    }
+`;
+
+export const RuleActionDanger = styled(RuleAction)`
+    border-color: ${Colors.red};
+    color: ${Colors.red};
+
+    &:hover {
+        border-color: ${Colors.white};
+        color: ${Colors.white};
+    }
+`;
+
+export const CompanyRuleHint = styled.p`
+    color: ${Colors.mediumGrey};
+    font-size: 13px;
+    margin: 0 0 12px;
+`;
+
+export const FilterRow = styled.div`
+    border-top: 1px solid ${Colors.brokenBlack};
+    display: grid;
+    gap: 8px;
+    padding: 12px;
+`;
+
+export const FilterRowMain = styled.div`
+    align-items: center;
+    display: grid;
+    gap: 8px;
+
+    @media ${Device.tablet} {
+        grid-template-columns: 9rem minmax(0, 1fr);
+    }
+`;
+
+export const FilterRowLabel = styled.div`
+    color: ${Colors.white};
+    font-size: 13px;
+    font-weight: 600;
+`;
+
+export const FilterSelect = styled.select`
+    background: ${Colors.brokenBlack};
+    border: 1px solid ${Colors.mediumGrey};
+    border-radius: 4px;
+    color: ${Colors.white};
+    font-size: 13px;
+    max-width: 100%;
+    padding: 6px 8px;
+`;
+
+export const FilterRowExtra = styled.div`
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+
+    @media ${Device.tablet} {
+        margin-left: 9rem;
+    }
+`;
+
+export const DimensionLabel = styled.div`
+    color: ${Colors.white};
+    font-size: 13px;
+    font-weight: 600;
+    margin-top: 12px;
 `;
 
 export const CompanyOptionImage = ({

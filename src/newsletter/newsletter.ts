@@ -3,11 +3,23 @@ import { CompanyLogo } from '@/company/company';
 
 export type NewsletterFrequency = 'daily' | 'weekly';
 
+export type WorkplacePreference = 'remote' | 'on-site' | 'hybrid';
+
+export type CompanyRule = {
+    companyId: string;
+    exclude?: boolean;
+    includeAll?: boolean;
+    allowedCategorySlugs?: string[] | null;
+    allowedWorkplaces?: WorkplacePreference[] | null;
+    publicSalaryOnly?: boolean;
+};
+
 export type NewsletterPreferences = {
     allowedCategorySlugs: string[] | null;
     allowedCompanyIds: string[] | null;
-    allowedWorkplaces: ('remote' | 'on-site' | 'hybrid')[] | null;
+    allowedWorkplaces: WorkplacePreference[] | null;
     publicSalaryOnly: boolean;
+    companyRules?: CompanyRule[] | null;
     updatedAt: number;
 };
 

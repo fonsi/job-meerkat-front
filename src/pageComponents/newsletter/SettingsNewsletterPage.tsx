@@ -13,6 +13,7 @@ import {
 import {
     NewsletterCompany,
     NewsletterFrequency,
+    WorkplacePreference,
 } from '@/newsletter/newsletter';
 import { Button } from '@/shared/layout/Button';
 import {
@@ -22,20 +23,30 @@ import {
     Input,
     Label,
 } from '@/shared/layout/Form';
+import { CategoryColumnsPicker } from './CategoryColumnsPicker';
+import { CompanyCustomFilters } from './CompanyCustomFilters';
 import {
-    CategoryColumn,
-    CategoryColumns,
-    CategoryGroup,
-    CategoryGroupTitle,
+    CompanyRuleDraft,
+    DEFAULT_WORKPLACES,
+    WORKPLACE_OPTIONS,
+    companyRuleSectionId,
+    companyRuleToDraft,
+    draftToCompanyRule,
+    emptyCompanyRuleDraft,
+} from './companyRuleDraft';
+import {
     CheckboxRow,
     CompanyGrid,
     CompanyOption,
+    CompanyOptionAction,
     CompanyOptionImage,
     CompanyOptionLink,
+    CompanyOptionMain,
     CompanyOptionMeta,
     CompanyOptionName,
     CompanyOptionOpenIcon,
     CompanyOptionTexts,
+    DimensionLabel,
     Fieldset,
     Legend,
     LegendAll,
@@ -54,18 +65,22 @@ type Props = {
     token?: string;
 };
 
-const toggleValue = (values: string[], value: string): string[] =>
+const toggleValue = <T,>(values: T[], value: T): T[] =>
     values.includes(value)
         ? values.filter((v) => v !== value)
         : [...values, value];
 
-const toAllowList = (selected: string[]): string[] | null =>
+const toAllowList = <T,>(selected: T[]): T[] | null =>
     selected.length ? selected : null;
 
 const openJobsLabel = (count: number) =>
     count === 1 ? '1 open job post' : `${count} open job posts`;
 
-const ENGINEERING_GROUP = 'Engineering';
+const scrollToCompanyRule = (companyId: string) => {
+    document
+        .getElementById(companyRuleSectionId(companyId))
+        ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+};
 
 export const SettingsNewsletterPage = ({ token }: Props) => {
     const [loading, setLoading] = useState(!!token);
@@ -77,7 +92,12 @@ export const SettingsNewsletterPage = ({ token }: Props) => {
     const [frequency, setFrequency] = useState<NewsletterFrequency>('daily');
     const [publicSalaryOnly, setPublicSalaryOnly] = useState(true);
     const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+    const [selectedWorkplaces, setSelectedWorkplaces] =
+        useState<WorkplacePreference[]>(DEFAULT_WORKPLACES);
     const [selectedCompanies, setSelectedCompanies] = useState<string[]>([]);
+    const [companyRuleDrafts, setCompanyRuleDrafts] = useState<
+        CompanyRuleDraft[]
+    >([]);
     const [categories, setCategories] = useState<CategoryTree>([]);
     const [companies, setCompanies] = useState<NewsletterCompany[]>([]);
     const [email, setEmail] = useState('');
@@ -91,7 +111,46 @@ export const SettingsNewsletterPage = ({ token }: Props) => {
             setFrequency(data.frequency);
             setPublicSalaryOnly(data.preferences.publicSalaryOnly ?? true);
             setSelectedCategories(data.preferences.allowedCategorySlugs ?? []);
-            setSelectedCompanies(data.preferences.allowedCompanyIds ?? []);
+            setSelectedWorkplaces(
+                data.preferences.allowedWorkplaces ?? [...DEFAULT_WORKPLACES],
+            );
+            const storedRules = data.preferences.companyRules ?? [];
+            const excludedIds = new Set(
+                storedRules
+                    .filter((rule) => rule.exclude)
+                    .map((rule) => rule.companyId),
+            );
+            const customRules = storedRules.filter((rule) => !rule.exclude);
+            const customIds = new Set(
+                customRules.map((rule) => rule.companyId),
+            );
+            const nameOf = (id: string) =>
+                data.companies.find((c) => c.id === id)?.name ?? id;
+            setCompanyRuleDrafts(
+                customRules
+                    .map(companyRuleToDraft)
+                    .sort((a, b) =>
+                        nameOf(a.companyId).localeCompare(
+                            nameOf(b.companyId),
+                            undefined,
+                            { sensitivity: 'base' },
+                        ),
+                    ),
+            );
+            const gridIds = data.companies
+                .filter((company) => !customIds.has(company.id))
+                .map((company) => company.id);
+            if (data.preferences.allowedCompanyIds == null) {
+                setSelectedCompanies(
+                    gridIds.filter((id) => !excludedIds.has(id)),
+                );
+            } else {
+                setSelectedCompanies(
+                    data.preferences.allowedCompanyIds.filter(
+                        (id) => !customIds.has(id) && !excludedIds.has(id),
+                    ),
+                );
+            }
             setCategories(data.categories);
             setCompanies(data.companies);
             setEmail(data.email);
@@ -127,40 +186,95 @@ export const SettingsNewsletterPage = ({ token }: Props) => {
         setSaving(true);
         setSaved(false);
 
+        const customIds = companyRuleDrafts.map((d) => d.companyId);
+        const gridIds = companies
+            .filter((company) => !customIds.includes(company.id))
+            .map((company) => company.id);
+        const allGridSelected = gridIds.every((id) =>
+            selectedCompanies.includes(id),
+        );
+        const companyRules = companyRuleDrafts
+            .map(draftToCompanyRule)
+            .filter((rule) => rule != null);
+        const allowedCompanyIds = allGridSelected
+            ? null
+            : [
+                  ...new Set([
+                      ...selectedCompanies.filter(
+                          (id) => !customIds.includes(id),
+                      ),
+                      ...companyRules.map((rule) => rule.companyId),
+                  ]),
+              ];
+
         try {
             const result = await putNewsletterPreferences(token, {
                 frequency,
                 allowedCategorySlugs: toAllowList(selectedCategories),
-                allowedCompanyIds: toAllowList(selectedCompanies),
-                allowedWorkplaces: null,
+                allowedCompanyIds,
+                allowedWorkplaces: selectedWorkplaces.length
+                    ? selectedWorkplaces
+                    : [...DEFAULT_WORKPLACES],
                 publicSalaryOnly,
+                companyRules: companyRules.length ? companyRules : null,
             });
             setFrequency(result.frequency);
+            setCompanyRuleDrafts(
+                companyRules.map((rule) => companyRuleToDraft(rule)),
+            );
             setSaved(true);
         } finally {
             setSaving(false);
         }
     };
 
-    const renderCategoryGroup = (group: CategoryTree[number]) => (
-        <CategoryGroup key={group.name}>
-            <CategoryGroupTitle>{group.name}</CategoryGroupTitle>
-            {group.categories.map((category) => (
-                <CheckboxRow key={category.slug}>
-                    <input
-                        type="checkbox"
-                        checked={selectedCategories.includes(category.slug)}
-                        onChange={() =>
-                            setSelectedCategories((current) =>
-                                toggleValue(current, category.slug),
-                            )
-                        }
-                    />
-                    {category.name}
-                </CheckboxRow>
-            ))}
-        </CategoryGroup>
-    );
+    const onToggleCompany = (companyId: string) => {
+        setSelectedCompanies((current) => toggleValue(current, companyId));
+    };
+
+    const addCustomFilters = (companyId: string) => {
+        if (companyRuleDrafts.some((d) => d.companyId === companyId)) {
+            scrollToCompanyRule(companyId);
+            return;
+        }
+
+        setCompanyRuleDrafts((current) => [
+            emptyCompanyRuleDraft(companyId),
+            ...current,
+        ]);
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => scrollToCompanyRule(companyId));
+        });
+    };
+
+    const removeCustomFilters = (companyId: string) => {
+        setCompanyRuleDrafts((current) =>
+            current.filter((d) => d.companyId !== companyId),
+        );
+        setSelectedCompanies((current) =>
+            current.includes(companyId) ? current : [...current, companyId],
+        );
+    };
+
+    const excludeCompany = (companyId: string) => {
+        setCompanyRuleDrafts((current) =>
+            current.filter((d) => d.companyId !== companyId),
+        );
+        setSelectedCompanies((current) =>
+            current.filter((id) => id !== companyId),
+        );
+    };
+
+    const patchCompanyRule = (
+        companyId: string,
+        patch: Partial<CompanyRuleDraft>,
+    ) => {
+        setCompanyRuleDrafts((current) =>
+            current.map((d) =>
+                d.companyId === companyId ? { ...d, ...patch } : d,
+            ),
+        );
+    };
 
     if (!token || expired) {
         return (
@@ -219,6 +333,18 @@ export const SettingsNewsletterPage = ({ token }: Props) => {
         );
     }
 
+    const customCompanyIds = new Set(
+        companyRuleDrafts.map((draft) => draft.companyId),
+    );
+    const gridCompanies = companies.filter(
+        (company) => !customCompanyIds.has(company.id),
+    );
+    const allGridSelected =
+        gridCompanies.length === 0 ||
+        gridCompanies.every((company) =>
+            selectedCompanies.includes(company.id),
+        );
+
     return (
         <NewsletterContainer>
             {saved ? (
@@ -273,6 +399,30 @@ export const SettingsNewsletterPage = ({ token }: Props) => {
                             />
                             Public salary offers only
                         </CheckboxRow>
+                        <DimensionLabel>Workplaces</DimensionLabel>
+                        {WORKPLACE_OPTIONS.map((option) => (
+                            <CheckboxRow key={option.value}>
+                                <input
+                                    type="checkbox"
+                                    checked={selectedWorkplaces.includes(
+                                        option.value,
+                                    )}
+                                    onChange={() =>
+                                        setSelectedWorkplaces((current) => {
+                                            const next = toggleValue(
+                                                current,
+                                                option.value,
+                                            );
+
+                                            return next.length
+                                                ? next
+                                                : [...DEFAULT_WORKPLACES];
+                                        })
+                                    }
+                                />
+                                {option.label}
+                            </CheckboxRow>
+                        ))}
                     </Fieldset>
                 </SettingsRow>
 
@@ -292,23 +442,24 @@ export const SettingsNewsletterPage = ({ token }: Props) => {
                             all
                         </LegendAll>
                     </Legend>
-                    <CategoryColumns>
-                        <CategoryColumn>
-                            {categories
-                                .filter(
-                                    (group) => group.name === ENGINEERING_GROUP,
-                                )
-                                .map(renderCategoryGroup)}
-                        </CategoryColumn>
-                        <CategoryColumn>
-                            {categories
-                                .filter(
-                                    (group) => group.name !== ENGINEERING_GROUP,
-                                )
-                                .map(renderCategoryGroup)}
-                        </CategoryColumn>
-                    </CategoryColumns>
+                    <CategoryColumnsPicker
+                        categories={categories}
+                        selected={selectedCategories}
+                        onChange={setSelectedCategories}
+                    />
                 </Fieldset>
+
+                <CompanyCustomFilters
+                    drafts={companyRuleDrafts}
+                    companies={companies}
+                    categories={categories}
+                    globalPublicSalaryOnly={publicSalaryOnly}
+                    globalWorkplaces={selectedWorkplaces}
+                    globalCategories={selectedCategories}
+                    onChange={patchCompanyRule}
+                    onRemove={removeCustomFilters}
+                    onExclude={excludeCompany}
+                />
 
                 <Fieldset>
                     <Legend>
@@ -316,10 +467,14 @@ export const SettingsNewsletterPage = ({ token }: Props) => {
                         <LegendAll>
                             <input
                                 type="checkbox"
-                                checked={selectedCompanies.length === 0}
+                                checked={allGridSelected}
                                 onChange={() => {
-                                    if (selectedCompanies.length > 0) {
-                                        setSelectedCompanies([]);
+                                    if (!allGridSelected) {
+                                        setSelectedCompanies(
+                                            gridCompanies.map(
+                                                (company) => company.id,
+                                            ),
+                                        );
                                     }
                                 }}
                             />
@@ -327,7 +482,7 @@ export const SettingsNewsletterPage = ({ token }: Props) => {
                         </LegendAll>
                     </Legend>
                     <CompanyGrid>
-                        {companies.map((company) => {
+                        {gridCompanies.map((company) => {
                             const selected = selectedCompanies.includes(
                                 company.id,
                             );
@@ -337,45 +492,52 @@ export const SettingsNewsletterPage = ({ token }: Props) => {
                                     key={company.id}
                                     $selected={selected}
                                 >
-                                    <input
-                                        type="checkbox"
-                                        checked={selected}
-                                        onChange={() =>
-                                            setSelectedCompanies((current) =>
-                                                toggleValue(
-                                                    current,
-                                                    company.id,
-                                                ),
-                                            )
+                                    <CompanyOptionMain>
+                                        <input
+                                            type="checkbox"
+                                            checked={selected}
+                                            onChange={() =>
+                                                onToggleCompany(company.id)
+                                            }
+                                        />
+                                        <CompanyOptionImage
+                                            company={{
+                                                id: company.id,
+                                                name: company.name,
+                                                logo: company.logo,
+                                            }}
+                                        />
+                                        <CompanyOptionTexts>
+                                            <CompanyOptionLink
+                                                to={createCompanyLink({
+                                                    companyId: company.id,
+                                                })}
+                                                onClick={(e) =>
+                                                    e.stopPropagation()
+                                                }
+                                            >
+                                                <CompanyOptionName>
+                                                    {company.name}
+                                                </CompanyOptionName>
+                                                <CompanyOptionOpenIcon />
+                                            </CompanyOptionLink>
+                                            <CompanyOptionMeta>
+                                                {company.jobPostsCount
+                                                    ? openJobsLabel(
+                                                          company.jobPostsCount,
+                                                      )
+                                                    : 'No open job posts'}
+                                            </CompanyOptionMeta>
+                                        </CompanyOptionTexts>
+                                    </CompanyOptionMain>
+                                    <CompanyOptionAction
+                                        type="button"
+                                        onClick={() =>
+                                            addCustomFilters(company.id)
                                         }
-                                    />
-                                    <CompanyOptionImage
-                                        company={{
-                                            id: company.id,
-                                            name: company.name,
-                                            logo: company.logo,
-                                        }}
-                                    />
-                                    <CompanyOptionTexts>
-                                        <CompanyOptionLink
-                                            to={createCompanyLink({
-                                                companyId: company.id,
-                                            })}
-                                            onClick={(e) => e.stopPropagation()}
-                                        >
-                                            <CompanyOptionName>
-                                                {company.name}
-                                            </CompanyOptionName>
-                                            <CompanyOptionOpenIcon />
-                                        </CompanyOptionLink>
-                                        <CompanyOptionMeta>
-                                            {company.jobPostsCount
-                                                ? openJobsLabel(
-                                                      company.jobPostsCount,
-                                                  )
-                                                : 'No open job posts'}
-                                        </CompanyOptionMeta>
-                                    </CompanyOptionTexts>
+                                    >
+                                        Customize
+                                    </CompanyOptionAction>
                                 </CompanyOption>
                             );
                         })}

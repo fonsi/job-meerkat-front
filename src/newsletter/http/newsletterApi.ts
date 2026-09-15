@@ -40,8 +40,9 @@ export const putNewsletterPreferences = (
         frequency: 'daily' | 'weekly';
         allowedCategorySlugs: string[] | null;
         allowedCompanyIds: string[] | null;
-        allowedWorkplaces: null;
+        allowedWorkplaces: NewsletterPreferences['allowedWorkplaces'];
         publicSalaryOnly: boolean;
+        companyRules: NewsletterPreferences['companyRules'];
     },
 ) =>
     apiRequest<
