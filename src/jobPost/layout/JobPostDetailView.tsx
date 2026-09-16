@@ -3,6 +3,8 @@
 import styled from 'styled-components';
 import { Link } from '@tanstack/react-router';
 import { JobPost, Workplace } from '@/jobPost/http/getJobPosts';
+import { JobPostDetailSections } from '@/jobPost/layout/JobPostDetailSections';
+import { JobPostOriginalApplyLink } from '@/jobPost/layout/JobPostOriginalApplyLink';
 import { SalaryRange } from '@/jobPost/layout/SalaryRange';
 import { CompanyImage } from '@/company/layout/CompanyImage';
 import { createCompanyLink } from '@/company/company';
@@ -10,7 +12,6 @@ import { Badge } from '@/shared/layout/Badge';
 import { Place } from '@/shared/image/icons/Place';
 import { Colors, Device } from '@/shared/styles/constants';
 import { Container } from '@/shared/layout/Container';
-import { JobPostOriginalApplyLink } from '@/jobPost/layout/JobPostOriginalApplyLink';
 import { NewsletterInlineSubscribe } from '@/newsletter/layout/NewsletterInlineSubscribe';
 
 type Props = {
@@ -225,6 +226,7 @@ export const JobPostDetailView = ({ jobPost }: Props) => (
                                 .split('T')[0]
                         }
                     </Published>
+                    <JobPostDetailSections jobPost={jobPost} />
                     {jobPost.closedAt != null ? (
                         <OriginalPostClosedText>
                             This job post is closed.

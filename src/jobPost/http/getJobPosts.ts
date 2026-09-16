@@ -27,6 +27,17 @@ export type SalaryRange = {
     period: Period;
 };
 
+export type JobPostDetails = {
+    summary?: string;
+    team?: string;
+    stack?: string[];
+    responsibilities?: string[];
+    requirements?: string[];
+    niceToHave?: string[];
+    benefits?: string[];
+    hiringProcess?: string[];
+};
+
 export type JobPost = {
     id: string;
     slug: string;
@@ -37,6 +48,7 @@ export type JobPost = {
         id: string;
         name: string;
         logo: CompanyLogo;
+        description?: string;
     };
     salaryRange: SalaryRange | null;
     workplace: Workplace;
@@ -45,6 +57,7 @@ export type JobPost = {
     /** When set, the job is closed and external / in-app apply links should not be used. */
     closedAt?: number | null;
     category: string;
+    details?: JobPostDetails;
 };
 
 export const getJobPosts = (): Promise<JobPost[]> => {
