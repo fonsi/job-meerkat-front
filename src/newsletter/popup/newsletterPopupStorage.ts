@@ -69,7 +69,9 @@ export const isNewsletterPopupExcludedPath = (pathname: string): boolean => {
         normalized === '/terms' ||
         normalized.startsWith('/terms/') ||
         normalized === '/privacy' ||
-        normalized.startsWith('/privacy/')
+        normalized.startsWith('/privacy/') ||
+        normalized === '/404' ||
+        normalized.startsWith('/404/')
     );
 };
 

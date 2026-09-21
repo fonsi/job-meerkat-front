@@ -1,18 +1,18 @@
 #!/bin/bash
 #
-# SPA note — unknown paths must still serve the app shell (same HTML as `/`).
-# Otherwise S3 returns its generic XML error for deep links and refreshes.
+# SPA note — unknown paths serve the prerendered branded 404 page (`404.html`).
+# Query strings + folder URLs: prerendered routes live under e.g. `job/index.html`
+# (URL path `/job/`). A request to `/job?slug=…` (no slash before `?`) often gets a
+# 302 to `/job/` whose Location omits the query — use `/job/?slug=…` in links
+# (see `src/router.tsx`). Do not use `trailingSlash: 'always'` with query URLs:
+# it can append `/` into the slug param. For legacy `/job?…` bookmarks, fix at
+# CloudFront (redirect with query preserved) if needed.
 #
-# Query strings + folder URLs: prerendered routes live under e.g. `job/index.html` (URL path
-# `/job/`). A request to `/job?slug=…` (no slash before `?`) often gets a 302 to `/job/` whose
-# Location omits the query — use `/job/?slug=…` in links (see `src/router.tsx`). Do not use
-# `trailingSlash: 'always'` with query URLs: it can append `/` into the slug param. For legacy
-# `/job?…` bookmarks, fix at CloudFront (redirect with query preserved) if needed.
-#
-# Configure one of:
-# - S3 static website hosting: set Error document to `index.html` or `404.html`
-#   (this build copies `index.html` → `404.html` so either name works).
-# - CloudFront: custom error responses for 403/404 → `/index.html` with HTTP 200.
+# Configure SPA fallback on S3 only (website hosting error document `404.html`).
+# This build writes a script-free `404.html` from the prerendered `/404/` page
+# so error documents are not hydrated as `/company/$id` (or similar) client routes.
+# Do not use CloudFront custom errors that map 403/404 → `/index.html` with HTTP 200:
+# those are distribution-wide and would replace `/jobpost/{slug}` Lambda 404s.
 #
 # Website hosting endpoint or CloudFront is required; the REST API endpoint does
 # not use the error document.
@@ -57,8 +57,6 @@ export AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
 export AWS_REGION=$AWS_REGION
 
 PUBLIC_DIR="./.output/public"
-if [ -f "${PUBLIC_DIR}/index.html" ]; then
-    cp "${PUBLIC_DIR}/index.html" "${PUBLIC_DIR}/404.html"
-fi
+node scripts/writeStatic404.js
 
 aws s3 sync "${PUBLIC_DIR}" "$WEB_BUCKET" --exclude "*.DS_Store" --delete

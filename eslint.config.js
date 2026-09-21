@@ -12,6 +12,7 @@ export default tseslint.config(
             '.output/**',
             'out/**',
             '.next/**',
+            '.serverless/**',
         ],
     },
     {

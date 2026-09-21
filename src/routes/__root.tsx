@@ -1,3 +1,4 @@
+import { type PropsWithChildren } from 'react';
 import {
     createRootRoute,
     HeadContent,
@@ -65,7 +66,7 @@ export const Route = createRootRoute({
     component: RootComponent,
 });
 
-function RootComponent() {
+function RootDocument({ children }: PropsWithChildren) {
     return (
         <html lang="en">
             <head>
@@ -100,14 +101,20 @@ function RootComponent() {
             <body>
                 <Page>
                     <Header />
-                    <Main>
-                        <Outlet />
-                    </Main>
+                    <Main>{children}</Main>
                     <Footer />
                     <NewsletterPopup />
                 </Page>
                 <Scripts />
             </body>
         </html>
+    );
+}
+
+function RootComponent() {
+    return (
+        <RootDocument>
+            <Outlet />
+        </RootDocument>
     );
 }

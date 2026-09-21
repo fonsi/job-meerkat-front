@@ -76,6 +76,7 @@ export default defineConfig(async ({ mode }) => {
         { path: '/job/' },
         { path: '/privacy/' },
         { path: '/terms/' },
+        { path: '/404/' },
         { path: '/newsletter/' },
         { path: '/newsletter/settings/' },
         { path: '/newsletter/confirm/' },

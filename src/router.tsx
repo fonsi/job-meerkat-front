@@ -7,11 +7,10 @@ export function getRouter() {
         scrollRestoration: true,
         // Prerendered static site: intent preload would re-run loaders (API) on hover for no gain.
         defaultPreload: false,
-        // In-app data fetching is only for `/job/?slug=…`. Other internal links use `reloadDocument`
-        // so the browser loads prerendered HTML from disk/CDN instead of SPA navigation + API loaders.
-        // Links use `/job/?slug=…` (slash before `?`) so S3 serves `job/index.html` without a
-        // redirect that drops the query. Use `preserve` — `always` appends `/` to the full URL
-        // and can put a trailing `/` into the last query value (e.g. `slug=foo/`).
+        // In-app data fetching is for `/jobpost/{slug}` and legacy `/job/?slug=…`.
+        // Other internal links use `reloadDocument` so the browser loads prerendered HTML
+        // from disk/CDN instead of SPA navigation + API loaders. Use `preserve` — `always`
+        // appends `/` to the full URL and can put a trailing `/` into query values.
         trailingSlash: 'preserve',
     });
 }

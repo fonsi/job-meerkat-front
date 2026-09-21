@@ -57,6 +57,8 @@ describe('buildJobPostingJsonLd', () => {
         expect(jsonLd).toMatchObject({
             '@type': 'JobPosting',
             title: 'Staff DevOps Engineer',
+            description:
+                'Staff DevOps Engineer at Phantom. Full-time · Remote — US, EU, UK. 200K–250K USD / year.',
             datePosted: '2026-07-15',
             validThrough: '2026-10-13',
             employmentType: 'FULL_TIME',

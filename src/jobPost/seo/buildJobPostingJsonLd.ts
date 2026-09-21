@@ -4,6 +4,7 @@ import {
     Period,
     Workplace,
 } from '@/jobPost/http/getJobPosts';
+import { jobMetaDescription } from '@/jobPost/seo/jobPostPageMeta';
 import { getSiteUrl } from '@/shared/environment/getSiteUrl';
 
 const employmentTypeMap: Record<JobType, string | null> = {
@@ -28,9 +29,7 @@ export const buildJobPostingJsonLd = (job: JobPost) => {
     const site = getSiteUrl();
     const url = `${site}/job/?slug=${encodeURIComponent(job.slug)}`;
     const employmentType = employmentTypeMap[job.type];
-    const description = job.company?.name
-        ? `${job.title} at ${job.company.name}. Remote job on Jobmeerkat with salary and workplace information.`
-        : `${job.title}. Remote job on Jobmeerkat with salary and workplace information.`;
+    const description = jobMetaDescription(job);
 
     const jsonLd: Record<string, unknown> = {
         '@context': 'https://schema.org/',

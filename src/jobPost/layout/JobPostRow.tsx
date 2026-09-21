@@ -2,13 +2,14 @@
 
 import styled from 'styled-components';
 import { Link } from '@tanstack/react-router';
+import { Place } from '@/shared/image/icons/Place';
+import { Badge } from '@/shared/layout/Badge';
 import { Colors, Device } from '@/shared/styles/constants';
+import { createCompanyLink } from '@/company/company';
+import { CompanyImage } from '@/company/layout/CompanyImage';
+import { buildJobPostPath } from '@/jobPost/seo/jobPostPageMeta';
 import { JobPost } from '../http/getJobPosts';
 import { SalaryRange } from './SalaryRange';
-import { CompanyImage } from '@/company/layout/CompanyImage';
-import { Badge } from '@/shared/layout/Badge';
-import { Place } from '@/shared/image/icons/Place';
-import { createCompanyLink } from '@/company/company';
 
 type Props = {
     jobPost: JobPost;
@@ -36,7 +37,6 @@ const InfoContainer = styled.div`
     justify-content: space-between;
 `;
 
-/** Client navigation so `/job/?slug=` stays the only route that loads job data in-app. */
 const Title = styled(Link)`
     font-size: 18px;
     font-weight: 600;
@@ -126,7 +126,7 @@ export const JobPostRow = ({ jobPost, isFilteredOut = false }: Props) => (
             {jobPost.closedAt != null ? (
                 <TitleText>{jobPost.title}</TitleText>
             ) : (
-                <Title to={`/job/?slug=${encodeURIComponent(jobPost.slug)}`}>
+                <Title to={buildJobPostPath(jobPost.slug)}>
                     {jobPost.title}
                 </Title>
             )}

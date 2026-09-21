@@ -11,6 +11,7 @@ import {
     getCachedJobPosts,
 } from '@/shared/http/prerenderCache';
 import { Container } from '@/shared/layout/Container';
+import { NotFoundPage } from '@/shared/layout/NotFoundPage';
 
 async function loadCategoryPageData(slug: string) {
     const [categoryTree, jobPosts] = await Promise.all([
@@ -39,7 +40,13 @@ async function loadCategoryPageData(slug: string) {
 }
 
 export const Route = createFileRoute('/category/$slug')({
-    loader: async ({ params }) => loadCategoryPageData(params.slug),
+    loader: async ({ params }) => {
+        const data = await loadCategoryPageData(params.slug);
+        if (!data) throw notFound();
+
+        return data;
+    },
+    notFoundComponent: NotFoundPage,
     staleTime: Number.POSITIVE_INFINITY,
     head: ({ loaderData, params }) => {
         if (!loaderData) {
@@ -73,10 +80,6 @@ export const Route = createFileRoute('/category/$slug')({
 
 function CategoryRoute() {
     const data = Route.useLoaderData();
-
-    if (!data) {
-        throw notFound();
-    }
 
     return (
         <Container>

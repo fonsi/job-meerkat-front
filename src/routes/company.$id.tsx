@@ -15,6 +15,7 @@ import {
     getCachedJobPosts,
 } from '@/shared/http/prerenderCache';
 import { Container } from '@/shared/layout/Container';
+import { NotFoundPage } from '@/shared/layout/NotFoundPage';
 
 async function loadCompanyData(id: string) {
     const company = await getCachedCompanyDetail(id);
@@ -42,7 +43,13 @@ async function loadCompanyData(id: string) {
 }
 
 export const Route = createFileRoute('/company/$id')({
-    loader: async ({ params }) => loadCompanyData(params.id),
+    loader: async ({ params }) => {
+        const data = await loadCompanyData(params.id);
+        if (!data) throw notFound();
+
+        return data;
+    },
+    notFoundComponent: NotFoundPage,
     staleTime: Number.POSITIVE_INFINITY,
     head: ({ loaderData, params }) => {
         if (!loaderData) {
@@ -87,9 +94,6 @@ export const Route = createFileRoute('/company/$id')({
 
 function CompanyRoute() {
     const companyData = Route.useLoaderData();
-    if (!companyData) {
-        throw notFound();
-    }
 
     return (
         <Container>

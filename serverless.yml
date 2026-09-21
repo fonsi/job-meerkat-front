@@ -1,0 +1,35 @@
+service: jobmeerkat-web
+
+frameworkVersion: '4'
+
+# HTML origin for /jobpost/{slug}. CloudFront wiring is manual:
+# docs/cloudfront-jobpost.md. Deploy prints the Function URL.
+
+provider:
+    name: aws
+    runtime: nodejs24.x
+    region: ${env:AWS_REGION, 'eu-west-1'}
+    memorySize: 1024
+    timeout: 30
+    environment:
+        STAGE: ${sls:stage}
+        NEXT_PUBLIC_API_ENDPOINT: ${env:NEXT_PUBLIC_API_ENDPOINT}
+        NEXT_PUBLIC_SITE_URL: ${env:NEXT_PUBLIC_SITE_URL}
+        NEXT_PUBLIC_APP_ENV: ${env:NEXT_PUBLIC_APP_ENV}
+        NEXT_PUBLIC_GA_MEASUREMENT_ID: ${env:NEXT_PUBLIC_GA_MEASUREMENT_ID, ''}
+        NEXT_PUBLIC_ADSENSE_ID: ${env:NEXT_PUBLIC_ADSENSE_ID, ''}
+        UMAMI_ID: ${env:UMAMI_ID, ''}
+
+build:
+    esbuild:
+        bundle: true
+        minify: false
+        sourcemap: false
+        format: esm
+        configFile: ./esbuild.ssr.mjs
+
+functions:
+    jobPostPage:
+        handler: src/ssr/jobPostHandler.handler
+        description: SSR HTML for /jobpost/{slug}
+        url: true

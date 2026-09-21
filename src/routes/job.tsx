@@ -1,42 +1,22 @@
-import { notFound } from '@tanstack/react-router';
 import { createFileRoute } from '@tanstack/react-router';
 import { JobPostDetailView } from '@/jobPost/layout/JobPostDetailView';
-import { getJobPostBySlug, type JobPost } from '@/jobPost/http/getJobPosts';
+import { loadJobPostBySlug } from '@/jobPost/loadJobPostBySlug';
 import { buildJobPostingJsonLd } from '@/jobPost/seo/buildJobPostingJsonLd';
+import {
+    buildJobPostSearchUrl,
+    jobMetaDescription,
+    jobMetaTitle,
+    jobPostRobotsContent,
+    normalizeSlugParam,
+} from '@/jobPost/seo/jobPostPageMeta';
 import { getSiteUrl } from '@/shared/environment/getSiteUrl';
 import { isProd } from '@/shared/environment/isProd';
-import { ApiRequestError } from '@/shared/http/apiRequestError';
 import { Container } from '@/shared/layout/Container';
 import { NotFoundPage } from '@/shared/layout/NotFoundPage';
 
 type JobSearch = {
     slug?: string;
 };
-
-/** `trailingSlash: 'always'` can append `/` after the query string; it may end up in `slug`. */
-function normalizeSlugParam(raw: string): string {
-    return raw.replace(/\/+$/, '').trim();
-}
-
-function jobMetaDescription(job: JobPost): string {
-    const company = job.company?.name;
-    const role = job.title;
-    if (company) {
-        return `${role} at ${company}. Remote job on Jobmeerkat with salary and workplace information.`;
-    }
-    return `${role}. Remote job on Jobmeerkat with salary and workplace information.`;
-}
-
-async function loadJobPostBySlug(slug: string) {
-    try {
-        return await getJobPostBySlug(slug);
-    } catch (error) {
-        if (error instanceof ApiRequestError && error.status === 404) {
-            throw notFound();
-        }
-        throw error;
-    }
-}
 
 function JobDetailPending() {
     return (
@@ -93,7 +73,7 @@ export const Route = createFileRoute('/job')({
             };
         }
 
-        const canonical = `${site}/job/?slug=${encodeURIComponent(slug)}`;
+        const canonical = buildJobPostSearchUrl(site, slug);
 
         // Only use loaderData when it matches this URL — avoids stale title/description after
         // navigating between jobs on the same `/job` route.
@@ -107,10 +87,8 @@ export const Route = createFileRoute('/job')({
                 ? jobMetaDescription(job)
                 : 'Explore this remote job post on Jobmeerkat with salary and workplace information.';
 
-        const title = `${job?.title ?? 'Job'} | Jobmeerkat`;
-        const isClosed = job?.closedAt != null;
-        const robots =
-            !isProd || isClosed ? 'noindex,nofollow' : 'index,follow';
+        const title = job != null ? jobMetaTitle(job) : 'Job | Jobmeerkat';
+        const robots = jobPostRobotsContent(job?.closedAt != null);
 
         return {
             meta: [

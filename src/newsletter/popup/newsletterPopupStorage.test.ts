@@ -76,6 +76,8 @@ describe('newsletterPopupStorage', () => {
         '/terms/',
         '/privacy',
         '/privacy/',
+        '/404',
+        '/404/',
     ])('excludes path %s', (pathname) => {
         expect(isNewsletterPopupExcludedPath(pathname)).toBe(true);
         expect(shouldShowNewsletterPopup(pathname)).toBe(false);
