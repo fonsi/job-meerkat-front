@@ -1,10 +1,10 @@
 # CloudFront: `/jobpost/{slug}` HTML origin
 
-The static site stays on S3. Job HTML is rendered by the `jobPostPage` Lambda Function URL in eu-west-1 (`npm run deploy:ssr:prod` / `deploy:prod`). Wire that URL into the existing distribution by hand.
+The static site stays on S3. Job HTML is rendered by the `jobPostPage` Lambda Function URL in eu-west-1 (`npm run deploy:ssr:prod`). The daily CI deploy does not publish this function. Wire that URL into the existing distribution by hand.
 
 ## After `serverless deploy`
 
-Copy the Function URL from the CLI output (`https://<id>.lambda-url.eu-west-1.on.aws/`). The AWS principal used for S3 sync also needs CloudFormation, Lambda, IAM, and Logs to deploy this stack.
+Copy the Function URL from the CLI output (`https://<id>.lambda-url.eu-west-1.on.aws/`). The principal that runs `deploy:ssr` needs CloudFormation, Lambda, IAM, and Logs. The S3 sync principal does not.
 
 ## Cache behavior
 
