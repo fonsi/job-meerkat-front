@@ -36,7 +36,18 @@ const CategoryGroupTitle = styled.li`
 const Category = styled.li<{ $isActive: boolean }>`
     display: flex;
     padding: 4px 0 4px 20px;
-    font-weight: ${(props) => (props.$isActive ? 900 : 400)};
+
+    a {
+        color: ${(props) =>
+            props.$isActive ? Colors.accent : Colors.lightGrey};
+        font-weight: ${(props) => (props.$isActive ? 700 : 400)};
+        transition: color 0.15s ease;
+
+        &:hover {
+            color: ${Colors.accent};
+            text-decoration: none;
+        }
+    }
 `;
 
 export const CategorySelector = ({ categoryTree, className }: Props) => {

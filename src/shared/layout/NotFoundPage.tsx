@@ -1,45 +1,50 @@
+'use client';
+
 import styled from 'styled-components';
 import { Link } from '@tanstack/react-router';
 import { Container } from '@/shared/layout/Container';
+import { PageHeader } from '@/shared/layout/PageHeader';
 import { Colors } from '@/shared/styles/constants';
 
 const Wrap = styled.div`
-    margin: 48px 8px;
+    margin-bottom: 48px;
     max-width: 560px;
 `;
 
-const Title = styled.h1`
-    font-size: 22px;
-    font-weight: 600;
-    margin: 0 0 12px;
-`;
-
-const Body = styled.p`
-    color: ${Colors.mediumGrey};
-    font-size: 15px;
-    line-height: 1.5;
-    margin: 0 0 20px;
-`;
-
 const HomeLink = styled(Link).attrs({ reloadDocument: true })`
-    color: ${Colors.brokenWhite};
+    background: ${Colors.accent};
+    border-radius: 2px;
+    color: ${Colors.brokenBlack};
+    display: inline-block;
     font-size: 15px;
-    font-weight: 600;
-    text-decoration: underline;
+    font-weight: 700;
+    margin-top: 8px;
+    padding: 14px 22px;
+    text-decoration: none;
+    transition:
+        transform 0.2s ease,
+        background-color 0.15s ease;
 
     &:hover {
-        color: ${Colors.mediumGrey};
+        background: ${Colors.lightGrey};
+        color: ${Colors.brokenBlack};
+        text-decoration: none;
+        transform: translateY(-2px);
+    }
+
+    &:focus-visible {
+        outline: 2px solid ${Colors.accent};
+        outline-offset: 3px;
     }
 `;
 
 export const NotFoundPage = () => (
     <Container>
         <Wrap>
-            <Title>Page not found</Title>
-            <Body>
-                This page does not exist or may have been removed. Check the URL
-                or return to the home page.
-            </Body>
+            <PageHeader
+                title="Page not found"
+                description="This page does not exist or may have been removed. Check the URL or return to the home page."
+            />
             <HomeLink to="/">Back to home</HomeLink>
         </Wrap>
     </Container>

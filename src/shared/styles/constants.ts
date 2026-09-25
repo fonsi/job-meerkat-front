@@ -2,10 +2,17 @@ export const Colors = {
     brokenBlack: '#111',
     brokenWhite: '#fefefe',
     darkGrey: '#222',
-    mediumGrey: '#666',
+    mediumGrey: '#999',
     lightGrey: '#ddd',
     white: '#fff',
     red: '#f33',
+    accent: '#D6FF3F',
+};
+
+/** Horizontal page inset — keep Header, Footer, Container, and heroes in sync. */
+export const PageGutter = {
+    sm: '16px',
+    lg: '24px',
 };
 
 const Size = {

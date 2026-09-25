@@ -3,6 +3,7 @@
 import styled from 'styled-components';
 import type { JobPost } from '../http/getJobPosts';
 import {
+    CategoryFilter,
     countJobsMatchingFilters,
     JobListFilters,
     SALARY_FILTER_OPTIONS,
@@ -10,10 +11,17 @@ import {
 } from '../jobListFilters';
 import { Colors } from '@/shared/styles/constants';
 
+type CategoryOption = {
+    value: CategoryFilter;
+    label: string;
+    count: number;
+};
+
 type Props = {
     filters: JobListFilters;
     jobPosts: JobPost[];
     onChange: (filters: JobListFilters) => void;
+    categoryOptions?: CategoryOption[];
     className?: string;
 };
 
@@ -29,10 +37,12 @@ const Group = styled.div`
 `;
 
 const GroupTitle = styled.div`
-    color: ${Colors.brokenWhite};
-    font-size: 14px;
-    font-weight: 600;
-    margin: 0 0 10px;
+    color: ${Colors.lightGrey};
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    margin: 0 0 12px;
+    text-transform: uppercase;
 `;
 
 const BadgeRow = styled.div`
@@ -44,18 +54,25 @@ const BadgeRow = styled.div`
 const FilterBadge = styled.button<{ $selected: boolean }>`
     background: transparent;
     border: 1px solid
-        ${(props) => (props.$selected ? Colors.brokenWhite : Colors.mediumGrey)};
+        ${(props) => (props.$selected ? Colors.accent : Colors.mediumGrey)};
     border-radius: 999px;
-    color: ${(props) =>
-        props.$selected ? Colors.brokenWhite : Colors.lightGrey};
+    color: ${(props) => (props.$selected ? Colors.accent : Colors.lightGrey)};
     cursor: pointer;
     font-size: 12px;
-    font-weight: ${(props) => (props.$selected ? 600 : 400)};
+    font-weight: ${(props) => (props.$selected ? 700 : 400)};
     padding: 4px 10px;
+    transition:
+        border-color 0.15s ease,
+        color 0.15s ease;
 
     &:hover {
-        border-color: ${Colors.brokenWhite};
-        color: ${Colors.brokenWhite};
+        border-color: ${Colors.accent};
+        color: ${Colors.accent};
+    }
+
+    &:focus-visible {
+        outline: 2px solid ${Colors.accent};
+        outline-offset: 2px;
     }
 `;
 
@@ -63,10 +80,38 @@ export const JobListFiltersControls = ({
     filters,
     jobPosts,
     onChange,
+    categoryOptions,
     className,
 }: Props) => {
     return (
         <Container className={className}>
+            {categoryOptions && categoryOptions.length > 0 ? (
+                <Group>
+                    <GroupTitle>Filter by category</GroupTitle>
+                    <BadgeRow>
+                        {categoryOptions.map((option) => {
+                            const selected = filters.category === option.value;
+
+                            return (
+                                <FilterBadge
+                                    key={String(option.value)}
+                                    type="button"
+                                    $selected={selected}
+                                    aria-pressed={selected}
+                                    onClick={() =>
+                                        onChange({
+                                            ...filters,
+                                            category: option.value,
+                                        })
+                                    }
+                                >
+                                    {option.label} · {option.count}
+                                </FilterBadge>
+                            );
+                        })}
+                    </BadgeRow>
+                </Group>
+            ) : null}
             <Group>
                 <GroupTitle>Salary</GroupTitle>
                 <BadgeRow>

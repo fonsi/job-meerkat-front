@@ -84,6 +84,7 @@ function CategoryRoute() {
     return (
         <Container>
             <CategoryPage
+                category={data.category}
                 jobPosts={data.sortedJobPosts}
                 categoryTree={data.categoryTree}
             />

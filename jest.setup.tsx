@@ -18,16 +18,15 @@ jest.mock('@tanstack/react-router', () => {
             to?: string;
             reloadDocument?: boolean;
         }
-    >(
-        (
-            { to, href, children, reloadDocument: _reloadDocument, ...rest },
-            ref,
-        ) => (
+    >(({ to, href, children, reloadDocument, ...rest }, ref) => {
+        void reloadDocument;
+
+        return (
             <a ref={ref} href={to ?? href} {...rest}>
                 {children}
             </a>
-        ),
-    );
+        );
+    });
 
     Link.displayName = 'Link';
 

@@ -8,6 +8,7 @@ import { CompanyDescription } from '@/company/layout/CompanyDescription';
 import { CompanyStats } from '@/company/layout/CompanyStats';
 import { JobPostsList } from '@/jobPost/layout/JobPostList';
 import { CompanyHeader } from '@/company/layout/CompanyHeader';
+import { delaGothicVarName } from '@/shared/font/constants';
 import { Colors, Device } from '@/shared/styles/constants';
 import { PublishPeriod, SortedJobPosts } from '@/jobPost/getSortedJobPosts';
 import { JobPostsPublishPeriod } from '@/jobPost/layout/JobPostsPublishPeriod';
@@ -27,15 +28,12 @@ type Props = {
 };
 
 const OpenPositions = styled.h2`
-    border-bottom: 1px solid ${Colors.brokenWhite};
-    font-size: 16px;
-    margin-bottom: 24px;
-    padding: 8px;
-
-    @media ${Device.tablet} {
-        font-size: 18px;
-        padding: 0 8px 16px;
-    }
+    font-family: var(${delaGothicVarName});
+    font-size: clamp(24px, 3.5vw, 32px);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    margin: 0 0 24px;
 `;
 
 const ContentLayout = styled.div`
@@ -43,7 +41,7 @@ const ContentLayout = styled.div`
     display: flex;
     flex-direction: column;
     gap: 24px;
-    padding: 0 8px 24px;
+    padding: 0 0 24px;
 
     @media ${Device.laptop} {
         flex-direction: row;
@@ -77,7 +75,7 @@ const DisabledContent = styled.div`
     display: flex;
     flex-direction: column;
     gap: 24px;
-    padding: 0 8px 48px;
+    padding: 0 0 48px;
 `;
 
 const StatusMessage = styled.p`
@@ -94,6 +92,13 @@ const StatusMessage = styled.p`
 const FiltersBar = styled.div`
     margin-bottom: 24px;
 `;
+
+const formatCategory = (category: string): string =>
+    category
+        .split(/[-_\s]+/)
+        .filter(Boolean)
+        .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+        .join(' ');
 
 export const CompanyHome = ({ company, openJobPosts }: Props) => {
     const [filters, setFilters] = useState<JobListFilters>(() =>
@@ -120,6 +125,24 @@ export const CompanyHome = ({ company, openJobPosts }: Props) => {
     const stats = getCompanyJobStats(flatJobPosts);
     const hasVisibleJobPosts =
         countJobsMatchingFilters(flatJobPosts, filters) > 0;
+    const categoryOptions = [
+        {
+            value: 'all' as const,
+            label: 'All',
+            count: countJobsMatchingFilters(flatJobPosts, {
+                ...filters,
+                category: 'all',
+            }),
+        },
+        ...stats.categories.map(({ category }) => ({
+            value: category,
+            label: formatCategory(category),
+            count: countJobsMatchingFilters(flatJobPosts, {
+                ...filters,
+                category,
+            }),
+        })),
+    ];
 
     return (
         <div>
@@ -129,14 +152,7 @@ export const CompanyHome = ({ company, openJobPosts }: Props) => {
                     {company.description ? (
                         <CompanyDescription description={company.description} />
                     ) : null}
-                    <CompanyStats
-                        stats={stats}
-                        filters={filters}
-                        jobPosts={flatJobPosts}
-                        onCategoryChange={(category) =>
-                            setFilters((current) => ({ ...current, category }))
-                        }
-                    />
+                    <CompanyStats stats={stats} />
                     <div>
                         <OpenPositions>Open positions</OpenPositions>
                         <FiltersBar>
@@ -144,6 +160,11 @@ export const CompanyHome = ({ company, openJobPosts }: Props) => {
                                 filters={filters}
                                 jobPosts={flatJobPosts}
                                 onChange={setFilters}
+                                categoryOptions={
+                                    stats.categories.length > 0
+                                        ? categoryOptions
+                                        : undefined
+                                }
                             />
                         </FiltersBar>
                         <JobPostsList>

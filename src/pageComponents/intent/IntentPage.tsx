@@ -27,7 +27,7 @@ type CompaniesProps = {
 type Props = JobsProps | CompaniesProps;
 
 const CompaniesWrap = styled.div`
-    padding: 0 8px 48px;
+    padding-bottom: 48px;
 `;
 
 export const IntentPage = (props: Props) => {

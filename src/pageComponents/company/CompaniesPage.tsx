@@ -6,19 +6,17 @@ import {
     isCompanyDisabled,
     sortCompaniesByName,
 } from '@/company/company';
-import { Device } from '@/shared/styles/constants';
 import { CompanyList } from '@/company/layout/CompanyList';
+import { PageHeader } from '@/shared/layout/PageHeader';
+import { delaGothicVarName } from '@/shared/font/constants';
+import { Device } from '@/shared/styles/constants';
 
 type Props = {
     companies: Company[];
 };
 
-const Container = styled.div`
-    margin: 48px 12px;
-
-    @media ${Device.laptopL} {
-        margin: 48px 0;
-    }
+const Page = styled.div`
+    margin-bottom: 48px;
 `;
 
 const Section = styled.section`
@@ -28,7 +26,9 @@ const Section = styled.section`
 `;
 
 const SectionTitle = styled.h2`
+    font-family: var(${delaGothicVarName});
     font-size: 20px;
+    font-weight: 400;
     margin: 0 0 24px;
 
     @media ${Device.tablet} {
@@ -45,7 +45,11 @@ export const CompaniesPage = ({ companies }: Props) => {
     });
 
     return (
-        <Container>
+        <Page>
+            <PageHeader
+                title="Companies"
+                description="Employers tracked on Jobmeerkat — browse open roles with public salaries when they publish pay."
+            />
             <Section>
                 <CompanyList companies={activeCompanies} />
             </Section>
@@ -59,6 +63,6 @@ export const CompaniesPage = ({ companies }: Props) => {
                     />
                 </Section>
             ) : null}
-        </Container>
+        </Page>
     );
 };

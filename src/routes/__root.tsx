@@ -11,7 +11,6 @@ import { Header } from '@/shared/layout/Header';
 import { Main } from '@/shared/layout/Main';
 import { NotFoundPage } from '@/shared/layout/NotFoundPage';
 import { Page } from '@/shared/layout/Page';
-import { getSiteUrl } from '@/shared/environment/getSiteUrl';
 import { isProd } from '@/shared/environment/isProd';
 import '@/styles/globals.css';
 import { CRITICAL_CSS } from '@/styles/criticalCss';
@@ -60,7 +59,6 @@ export const Route = createRootRoute({
                 rel: 'stylesheet',
                 href: 'https://fonts.googleapis.com/css2?family=Dela+Gothic+One&display=swap',
             },
-            { rel: 'canonical', href: getSiteUrl() },
         ],
     }),
     component: RootComponent,

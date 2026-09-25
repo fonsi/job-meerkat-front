@@ -125,9 +125,9 @@ const EmailInput = styled.input`
 `;
 
 const SubmitButton = styled.button`
-    background: ${Colors.white};
+    background: ${Colors.accent};
     border: none;
-    border-radius: 8px;
+    border-radius: 2px;
     color: ${Colors.brokenBlack};
     cursor: pointer;
     flex-shrink: 0;
@@ -207,11 +207,12 @@ const Benefits = styled.section`
 `;
 
 const BenefitsTitle = styled.h2`
-    color: ${Colors.white};
-    font-family: var(${delaGothicVarName});
-    font-size: 1.35rem;
-    font-weight: 400;
-    margin: 0 0 8px;
+    color: ${Colors.accent};
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    margin: 0 0 10px;
+    text-transform: uppercase;
 `;
 
 const BenefitsLead = styled.p`
@@ -245,9 +246,9 @@ const BenefitItem = styled.li`
 `;
 
 const BenefitLabel = styled.span`
-    color: ${Colors.white};
+    color: ${Colors.accent};
     font-size: 15px;
-    font-weight: 600;
+    font-weight: 700;
 `;
 
 const BenefitCopy = styled.span`

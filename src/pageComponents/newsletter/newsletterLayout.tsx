@@ -6,18 +6,23 @@ import { Company } from '@/company/company';
 import { CompanyImage } from '@/company/layout/CompanyImage';
 import { Container } from '@/shared/layout/Container';
 import { Colors, Device } from '@/shared/styles/constants';
+import { delaGothicVarName } from '@/shared/font/constants';
 import { OpenInNew } from '@/shared/image/icons/OpenInNew';
 
 export const NewsletterPageWrapper = styled.div`
     max-width: 48rem;
     margin: 0 auto;
-    padding: 2rem 1rem;
+    padding: 2rem 0 3rem;
 `;
 
 export const NewsletterTitle = styled.h1`
     color: ${Colors.white};
-    font-size: 2rem;
-    margin-bottom: 2.5rem;
+    font-family: var(${delaGothicVarName});
+    font-size: clamp(28px, 4vw, 40px);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    margin-bottom: 2rem;
     text-align: center;
 `;
 
@@ -26,7 +31,7 @@ export const SettingsHeader = styled.div`
     display: flex;
     gap: 16px;
     justify-content: space-between;
-    margin-bottom: 2.5rem;
+    margin-bottom: 2rem;
 `;
 
 export const SettingsTitleBlock = styled.div`
@@ -39,7 +44,11 @@ export const SettingsTitleBlock = styled.div`
 
 export const SettingsTitle = styled.h1`
     color: ${Colors.white};
-    font-size: 2rem;
+    font-family: var(${delaGothicVarName});
+    font-size: clamp(28px, 4vw, 40px);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
     margin: 0;
     text-align: left;
 `;

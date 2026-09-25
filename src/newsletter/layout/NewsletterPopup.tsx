@@ -165,7 +165,7 @@ const EmailInput = styled.input`
 `;
 
 const SubmitButton = styled.button`
-    background: ${Colors.white};
+    background: ${Colors.accent};
     border: none;
     border-radius: 8px;
     color: ${Colors.brokenBlack};

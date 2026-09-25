@@ -3,7 +3,7 @@
 import styled from 'styled-components';
 import { JobPost } from '../http/getJobPosts';
 import { JobPostRow } from './JobPostRow';
-import { Colors, Device } from '@/shared/styles/constants';
+import { Colors } from '@/shared/styles/constants';
 import { Calendar } from '@/shared/image/icons/Calendar';
 import { JobListFilters, matchesJobListFilters } from '../jobListFilters';
 
@@ -21,21 +21,19 @@ const PublishPeriod = styled.div<{ $hidden: boolean }>`
 
 const Title = styled.div`
     align-items: center;
-    background-color: ${Colors.brokenWhite};
-    color: ${Colors.darkGrey};
+    color: ${Colors.accent};
     display: flex;
-    font-size: 14px;
-    gap: 6px;
-    margin: 12px 0;
-    padding: 12px 8px;
-
-    @media ${Device.laptop} {
-        border-radius: 2px;
-    }
+    font-size: 12px;
+    font-weight: 700;
+    gap: 8px;
+    letter-spacing: 0.14em;
+    margin: 8px 0 16px;
+    text-transform: uppercase;
 
     svg {
-        height: 20px;
-        width: 20px;
+        flex-shrink: 0;
+        height: 16px;
+        width: 16px;
     }
 `;
 

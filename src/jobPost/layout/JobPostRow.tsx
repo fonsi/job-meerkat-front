@@ -23,7 +23,7 @@ const StyledJobPostRow = styled.li<{ $isFilteredOut: boolean }>`
     gap: 12px;
     justify-content: flex-start;
     min-height: 110px;
-    padding: 24px 8px;
+    padding: 24px 0;
 
     @media ${Device.tablet} {
         flex-direction: row;

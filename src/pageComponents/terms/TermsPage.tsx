@@ -2,20 +2,14 @@
 
 import styled from 'styled-components';
 import { Container } from '@/shared/layout/Container';
+import { PageHeader } from '@/shared/layout/PageHeader';
+import { Colors } from '@/shared/styles/constants';
 import { useEffect, useState } from 'react';
 
 const PageWrapper = styled.div`
-    max-width: 64rem;
     margin: 0 auto;
-    padding: 3rem 1rem;
-`;
-
-const Title = styled.h1`
-    font-size: 2.5rem;
-    font-weight: bold;
-    margin-bottom: 3rem;
-    text-align: center;
-    color: white;
+    max-width: 64rem;
+    padding-bottom: 3rem;
 `;
 
 const ContentWrapper = styled.div`
@@ -23,27 +17,28 @@ const ContentWrapper = styled.div`
 `;
 
 const Section = styled.section`
-    margin-bottom: 3rem;
+    margin-bottom: 2.5rem;
 `;
 
 const SectionTitle = styled.h2`
-    font-size: 1.5rem;
+    color: ${Colors.brokenWhite};
+    font-size: 1.25rem;
     font-weight: 600;
-    margin-bottom: 1rem;
-    color: white;
+    margin-bottom: 0.75rem;
 `;
 
 const SectionText = styled.p`
-    color: #e5e7eb;
-    line-height: 1.8;
-    font-size: 1.1rem;
+    color: ${Colors.lightGrey};
+    font-size: 1rem;
+    line-height: 1.7;
 `;
 
 const EmailLink = styled.a`
-    color: #e5e7eb;
+    color: ${Colors.lightGrey};
     text-decoration: underline;
+
     &:hover {
-        color: white;
+        color: ${Colors.accent};
     }
 `;
 
@@ -62,7 +57,7 @@ export const TermsPage = () => {
     return (
         <Container>
             <PageWrapper>
-                <Title>Terms and Conditions</Title>
+                <PageHeader align="center" title="Terms and Conditions" />
 
                 <ContentWrapper>
                     <Section>

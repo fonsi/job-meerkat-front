@@ -1,7 +1,9 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { getSortedJobPosts } from '@/jobPost/getSortedJobPosts';
 import { HomePage } from '@/pageComponents/home/HomePage';
-import { Container } from '@/shared/layout/Container';
+import { HOME_META } from '@/pageComponents/home/homeSeo';
+import { selectHomeContent } from '@/pageComponents/home/selectHomeContent';
+import { getSiteUrl } from '@/shared/environment/getSiteUrl';
+import { isProd } from '@/shared/environment/isProd';
 import {
     getCachedCategories,
     getCachedCompanies,
@@ -9,16 +11,20 @@ import {
 } from '@/shared/http/prerenderCache';
 
 async function loadHomeData() {
-    void getCachedCompanies();
-
-    const [jobPosts, categoryTree] = await Promise.all([
+    const [jobPosts, categoryTree, companies] = await Promise.all([
         getCachedJobPosts(),
         getCachedCategories(),
+        getCachedCompanies(),
     ]);
+    const { freshPicks, featuredCompanies } = selectHomeContent({
+        jobPosts,
+        companies,
+    });
 
     return {
-        sortedJobPosts: getSortedJobPosts(jobPosts),
         categoryTree,
+        freshPicks,
+        featuredCompanies,
     };
 }
 
@@ -26,15 +32,41 @@ export const Route = createFileRoute('/')({
     loader: () => loadHomeData(),
     // Static prerender: data comes from HTML; avoid client reloads refetching the API.
     staleTime: Number.POSITIVE_INFINITY,
+    head: () => {
+        const siteUrl = getSiteUrl().replace(/\/$/, '');
+        const canonical = `${siteUrl}/`;
+
+        return {
+            meta: [
+                { title: HOME_META.title },
+                { name: 'description', content: HOME_META.description },
+                {
+                    name: 'robots',
+                    content: isProd ? 'index,follow' : 'noindex,nofollow',
+                },
+                { property: 'og:title', content: HOME_META.title },
+                {
+                    property: 'og:description',
+                    content: HOME_META.description,
+                },
+                { property: 'og:url', content: canonical },
+                { property: 'og:type', content: 'website' },
+            ],
+            links: [{ rel: 'canonical', href: canonical }],
+        };
+    },
     component: HomeRoute,
 });
 
 function HomeRoute() {
-    const { sortedJobPosts, categoryTree } = Route.useLoaderData();
+    const { categoryTree, freshPicks, featuredCompanies } =
+        Route.useLoaderData();
 
     return (
-        <Container>
-            <HomePage jobPosts={sortedJobPosts} categoryTree={categoryTree} />
-        </Container>
+        <HomePage
+            categoryTree={categoryTree}
+            freshPicks={freshPicks}
+            featuredCompanies={featuredCompanies}
+        />
     );
 }

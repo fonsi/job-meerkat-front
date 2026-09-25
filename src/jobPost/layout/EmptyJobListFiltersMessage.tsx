@@ -8,7 +8,7 @@ const Message = styled.p`
     font-size: 14px;
     line-height: 1.5;
     margin: 8px 0 24px;
-    padding: 0 8px;
+    padding: 0;
 `;
 
 type Props = {

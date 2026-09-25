@@ -13,6 +13,7 @@ import { Place } from '@/shared/image/icons/Place';
 import { Colors, Device } from '@/shared/styles/constants';
 import { Container } from '@/shared/layout/Container';
 import { NewsletterInlineSubscribe } from '@/newsletter/layout/NewsletterInlineSubscribe';
+import { delaGothicVarName } from '@/shared/font/constants';
 
 type Props = {
     jobPost: JobPost;
@@ -29,10 +30,10 @@ const workplaceLabel = (w: Workplace): string => {
 };
 
 const JobPostDetailWrap = styled.div`
-    margin: 24px 8px;
+    margin: 40px 0 48px;
 
     @media ${Device.tablet} {
-        margin: 48px 8px;
+        margin-top: 48px;
     }
 `;
 
@@ -65,48 +66,36 @@ const Aside = styled.aside`
 `;
 
 const TopRow = styled.div`
-    align-items: flex-start;
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    justify-content: space-between;
+    gap: 10px;
     margin-bottom: 20px;
-
-    @media ${Device.tablet} {
-        align-items: flex-start;
-        flex-direction: row;
-        gap: 16px;
-    }
 `;
 
 const Title = styled.h1`
-    flex: 1;
-    font-size: 22px;
-    font-weight: 600;
-    line-height: 1.25;
+    font-family: var(${delaGothicVarName});
+    font-size: clamp(28px, 4vw, 40px);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    line-height: 1.15;
+    margin: 0;
     min-width: 0;
-
-    @media ${Device.tablet} {
-        font-size: 28px;
-    }
 `;
 
-const SalarySide = styled.div`
-    color: ${Colors.brokenWhite};
-    flex-shrink: 0;
-    text-align: left;
+const SalaryBlock = styled.div`
+    margin: 0;
+`;
 
-    @media ${Device.tablet} {
-        padding-top: 4px;
-        text-align: right;
-    }
+const NoSalary = styled.span`
+    color: ${Colors.mediumGrey};
+    font-size: 14px;
 `;
 
 const CompanyRow = styled.div`
     align-items: center;
     display: flex;
     gap: 16px;
-    margin-bottom: 16px;
+    margin-bottom: 20px;
 `;
 
 const CompanyNameLink = styled(Link).attrs({ reloadDocument: true })`
@@ -116,7 +105,13 @@ const CompanyNameLink = styled(Link).attrs({ reloadDocument: true })`
     text-decoration: none;
 
     &:hover {
-        text-decoration: underline;
+        color: ${Colors.accent};
+        text-decoration: none;
+    }
+
+    &:focus-visible {
+        outline: 2px solid ${Colors.accent};
+        outline-offset: 2px;
     }
 `;
 
@@ -150,19 +145,28 @@ const Published = styled.div`
 `;
 
 const ApplyButton = styled(JobPostOriginalApplyLink)`
-    background-color: ${Colors.darkGrey};
-    border-radius: 4px;
-    color: ${Colors.brokenWhite};
+    background: ${Colors.accent};
+    border-radius: 2px;
+    color: ${Colors.brokenBlack};
     display: inline-block;
     font-size: 15px;
-    font-weight: 600;
-    padding: 12px 20px;
+    font-weight: 700;
+    padding: 14px 22px;
     text-decoration: none;
-    transition: background-color 0.15s ease;
+    transition:
+        transform 0.2s ease,
+        background-color 0.15s ease;
 
     &:hover {
-        background-color: ${Colors.mediumGrey};
+        background: ${Colors.lightGrey};
+        color: ${Colors.brokenBlack};
         text-decoration: none;
+        transform: translateY(-2px);
+    }
+
+    &:focus-visible {
+        outline: 2px solid ${Colors.accent};
+        outline-offset: 3px;
     }
 `;
 
@@ -188,23 +192,17 @@ export const JobPostDetailView = ({ jobPost }: Props) => (
                         </CompanyNameLink>
                     </CompanyRow>
                     <TopRow>
-                        <Title>{jobPost.title}</Title>
-                        <SalarySide>
+                        <SalaryBlock>
                             {jobPost.salaryRange ? (
                                 <SalaryRange
                                     salaryRange={jobPost.salaryRange}
+                                    $size="lg"
                                 />
                             ) : (
-                                <span
-                                    style={{
-                                        color: Colors.mediumGrey,
-                                        fontSize: 14,
-                                    }}
-                                >
-                                    Salary not listed
-                                </span>
+                                <NoSalary>Salary not listed</NoSalary>
                             )}
-                        </SalarySide>
+                        </SalaryBlock>
+                        <Title>{jobPost.title}</Title>
                     </TopRow>
                     <MetaRow>
                         <Badge>{jobPost.category}</Badge>

@@ -11,47 +11,63 @@ import { Colors } from '../styles/constants';
 const StyledFooter = styled.footer`
     align-items: center;
     border-top: 1px solid ${Colors.mediumGrey};
-    font-size: 12px;
     display: flex;
+    font-size: 12px;
     justify-content: center;
-    padding: 8px 4px;
+    padding: 8px 0;
     width: 100%;
 `;
 
 const StyledMadeBy = styled.div`
+    line-height: 1.2;
     text-align: center;
 
-    @media (max-width: 768px) {
+    @media (max-width: 767px) {
         display: none;
     }
 `;
 
-const StyledLinks = styled.div`
-    display: flex;
-    gap: 16px;
+const StyledLinks = styled.nav`
     align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    line-height: 1;
+    min-height: 24px;
 `;
 
 const Separator = styled.span`
     color: ${Colors.mediumGrey};
+    line-height: 1;
 `;
 
 const FooterLink = styled(Link).attrs({ reloadDocument: true })`
+    align-items: center;
     color: ${Colors.lightGrey};
+    display: inline-flex;
+    line-height: 1;
     transition: color 0.2s ease-in;
 
-    :hover {
+    &:hover {
         color: ${Colors.white};
+    }
+
+    &:focus-visible {
+        outline: 2px solid ${Colors.accent};
+        outline-offset: 2px;
     }
 `;
 
 const StyledSocial = styled.div`
+    align-items: center;
     display: flex;
     gap: 12px;
+    min-height: 24px;
 
     svg {
-        width: 24px;
+        display: block;
         height: 24px;
+        width: 24px;
     }
 `;
 
@@ -60,8 +76,13 @@ const SocialLink = styled.a`
     display: flex;
     transition: color 0.2s ease-in;
 
-    :hover {
+    &:hover {
         color: ${Colors.lightGrey};
+    }
+
+    &:focus-visible {
+        outline: 2px solid ${Colors.accent};
+        outline-offset: 2px;
     }
 `;
 
@@ -69,10 +90,6 @@ const StyledContainer = styled(Container)`
     align-items: center;
     flex-direction: row;
     justify-content: space-between;
-
-    @media (max-width: 768px) {
-        justify-content: space-between;
-    }
 `;
 
 export const Footer = () => (
@@ -80,9 +97,9 @@ export const Footer = () => (
         <StyledContainer>
             <StyledLinks>
                 <FooterLink to="/newsletter/">Newsletter</FooterLink>
-                <Separator>|</Separator>
+                <Separator aria-hidden="true">|</Separator>
                 <FooterLink to="/terms/">Terms</FooterLink>
-                <Separator>|</Separator>
+                <Separator aria-hidden="true">|</Separator>
                 <FooterLink to="/privacy/">Privacy</FooterLink>
             </StyledLinks>
             <StyledMadeBy>

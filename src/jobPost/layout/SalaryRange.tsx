@@ -1,23 +1,32 @@
 import styled from 'styled-components';
+import { Colors } from '@/shared/styles/constants';
 import { SalaryRange as SalaryRangeType } from '../http/getJobPosts';
 
 type Props = {
     salaryRange: SalaryRangeType;
+    $size?: 'md' | 'lg';
 };
 
-const Container = styled.div`
+const Container = styled.div<{ $size: 'md' | 'lg' }>`
     align-items: baseline;
+    color: ${Colors.accent};
     display: flex;
+    flex-wrap: wrap;
+    font-size: ${({ $size }) => ($size === 'lg' ? '28px' : '20px')};
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
 `;
 
 const Text = styled.span`
-    font-weight: 300;
-    font-size: 12px;
+    font-size: 0.55em;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
 `;
 
 const Amount = styled.span`
-    font-size: 16px;
-    font-weight: 600;
+    font-weight: 700;
 `;
 
 const beautifySalary = (salary: number): string | number => {
@@ -57,19 +66,19 @@ export const SalaryRangeAmount = ({ salaryRange }: Props) => {
 
     return (
         <Amount>
-            {beautifySalary(salaryRange.min)} -{' '}
-            {beautifySalary(salaryRange.max)} {currency}
+            {beautifySalary(salaryRange.min)}–{beautifySalary(salaryRange.max)}{' '}
+            {currency}
         </Amount>
     );
 };
 
-export const SalaryRange = ({ salaryRange }: Props) => {
+export const SalaryRange = ({ salaryRange, $size = 'md' }: Props) => {
     if (!salaryRange || (!salaryRange.min && !salaryRange.max)) {
         return null;
     }
 
     return (
-        <Container>
+        <Container $size={$size}>
             <SalaryRangeAmount salaryRange={salaryRange} />
             <Text>&nbsp;/&nbsp;{salaryRange.period}</Text>
         </Container>

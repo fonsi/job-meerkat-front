@@ -5,6 +5,8 @@ export function getRouter() {
     return createRouter({
         routeTree,
         scrollRestoration: true,
+        // Scroll happens on <main>, not the window (Page uses overflow: hidden).
+        scrollToTopSelectors: ['main'],
         // Prerendered static site: intent preload would re-run loaders (API) on hover for no gain.
         defaultPreload: false,
         // In-app data fetching is for `/jobpost/{slug}` and legacy `/job/?slug=…`.

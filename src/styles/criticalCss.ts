@@ -49,16 +49,35 @@ body {
   font-size: 24px;
   justify-content: center;
   min-height: 54px;
-  padding: 8px;
+  padding: 8px 0;
+  width: 100%;
+}
+.app-shell > div:first-child > div {
+  box-sizing: border-box;
+  max-width: 1280px;
+  padding: 0 16px;
   width: 100%;
 }
 .app-shell > div:first-child nav {
-  font-size: 14px;
+  font-size: 13px;
 }
 .app-shell > div:first-child a svg {
-  height: 20px;
-  width: 186px;
-  max-width: min(186px, 70vw);
+  height: 28px;
+  width: 28px;
+}
+@media (min-width: 768px) {
+  .app-shell > div:first-child nav {
+    font-size: 14px;
+  }
+  .app-shell > div:first-child a svg {
+    height: 32px;
+    width: 32px;
+  }
+}
+@media (min-width: 1024px) {
+  .app-shell > div:first-child > div {
+    padding: 0 24px;
+  }
 }
 .app-shell > main {
   align-items: center;
@@ -78,8 +97,19 @@ body {
   display: flex;
   font-size: 12px;
   justify-content: center;
-  padding: 8px 4px;
+  padding: 8px 0;
   width: 100%;
+}
+.app-shell > footer > div {
+  box-sizing: border-box;
+  max-width: 1280px;
+  padding: 0 16px;
+  width: 100%;
+}
+@media (min-width: 1024px) {
+  .app-shell > footer > div {
+    padding: 0 24px;
+  }
 }
 .app-shell > footer svg {
   flex-shrink: 0;
@@ -89,50 +119,102 @@ body {
 [data-company-logo] {
   background-color: transparent;
   flex-shrink: 0;
-  height: var(--logo-w-sm);
-  min-height: var(--logo-w-sm);
-  min-width: var(--logo-w-sm);
+  height: var(--logo-h-sm);
   position: relative;
   width: var(--logo-w-sm);
 }
+[data-company-logo][data-logo-fit] {
+  max-width: var(--logo-w-sm);
+  min-width: var(--logo-h-sm);
+  width: max-content;
+}
 [data-company-logo] img {
+  display: block;
   height: 100%;
   object-fit: contain;
-  padding: 4px;
+  object-position: left center;
+  padding: 2px 0;
   width: 100%;
+}
+[data-company-logo][data-logo-fit] img {
+  max-width: 100%;
+  width: auto;
 }
 @media (min-width: 768px) {
   [data-company-logo] {
-    height: var(--logo-w-lg);
-    min-height: var(--logo-w-lg);
-    min-width: var(--logo-w-lg);
+    height: var(--logo-h-lg);
     width: var(--logo-w-lg);
+  }
+  [data-company-logo][data-logo-fit] {
+    max-width: var(--logo-w-lg);
+    min-width: var(--logo-h-lg);
+    width: max-content;
   }
 }
 .home-hero {
+  flex-shrink: 0;
+  margin: 0 0 64px;
+  padding: 40px 0 48px;
+  position: relative;
+  text-wrap: pretty;
+  width: 100%;
+}
+.home-hero::before {
+  background: radial-gradient(
+    ellipse 90% 100% at 28% 0%,
+    rgba(214, 255, 63, 0.14),
+    transparent 70%
+  );
+  content: '';
+  inset: 0;
+  pointer-events: none;
+  position: absolute;
+  z-index: 0;
+}
+@media (min-width: 768px) {
+  .home-hero {
+    margin-bottom: 80px;
+    padding: 56px 0 64px;
+  }
+}
+.home-hero h1 {
   align-items: center;
   display: flex;
   flex-direction: column;
-  margin: 48px 0;
-  min-height: 168px;
-  padding: 0 8px;
-  text-wrap: pretty;
-}
-.home-hero h1 {
   font-family: var(--dela-gothic-one);
-  font-size: 36px;
   font-weight: 400;
-  line-height: 1.2;
+  gap: 0;
+  letter-spacing: -0.03em;
+  line-height: 1;
   margin: 0;
-  min-height: 2.4em;
+}
+.home-hero h1 > span:first-child {
+  font-size: clamp(36px, 6.5vw, 64px);
+  letter-spacing: -0.035em;
+  line-height: 1.02;
+  margin-bottom: 0.28em;
+}
+.home-hero h1 > span:not(:first-child) {
+  font-size: clamp(20px, 3.4vw, 28px);
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+.home-hero p {
+  color: #999;
+  font-size: 17px;
+  font-weight: 300;
+  line-height: 1.55;
+  margin: 0 auto;
+  max-width: 34ch;
   text-align: center;
 }
-.home-hero h2 {
-  color: #666;
-  font-size: 18px;
-  font-weight: 300;
-  margin: 12px 0 0;
-  max-width: 500px;
-  text-align: center;
+@media (min-width: 1024px) {
+  .home-hero h1 {
+    align-items: flex-start;
+  }
+  .home-hero p {
+    margin: 0.55em 0 0;
+    text-align: left;
+  }
 }
 `.trim();

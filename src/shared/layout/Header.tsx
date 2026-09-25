@@ -1,9 +1,9 @@
 'use client';
 
 import styled from 'styled-components';
-import { Colors } from '@/shared/styles/constants';
+import { Colors, Device, PageGutter } from '@/shared/styles/constants';
 import { Link } from '@tanstack/react-router';
-import { LogoText } from '../image/LogoText';
+import { LogoMark } from '../image/LogoMark';
 
 const StyledDiv = styled.div`
     align-items: center;
@@ -14,36 +14,65 @@ const StyledDiv = styled.div`
     font-size: 24px;
     min-height: 54px;
     justify-content: center;
-    padding: 8px;
+    padding: 8px 0;
     width: 100%;
 `;
 
 const Container = styled.div`
-    display: flex;
     align-items: center;
+    box-sizing: border-box;
+    display: flex;
+    gap: 12px;
     justify-content: space-between;
     max-width: 1280px;
+    padding: 0 ${PageGutter.sm};
     width: 100%;
+
+    @media ${Device.laptop} {
+        padding: 0 ${PageGutter.lg};
+    }
 `;
 
 const LogoContainer = styled.div`
     display: flex;
+    flex-shrink: 0;
 `;
 
 const StyledLink = styled(Link).attrs({ reloadDocument: true })`
+    display: block;
     font-size: unset;
+    line-height: 0;
 
     svg {
-        height: 20px;
-        width: 186px;
+        display: block;
+        height: 28px;
+        width: 28px;
+    }
+
+    @media ${Device.tablet} {
+        svg {
+            height: 32px;
+            width: 32px;
+        }
+    }
+
+    &:focus-visible {
+        outline: 2px solid ${Colors.accent};
+        outline-offset: 3px;
     }
 `;
 
 const HeaderLinks = styled.nav`
     align-items: center;
     display: flex;
-    font-size: 14px;
-    gap: 20px;
+    flex-shrink: 0;
+    font-size: 13px;
+    gap: 14px;
+
+    @media ${Device.tablet} {
+        font-size: 14px;
+        gap: 20px;
+    }
 `;
 
 const NavLink = styled(Link).attrs({ reloadDocument: true })`
@@ -51,7 +80,12 @@ const NavLink = styled(Link).attrs({ reloadDocument: true })`
     transition: color 0.2s ease-in;
 
     &:hover {
-        color: ${Colors.lightGrey};
+        color: ${Colors.accent};
+    }
+
+    &:focus-visible {
+        outline: 2px solid ${Colors.accent};
+        outline-offset: 3px;
     }
 `;
 
@@ -59,8 +93,8 @@ export const Header = () => (
     <StyledDiv>
         <Container>
             <LogoContainer>
-                <StyledLink to="/">
-                    <LogoText fill="#fff" />
+                <StyledLink to="/" aria-label="Jobmeerkat home">
+                    <LogoMark />
                 </StyledLink>
             </LogoContainer>
             <HeaderLinks>
