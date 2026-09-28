@@ -90,5 +90,26 @@ export const buildJobPostPath = (slug: string): string =>
 export const buildJobPostPathUrl = (site: string, slug: string): string =>
     `${site}${buildJobPostPath(slug)}`;
 
+export const JOB_POST_OG_IMAGE_WIDTH = 1200;
+export const JOB_POST_OG_IMAGE_HEIGHT = 630;
+
+/** PNG at `{assets}/company/{companyId}/jobpost/{jobPostId}/og.png`. Host comes from the company logo URL. */
+export const jobPostOgImageUrl = (job: JobPost): string | null => {
+    const logoUrl = job.company?.logo?.url?.trim();
+    const companyId = job.company?.id?.trim();
+    const jobPostId = job.id?.trim();
+    if (!logoUrl || !companyId || !jobPostId) return null;
+    try {
+        const url = new URL(logoUrl);
+        url.pathname = `/company/${companyId}/jobpost/${jobPostId}/og.png`;
+        url.search = '';
+        url.hash = '';
+
+        return url.toString();
+    } catch {
+        return null;
+    }
+};
+
 export const jobPostRobotsContent = (isClosed: boolean): string =>
     !isProd || isClosed ? 'noindex,nofollow' : 'index,follow';

@@ -10,6 +10,7 @@ import {
     buildJobPostSearchUrl,
     jobMetaDescription,
     jobMetaTitle,
+    jobPostOgImageUrl,
     jobPostRobotsContent,
     normalizeSlugParam,
 } from './jobPostPageMeta';
@@ -51,6 +52,27 @@ describe('jobPostPageMeta', () => {
         expect(buildJobPostPathUrl('https://jobmeerkat.com', 'a b')).toBe(
             'https://jobmeerkat.com/jobpost/a%20b',
         );
+    });
+
+    it('builds the og image from the logo origin and job ids', () => {
+        expect(
+            jobPostOgImageUrl(
+                job({
+                    id: 'job-1',
+                    company: {
+                        id: 'co-1',
+                        name: 'Acme',
+                        logo: {
+                            url: 'https://assets.example.com/company/co-1/logo.png',
+                        },
+                    },
+                }),
+            ),
+        ).toBe('https://assets.example.com/company/co-1/jobpost/job-1/og.png');
+    });
+
+    it('omits the og image when the logo url is missing', () => {
+        expect(jobPostOgImageUrl(job())).toBeNull();
     });
 
     it('titles the role and company without claiming salary', () => {

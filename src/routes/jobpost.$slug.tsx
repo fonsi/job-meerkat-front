@@ -4,8 +4,11 @@ import { loadJobPostBySlug } from '@/jobPost/loadJobPostBySlug';
 import { buildJobPostingJsonLd } from '@/jobPost/seo/buildJobPostingJsonLd';
 import {
     buildJobPostPathUrl,
+    JOB_POST_OG_IMAGE_HEIGHT,
+    JOB_POST_OG_IMAGE_WIDTH,
     jobMetaDescription,
     jobMetaTitle,
+    jobPostOgImageUrl,
     jobPostRobotsContent,
     normalizeSlugParam,
 } from '@/jobPost/seo/jobPostPageMeta';
@@ -45,6 +48,7 @@ export const Route = createFileRoute('/jobpost/$slug')({
                 : 'Explore this remote job post on Jobmeerkat with salary and workplace information.';
         const title = job != null ? jobMetaTitle(job) : 'Job | Jobmeerkat';
         const robots = jobPostRobotsContent(job?.closedAt != null);
+        const ogImage = job != null ? jobPostOgImageUrl(job) : null;
 
         return {
             meta: [
@@ -55,6 +59,21 @@ export const Route = createFileRoute('/jobpost/$slug')({
                 { property: 'og:description', content: description },
                 { property: 'og:url', content: canonical },
                 { property: 'og:type', content: 'website' },
+                ...(ogImage != null
+                    ? [
+                          { property: 'og:image', content: ogImage },
+                          {
+                              property: 'og:image:width',
+                              content: String(JOB_POST_OG_IMAGE_WIDTH),
+                          },
+                          {
+                              property: 'og:image:height',
+                              content: String(JOB_POST_OG_IMAGE_HEIGHT),
+                          },
+                          { property: 'og:image:type', content: 'image/png' },
+                          { property: 'og:image:alt', content: title },
+                      ]
+                    : []),
                 ...(job != null
                     ? [
                           {

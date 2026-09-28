@@ -2,8 +2,11 @@ import { JobPostDetailView } from '@/jobPost/layout/JobPostDetailView';
 import { buildJobPostingJsonLd } from '@/jobPost/seo/buildJobPostingJsonLd';
 import {
     buildJobPostPathUrl,
+    JOB_POST_OG_IMAGE_HEIGHT,
+    JOB_POST_OG_IMAGE_WIDTH,
     jobMetaDescription,
     jobMetaTitle,
+    jobPostOgImageUrl,
     jobPostRobotsContent,
 } from '@/jobPost/seo/jobPostPageMeta';
 import { type JobPost } from '@/jobPost/http/getJobPosts';
@@ -55,6 +58,7 @@ export const JobPostSsrDocument = ({ job, slug }: Props) => {
         : jobPostRobotsContent(job.closedAt != null);
     const jsonLd =
         job != null ? { ...buildJobPostingJsonLd(job), url: canonical } : null;
+    const ogImage = job != null ? jobPostOgImageUrl(job) : null;
 
     return (
         <html lang="en">
@@ -72,6 +76,21 @@ export const JobPostSsrDocument = ({ job, slug }: Props) => {
                 <meta property="og:description" content={description} />
                 <meta property="og:url" content={canonical} />
                 <meta property="og:type" content="website" />
+                {ogImage != null ? (
+                    <>
+                        <meta property="og:image" content={ogImage} />
+                        <meta
+                            property="og:image:width"
+                            content={String(JOB_POST_OG_IMAGE_WIDTH)}
+                        />
+                        <meta
+                            property="og:image:height"
+                            content={String(JOB_POST_OG_IMAGE_HEIGHT)}
+                        />
+                        <meta property="og:image:type" content="image/png" />
+                        <meta property="og:image:alt" content={title} />
+                    </>
+                ) : null}
                 <link rel="canonical" href={canonical} />
                 <link rel="icon" href="/logo-black.svg" type="image/svg+xml" />
                 <link rel="preconnect" href="https://fonts.googleapis.com" />
