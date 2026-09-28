@@ -12,6 +12,7 @@ import { Main } from '@/shared/layout/Main';
 import { NotFoundPage } from '@/shared/layout/NotFoundPage';
 import { Page } from '@/shared/layout/Page';
 import { isProd } from '@/shared/environment/isProd';
+import { ogImageMeta, SITE_OG_IMAGE_URL } from '@/shared/seo/ogImage';
 import '@/styles/globals.css';
 import { CRITICAL_CSS } from '@/styles/criticalCss';
 
@@ -42,6 +43,7 @@ export const Route = createRootRoute({
                       },
                   ]
                 : []),
+            ...ogImageMeta(SITE_OG_IMAGE_URL, 'Jobmeerkat'),
         ],
         links: [
             {

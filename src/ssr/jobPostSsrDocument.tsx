@@ -11,6 +11,7 @@ import {
 } from '@/jobPost/seo/jobPostPageMeta';
 import { type JobPost } from '@/jobPost/http/getJobPosts';
 import { getSiteUrl } from '@/shared/environment/getSiteUrl';
+import { SITE_OG_IMAGE_URL } from '@/shared/seo/ogImage';
 import { isProd } from '@/shared/environment/isProd';
 import { Footer } from '@/shared/layout/Footer';
 import { Header } from '@/shared/layout/Header';
@@ -58,7 +59,8 @@ export const JobPostSsrDocument = ({ job, slug }: Props) => {
         : jobPostRobotsContent(job.closedAt != null);
     const jsonLd =
         job != null ? { ...buildJobPostingJsonLd(job), url: canonical } : null;
-    const ogImage = job != null ? jobPostOgImageUrl(job) : null;
+    const ogImage =
+        (job != null ? jobPostOgImageUrl(job) : null) ?? SITE_OG_IMAGE_URL;
 
     return (
         <html lang="en">

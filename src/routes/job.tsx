@@ -6,12 +6,14 @@ import {
     buildJobPostSearchUrl,
     jobMetaDescription,
     jobMetaTitle,
+    jobPostOgImageUrl,
     jobPostRobotsContent,
     normalizeSlugParam,
 } from '@/jobPost/seo/jobPostPageMeta';
 import { getSiteUrl } from '@/shared/environment/getSiteUrl';
 import { isProd } from '@/shared/environment/isProd';
 import { Container } from '@/shared/layout/Container';
+import { ogImageMeta } from '@/shared/seo/ogImage';
 import { NotFoundPage } from '@/shared/layout/NotFoundPage';
 
 type JobSearch = {
@@ -89,6 +91,7 @@ export const Route = createFileRoute('/job')({
 
         const title = job != null ? jobMetaTitle(job) : 'Job | Jobmeerkat';
         const robots = jobPostRobotsContent(job?.closedAt != null);
+        const ogImage = job != null ? jobPostOgImageUrl(job) : null;
 
         return {
             meta: [
@@ -99,6 +102,7 @@ export const Route = createFileRoute('/job')({
                 { property: 'og:description', content: description },
                 { property: 'og:url', content: canonical },
                 { property: 'og:type', content: 'website' },
+                ...(ogImage != null ? ogImageMeta(ogImage, title) : []),
                 ...(job != null
                     ? [{ 'script:ld+json': buildJobPostingJsonLd(job) }]
                     : []),
