@@ -81,7 +81,7 @@ const Card = styled.div<{ $featured?: boolean }>`
     }
 `;
 
-const CardLink = styled(Link)`
+const CardLink = styled.a`
     color: inherit;
     text-decoration: none;
 
@@ -230,7 +230,7 @@ const FreshPickCard = ({ job, featured }: FreshPickCardProps) => (
             <Card $featured={featured}>
                 <CardLink
                     data-card-link
-                    to={`/jobpost/${encodeURIComponent(job.slug)}`}
+                    href={`/jobpost/${encodeURIComponent(job.slug)}`}
                 >
                     <VisuallyHidden>{job.title}</VisuallyHidden>
                 </CardLink>

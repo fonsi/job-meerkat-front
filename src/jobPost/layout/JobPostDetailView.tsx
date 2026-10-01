@@ -1,7 +1,6 @@
 'use client';
 
 import styled from 'styled-components';
-import { Link } from '@tanstack/react-router';
 import { JobPost, Workplace } from '@/jobPost/http/getJobPosts';
 import { JobPostDetailSections } from '@/jobPost/layout/JobPostDetailSections';
 import { JobPostOriginalApplyLink } from '@/jobPost/layout/JobPostOriginalApplyLink';
@@ -98,7 +97,7 @@ const CompanyRow = styled.div`
     margin-bottom: 20px;
 `;
 
-const CompanyNameLink = styled(Link).attrs({ reloadDocument: true })`
+const CompanyNameLink = styled.a`
     color: inherit;
     font-size: 18px;
     font-weight: 600;
@@ -184,7 +183,7 @@ export const JobPostDetailView = ({ jobPost }: Props) => (
                     <CompanyRow>
                         <CompanyImage company={jobPost.company} $width={56} />
                         <CompanyNameLink
-                            to={createCompanyLink({
+                            href={createCompanyLink({
                                 companyId: jobPost.company.id,
                             })}
                         >

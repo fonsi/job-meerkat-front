@@ -1,12 +1,9 @@
 #!/bin/bash
 #
 # SPA note — unknown paths serve the prerendered branded 404 page (`404.html`).
-# Query strings + folder URLs: prerendered routes live under e.g. `job/index.html`
-# (URL path `/job/`). A request to `/job?slug=…` (no slash before `?`) often gets a
-# 302 to `/job/` whose Location omits the query — use `/job/?slug=…` in links
-# (see `src/router.tsx`). Do not use `trailingSlash: 'always'` with query URLs:
-# it can append `/` into the slug param. For legacy `/job?…` bookmarks, fix at
-# CloudFront (redirect with query preserved) if needed.
+# `/job/?slug=` redirects to `/jobpost/{slug}` (full document load). A request to
+# `/job?slug=…` (no slash before `?`) often 302s to `/job/` and drops the query.
+# Do not use `trailingSlash: 'always'` with query URLs.
 #
 # Configure SPA fallback on S3 only (website hosting error document `404.html`).
 # This build writes a script-free `404.html` from the prerendered `/404/` page

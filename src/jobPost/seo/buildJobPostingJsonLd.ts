@@ -4,7 +4,10 @@ import {
     Period,
     Workplace,
 } from '@/jobPost/http/getJobPosts';
-import { jobMetaDescription } from '@/jobPost/seo/jobPostPageMeta';
+import {
+    buildJobPostPathUrl,
+    jobMetaDescription,
+} from '@/jobPost/seo/jobPostPageMeta';
 import { getSiteUrl } from '@/shared/environment/getSiteUrl';
 
 const employmentTypeMap: Record<JobType, string | null> = {
@@ -27,7 +30,7 @@ const toIsoDate = (ms: number) => new Date(ms).toISOString().slice(0, 10);
 /** Google JobPosting JSON-LD for a job detail page. */
 export const buildJobPostingJsonLd = (job: JobPost) => {
     const site = getSiteUrl();
-    const url = `${site}/job/?slug=${encodeURIComponent(job.slug)}`;
+    const url = buildJobPostPathUrl(site, job.slug);
     const employmentType = employmentTypeMap[job.type];
     const description = jobMetaDescription(job);
 

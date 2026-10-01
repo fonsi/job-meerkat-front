@@ -10,14 +10,7 @@ const OUTPUT_FILE = 'sitemap.xml';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
 
-const staticUrls = [
-    '/',
-    '/companies/',
-    '/job/',
-    '/newsletter/',
-    '/privacy/',
-    '/terms/',
-];
+const staticUrls = ['/', '/companies/', '/newsletter/', '/privacy/', '/terms/'];
 
 const escapeXml = (input) =>
     input
@@ -63,7 +56,7 @@ const main = () => {
         readSitemapSources();
 
     const activeJobUrls = jobSlugs.map(
-        (slug) => `/job/?slug=${encodeURIComponent(slug)}`,
+        (slug) => `/jobpost/${encodeURIComponent(slug)}`,
     );
 
     const dynamicUrls = [

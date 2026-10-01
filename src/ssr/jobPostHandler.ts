@@ -1,5 +1,5 @@
-import { getJobPostBySlug, type JobPost } from '@/jobPost/http/getJobPosts';
-import { ApiRequestError } from '@/shared/http/apiRequestError';
+import { type JobPost } from '@/jobPost/http/getJobPosts';
+import { getJobPostPageFromCache } from '@/ssr/getJobPostPageFromCache';
 import {
     getHttpMethodFromFunctionUrlEvent,
     getRawPathFromFunctionUrlEvent,
@@ -20,7 +20,7 @@ export type JobPostLambdaResponse = {
 };
 
 export type JobPostHandlerDeps = {
-    getJobPostBySlug: (slug: string) => Promise<JobPost>;
+    loadJobPost: (slug: string) => Promise<JobPost | null>;
 };
 
 const htmlResponse = (
@@ -35,20 +35,6 @@ const htmlResponse = (
     },
     body,
 });
-
-const loadJobPost = async (
-    slug: string,
-    getBySlug: JobPostHandlerDeps['getJobPostBySlug'],
-): Promise<JobPost | null> => {
-    try {
-        return await getBySlug(slug);
-    } catch (error) {
-        if (error instanceof ApiRequestError && error.status === 404) {
-            return null;
-        }
-        throw error;
-    }
-};
 
 export const createJobPostHandler =
     (deps: JobPostHandlerDeps) =>
@@ -70,10 +56,7 @@ export const createJobPostHandler =
         );
 
         try {
-            const job =
-                slug == null
-                    ? null
-                    : await loadJobPost(slug, deps.getJobPostBySlug);
+            const job = slug == null ? null : await deps.loadJobPost(slug);
             const body = renderJobPostHtml({ job, slug });
             const notFound = job == null;
 
@@ -94,4 +77,6 @@ export const createJobPostHandler =
         }
     };
 
-export const handler = createJobPostHandler({ getJobPostBySlug });
+export const handler = createJobPostHandler({
+    loadJobPost: getJobPostPageFromCache,
+});

@@ -1,7 +1,6 @@
 'use client';
 
 import styled from 'styled-components';
-import { Link } from '@tanstack/react-router';
 import { Container } from '@/shared/layout/Container';
 import { PageHeader } from '@/shared/layout/PageHeader';
 import { Colors } from '@/shared/styles/constants';
@@ -11,7 +10,7 @@ const Wrap = styled.div`
     max-width: 560px;
 `;
 
-const HomeLink = styled(Link).attrs({ reloadDocument: true })`
+const HomeLink = styled.a`
     background: ${Colors.accent};
     border-radius: 2px;
     color: ${Colors.brokenBlack};
@@ -45,7 +44,7 @@ export const NotFoundPage = () => (
                 title="Page not found"
                 description="This page does not exist or may have been removed. Check the URL or return to the home page."
             />
-            <HomeLink to="/">Back to home</HomeLink>
+            <HomeLink href="/">Back to home</HomeLink>
         </Wrap>
     </Container>
 );

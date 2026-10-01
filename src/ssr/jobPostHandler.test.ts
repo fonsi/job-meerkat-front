@@ -1,7 +1,6 @@
 /**
  * @jest-environment node
  */
-import { ApiRequestError } from '@/shared/http/apiRequestError';
 import { createJobPostHandler } from '@/ssr/jobPostHandler';
 import { renderJobPostHtml } from '@/ssr/renderJobPostHtml';
 import type { JobPost } from '@/jobPost/http/getJobPosts';
@@ -14,30 +13,6 @@ jest.mock('@/shared/environment/isProd', () => ({
     isProd: true,
 }));
 
-jest.mock('@/jobPost/http/getJobPosts', () => ({
-    JobType: {
-        FullTime: 'fullTime',
-        PartTime: 'partTime',
-        Contract: 'contract',
-        Unknown: 'unknown',
-    },
-    Period: {
-        Year: 'year',
-        Month: 'month',
-        Week: 'week',
-        Day: 'day',
-        Hour: 'hour',
-    },
-    Workplace: {
-        Remote: 'remote',
-        OnSite: 'onSite',
-        Hybrid: 'hybrid',
-        Unknown: 'unknown',
-    },
-    getJobPostBySlug: jest.fn(),
-    getJobPosts: jest.fn(),
-}));
-
 jest.mock('@/shared/http/apiRequest', () => ({
     apiRequest: jest.fn(),
     buildApiRequestUrl: (path: string) => path,
@@ -48,6 +23,10 @@ jest.mock('@/shared/http/apiRequest', () => ({
         PUT: 'put',
         DELETE: 'delete',
     },
+}));
+
+jest.mock('@/ssr/getJobPostPageFromCache', () => ({
+    getJobPostPageFromCache: jest.fn(),
 }));
 
 const fixtureJob = {
@@ -119,7 +98,7 @@ describe('renderJobPostHtml', () => {
 describe('createJobPostHandler', () => {
     it('returns 200 HTML for a found job', async () => {
         const handler = createJobPostHandler({
-            getJobPostBySlug: async () => fixtureJob,
+            loadJobPost: async () => fixtureJob,
         });
         const response = await handler({
             rawPath: '/jobpost/staff-devops-phantom',
@@ -133,11 +112,9 @@ describe('createJobPostHandler', () => {
         expect(response.body).toContain('Staff DevOps Engineer');
     });
 
-    it('returns 404 noindex HTML when the API 404s', async () => {
+    it('returns 404 noindex HTML when the job is missing from cache', async () => {
         const handler = createJobPostHandler({
-            getJobPostBySlug: async () => {
-                throw new ApiRequestError('missing', 404);
-            },
+            loadJobPost: async () => null,
         });
         const response = await handler({
             rawPath: '/jobpost/missing-role',
@@ -153,14 +130,14 @@ describe('createJobPostHandler', () => {
     });
 
     it('returns 404 HTML when the path has no slug', async () => {
-        const getJobPostBySlug = jest.fn();
-        const handler = createJobPostHandler({ getJobPostBySlug });
+        const loadJobPost = jest.fn();
+        const handler = createJobPostHandler({ loadJobPost });
         const response = await handler({
             rawPath: '/jobpost/',
             requestContext: { http: { method: 'GET' } },
         });
 
-        expect(getJobPostBySlug).not.toHaveBeenCalled();
+        expect(loadJobPost).not.toHaveBeenCalled();
         expect(response.statusCode).toBe(404);
         expect(response.body).toContain('Page not found');
     });

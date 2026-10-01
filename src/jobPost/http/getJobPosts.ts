@@ -68,12 +68,3 @@ export const getJobPosts = (): Promise<JobPost[]> => {
         throw error;
     });
 };
-
-export const getJobPostBySlug = (slug: string): Promise<JobPost> => {
-    return apiRequest<JobPost, void>({
-        path: `/jobpost/${encodeURIComponent(slug)}`,
-    }).catch((error) => {
-        console.error('getJobPostBySlug error:', error);
-        throw error;
-    });
-};

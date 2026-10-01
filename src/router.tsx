@@ -9,7 +9,9 @@ export function getRouter() {
         scrollToTopSelectors: ['main'],
         // Prerendered static site: intent preload would re-run loaders (API) on hover for no gain.
         defaultPreload: false,
-        // In-app data fetching is for `/jobpost/{slug}` and legacy `/job/?slug=…`.
+        // Chrome nav and job pages use full document loads (`<a href>`), so Back
+        // restores a real previous document instead of a soft SPA route.
+        // Job pages are full document loads (`/jobpost/{slug}` → SSR Lambda).
         // Other internal links use `reloadDocument` so the browser loads prerendered HTML
         // from disk/CDN instead of SPA navigation + API loaders. Use `preserve` — `always`
         // appends `/` to the full URL and can put a trailing `/` into query values.

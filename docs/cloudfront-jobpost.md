@@ -31,6 +31,8 @@ CloudFront custom error responses are distribution-wide. If 403/404 are mapped t
 
 Do **not** use those custom errors once this origin returns 404. Keep the SPA fallback on S3 only (website hosting error document `404.html`, the prerendered branded page) or a CloudFront Function on the default (`*`) behavior. Leave `jobpost*` alone so the Lambda status and HTML pass through.
 
-## Trial
+## Job JSON
 
-Internal job links go to `/jobpost/{slug}`. Keep sitemap, JSON-LD, and `/job/?slug=` canonicals until crawlers look right. Then switch those and add a 301 if you want.
+The Lambda reads `jobpost/{slug}.json` from the private `${stage}-job-post-cache` bucket with `GetObject`. It does not call the API. Canonicals, the sitemap, and JSON-LD use `/jobpost/{slug}`.
+
+`/job/?slug=` redirects to `/jobpost/{slug}`. A CloudFront Function can 301 that query URL before it hits S3 if crawlers still request it.

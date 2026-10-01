@@ -2,7 +2,6 @@
 
 import styled from 'styled-components';
 import { Colors, Device, PageGutter } from '@/shared/styles/constants';
-import { Link } from '@tanstack/react-router';
 import { LogoMark } from '../image/LogoMark';
 
 const StyledDiv = styled.div`
@@ -38,7 +37,7 @@ const LogoContainer = styled.div`
     flex-shrink: 0;
 `;
 
-const StyledLink = styled(Link).attrs({ reloadDocument: true })`
+const StyledLink = styled.a`
     display: block;
     font-size: unset;
     line-height: 0;
@@ -75,12 +74,14 @@ const HeaderLinks = styled.nav`
     }
 `;
 
-const NavLink = styled(Link).attrs({ reloadDocument: true })`
+const NavLink = styled.a`
     color: ${Colors.brokenWhite};
+    text-decoration: none;
     transition: color 0.2s ease-in;
 
     &:hover {
         color: ${Colors.accent};
+        text-decoration: none;
     }
 
     &:focus-visible {
@@ -93,13 +94,13 @@ export const Header = () => (
     <StyledDiv>
         <Container>
             <LogoContainer>
-                <StyledLink to="/" aria-label="Jobmeerkat home">
+                <StyledLink href="/" aria-label="Jobmeerkat home">
                     <LogoMark />
                 </StyledLink>
             </LogoContainer>
             <HeaderLinks>
-                <NavLink to="/companies/">Companies</NavLink>
-                <NavLink to="/newsletter/">Newsletter</NavLink>
+                <NavLink href="/companies/">Companies</NavLink>
+                <NavLink href="/newsletter/">Newsletter</NavLink>
             </HeaderLinks>
         </Container>
     </StyledDiv>

@@ -1,6 +1,5 @@
 'use client';
 
-import { Link } from '@tanstack/react-router';
 import styled from 'styled-components';
 import { X } from '../image/icons/X';
 import { Threads } from '../image/icons/Threads';
@@ -41,15 +40,17 @@ const Separator = styled.span`
     line-height: 1;
 `;
 
-const FooterLink = styled(Link).attrs({ reloadDocument: true })`
+const FooterLink = styled.a`
     align-items: center;
     color: ${Colors.lightGrey};
     display: inline-flex;
     line-height: 1;
+    text-decoration: none;
     transition: color 0.2s ease-in;
 
     &:hover {
         color: ${Colors.white};
+        text-decoration: none;
     }
 
     &:focus-visible {
@@ -96,11 +97,11 @@ export const Footer = () => (
     <StyledFooter>
         <StyledContainer>
             <StyledLinks>
-                <FooterLink to="/newsletter/">Newsletter</FooterLink>
+                <FooterLink href="/newsletter/">Newsletter</FooterLink>
                 <Separator aria-hidden="true">|</Separator>
-                <FooterLink to="/terms/">Terms</FooterLink>
+                <FooterLink href="/terms/">Terms</FooterLink>
                 <Separator aria-hidden="true">|</Separator>
-                <FooterLink to="/privacy/">Privacy</FooterLink>
+                <FooterLink href="/privacy/">Privacy</FooterLink>
             </StyledLinks>
             <StyledMadeBy>
                 Made with love by{' '}

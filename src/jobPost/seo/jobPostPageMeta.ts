@@ -81,9 +81,6 @@ export const jobMetaDescription = (job: JobPost): string => {
     return `${clauses.join('. ')}.`;
 };
 
-export const buildJobPostSearchUrl = (site: string, slug: string): string =>
-    `${site}/job/?slug=${encodeURIComponent(slug)}`;
-
 export const buildJobPostPath = (slug: string): string =>
     `/jobpost/${encodeURIComponent(slug)}`;
 

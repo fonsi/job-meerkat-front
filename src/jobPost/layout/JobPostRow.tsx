@@ -37,9 +37,15 @@ const InfoContainer = styled.div`
     justify-content: space-between;
 `;
 
-const Title = styled(Link)`
+const Title = styled.a`
+    color: inherit;
     font-size: 18px;
     font-weight: 600;
+    text-decoration: none;
+
+    &:hover {
+        text-decoration: underline;
+    }
 `;
 
 const TitleText = styled.span`
@@ -126,7 +132,7 @@ export const JobPostRow = ({ jobPost, isFilteredOut = false }: Props) => (
             {jobPost.closedAt != null ? (
                 <TitleText>{jobPost.title}</TitleText>
             ) : (
-                <Title to={buildJobPostPath(jobPost.slug)}>
+                <Title href={buildJobPostPath(jobPost.slug)}>
                     {jobPost.title}
                 </Title>
             )}

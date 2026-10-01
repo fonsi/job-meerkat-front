@@ -63,7 +63,7 @@ describe('buildJobPostingJsonLd', () => {
             validThrough: '2026-10-13',
             employmentType: 'FULL_TIME',
             jobLocationType: 'TELECOMMUTE',
-            url: 'https://jobmeerkat.com/job/?slug=staff-devops-phantom',
+            url: 'https://jobmeerkat.com/jobpost/staff-devops-phantom',
             hiringOrganization: {
                 '@type': 'Organization',
                 name: 'Phantom',

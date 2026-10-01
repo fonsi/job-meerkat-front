@@ -7,7 +7,6 @@ import {
 import {
     buildJobPostPath,
     buildJobPostPathUrl,
-    buildJobPostSearchUrl,
     jobMetaDescription,
     jobMetaTitle,
     jobPostOgImageUrl,
@@ -44,10 +43,7 @@ describe('jobPostPageMeta', () => {
         expect(normalizeSlugParam('foo/')).toBe('foo');
     });
 
-    it('builds search and path URLs', () => {
-        expect(buildJobPostSearchUrl('https://jobmeerkat.com', 'a b')).toBe(
-            'https://jobmeerkat.com/job/?slug=a%20b',
-        );
+    it('builds path URLs', () => {
         expect(buildJobPostPath('a b')).toBe('/jobpost/a%20b');
         expect(buildJobPostPathUrl('https://jobmeerkat.com', 'a b')).toBe(
             'https://jobmeerkat.com/jobpost/a%20b',

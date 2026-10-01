@@ -19,6 +19,13 @@ provider:
         NEXT_PUBLIC_GA_MEASUREMENT_ID: ${env:NEXT_PUBLIC_GA_MEASUREMENT_ID, ''}
         NEXT_PUBLIC_ADSENSE_ID: ${env:NEXT_PUBLIC_ADSENSE_ID, ''}
         UMAMI_ID: ${env:UMAMI_ID, ''}
+        JOB_POST_CACHE_BUCKET: ${sls:stage}-job-post-cache
+    iamRoleStatements:
+        - Effect: Allow
+          Action:
+              - s3:GetObject
+          Resource:
+              - arn:aws:s3:::${sls:stage}-job-post-cache/jobpost/*
 
 build:
     esbuild:
