@@ -10,6 +10,7 @@ import {
     jobPostRobotsContent,
 } from '@/jobPost/seo/jobPostPageMeta';
 import { type JobPost } from '@/jobPost/http/getJobPosts';
+import { buildNewsletterInlineSubscribeSsrScript } from '@/newsletter/layout/newsletterInlineSubscribeSsrScript';
 import { getSiteUrl } from '@/shared/environment/getSiteUrl';
 import { SITE_OG_IMAGE_URL } from '@/shared/seo/ogImage';
 import { isProd } from '@/shared/environment/isProd';
@@ -157,6 +158,15 @@ export const JobPostSsrDocument = ({ job, slug }: Props) => {
                     </Main>
                     <Footer />
                 </Page>
+                {job != null && process.env.NEXT_PUBLIC_API_ENDPOINT ? (
+                    <script
+                        dangerouslySetInnerHTML={{
+                            __html: buildNewsletterInlineSubscribeSsrScript(
+                                process.env.NEXT_PUBLIC_API_ENDPOINT,
+                            ),
+                        }}
+                    />
+                ) : null}
             </body>
         </html>
     );

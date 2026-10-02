@@ -25,6 +25,16 @@ jest.mock('@/shared/http/apiRequest', () => ({
     },
 }));
 
+const originalApiEndpoint = process.env.NEXT_PUBLIC_API_ENDPOINT;
+
+beforeAll(() => {
+    process.env.NEXT_PUBLIC_API_ENDPOINT = 'https://api.jobmeerkat.com';
+});
+
+afterAll(() => {
+    process.env.NEXT_PUBLIC_API_ENDPOINT = originalApiEndpoint;
+});
+
 jest.mock('@/ssr/getJobPostPageFromCache', () => ({
     getJobPostPageFromCache: jest.fn(),
 }));
@@ -78,6 +88,12 @@ describe('renderJobPostHtml', () => {
         expect(html).toContain('Staff DevOps Engineer');
         expect(html).toContain('Phantom');
         expect(html).not.toContain('<script src="/assets/');
+        expect(html).toContain('data-newsletter-subscribe');
+        expect(html).toContain('data-newsletter-fields');
+        expect(html).toContain('data-newsletter-form');
+        expect(html).toContain(
+            'https://api.jobmeerkat.com/newsletter/subscribe',
+        );
     });
 
     it('renders a noindex not-found page when the job is missing', () => {

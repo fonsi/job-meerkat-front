@@ -166,20 +166,15 @@ export const NewsletterInlineSubscribe = ({
     };
 
     return (
-        <Card $compact={compact}>
+        <Card $compact={compact} data-newsletter-subscribe="">
             <Title $compact={compact}>{title}</Title>
             <Description $compact={compact}>{description}</Description>
-            {submitted ? (
-                <Success>
-                    <strong>Check your inbox</strong>
-                    Confirm via the email we sent (check spam/junk too) and
-                    we&apos;ll start sending curated remote roles your way.
-                </Success>
-            ) : (
-                <>
-                    <Form onSubmit={onSubmit}>
+            {submitted ? null : (
+                <div data-newsletter-fields="">
+                    <Form onSubmit={onSubmit} data-newsletter-form="">
                         <EmailInput
                             type="email"
+                            name="email"
                             required
                             autoComplete="email"
                             aria-label="Email"
@@ -187,8 +182,13 @@ export const NewsletterInlineSubscribe = ({
                             value={email}
                             disabled={loading}
                             onChange={(e) => setEmail(e.target.value)}
+                            data-newsletter-email=""
                         />
-                        <SubmitButton type="submit" disabled={loading}>
+                        <SubmitButton
+                            type="submit"
+                            disabled={loading}
+                            data-newsletter-submit=""
+                        >
                             {loading ? 'Sending…' : submitLabel}
                         </SubmitButton>
                     </Form>
@@ -199,8 +199,13 @@ export const NewsletterInlineSubscribe = ({
                         </Link>
                         . Confirmation required.
                     </PrivacyNote>
-                </>
+                </div>
             )}
+            <Success data-newsletter-success="" hidden={!submitted}>
+                <strong>Check your inbox</strong>
+                Confirm via the email we sent (check spam/junk too) and
+                we&apos;ll start sending curated remote roles your way.
+            </Success>
         </Card>
     );
 };
