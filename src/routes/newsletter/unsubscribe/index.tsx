@@ -14,6 +14,12 @@ export const Route = createFileRoute('/newsletter/unsubscribe/')({
 
         return { t: raw.trim() };
     },
+    head: () => ({
+        meta: [
+            { title: 'Unsubscribe | Jobmeerkat' },
+            { name: 'robots', content: 'noindex,nofollow' },
+        ],
+    }),
     component: UnsubscribeRoute,
 });
 

@@ -11,14 +11,19 @@ import { Header } from '@/shared/layout/Header';
 import { Main } from '@/shared/layout/Main';
 import { NotFoundPage } from '@/shared/layout/NotFoundPage';
 import { Page } from '@/shared/layout/Page';
+import { getSiteUrl } from '@/shared/environment/getSiteUrl';
 import { isProd } from '@/shared/environment/isProd';
-import { ogImageMeta, SITE_OG_IMAGE_URL } from '@/shared/seo/ogImage';
+import { SITE_OG_IMAGE_URL } from '@/shared/seo/ogImage';
+import { pageSocialMeta } from '@/shared/seo/pageSocialMeta';
 import '@/styles/globals.css';
 import { CRITICAL_CSS } from '@/styles/criticalCss';
 
 const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || '';
 const GOOGLE_ADSENSE_ACCOUNT = process.env.NEXT_PUBLIC_ADSENSE_ID || '';
 const UMAMI_ID = process.env.UMAMI_ID || '';
+
+const ROOT_DESCRIPTION =
+    'Find the best remote jobs with JobMeerkat! Discover handpicked opportunities with public salaries, flexible work options, and your next career move.';
 
 export const Route = createRootRoute({
     notFoundComponent: NotFoundPage,
@@ -30,11 +35,7 @@ export const Route = createRootRoute({
                 content: 'width=device-width, initial-scale=1',
             },
             { title: 'Jobmeerkat' },
-            {
-                name: 'description',
-                content:
-                    'Find the best remote jobs with JobMeerkat! Discover handpicked opportunities with public salaries, flexible work options, and your next career move.',
-            },
+            { name: 'description', content: ROOT_DESCRIPTION },
             ...(isProd
                 ? [
                       {
@@ -43,7 +44,12 @@ export const Route = createRootRoute({
                       },
                   ]
                 : []),
-            ...ogImageMeta(SITE_OG_IMAGE_URL, 'Jobmeerkat'),
+            ...pageSocialMeta({
+                title: 'Jobmeerkat',
+                description: ROOT_DESCRIPTION,
+                url: `${getSiteUrl().replace(/\/$/, '')}/`,
+                image: SITE_OG_IMAGE_URL,
+            }),
         ],
         links: [
             {

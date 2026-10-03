@@ -5,6 +5,7 @@ import { getSiteUrl } from '@/shared/environment/getSiteUrl';
 import { isProd } from '@/shared/environment/isProd';
 import { getCachedCompanies } from '@/shared/http/prerenderCache';
 import { Container } from '@/shared/layout/Container';
+import { pageSocialMeta } from '@/shared/seo/pageSocialMeta';
 
 async function loadCompaniesData() {
     const companies = await getCachedCompanies();
@@ -14,21 +15,25 @@ async function loadCompaniesData() {
 export const Route = createFileRoute('/companies')({
     loader: () => loadCompaniesData(),
     staleTime: Number.POSITIVE_INFINITY,
-    head: () => ({
-        meta: [
-            { title: 'Companies | Jobmeerkat' },
-            {
-                name: 'description',
-                content:
-                    'Explore top companies hiring for remote jobs on JobMeerkat! Browse tracked employers with public salary insights.',
-            },
-            {
-                name: 'robots',
-                content: isProd ? 'index,follow' : 'noindex,nofollow',
-            },
-        ],
-        links: [{ rel: 'canonical', href: `${getSiteUrl()}/companies/` }],
-    }),
+    head: () => {
+        const title = 'Companies | Jobmeerkat';
+        const description =
+            'Explore top companies hiring for remote jobs on JobMeerkat! Browse tracked employers with public salary insights.';
+        const canonical = `${getSiteUrl()}/companies/`;
+
+        return {
+            meta: [
+                { title },
+                { name: 'description', content: description },
+                {
+                    name: 'robots',
+                    content: isProd ? 'index,follow' : 'noindex,nofollow',
+                },
+                ...pageSocialMeta({ title, description, url: canonical }),
+            ],
+            links: [{ rel: 'canonical', href: canonical }],
+        };
+    },
     component: CompaniesRoute,
 });
 

@@ -10,7 +10,8 @@ import { getSortedJobPosts } from '@/jobPost/getSortedJobPosts';
 import { CompanyHome } from '@/pageComponents/company/CompanyHome';
 import { getSiteUrl } from '@/shared/environment/getSiteUrl';
 import { isProd } from '@/shared/environment/isProd';
-import { companyOgImageUrl, ogImageMeta } from '@/shared/seo/ogImage';
+import { companyOgImageUrl } from '@/shared/seo/ogImage';
+import { pageSocialMeta } from '@/shared/seo/pageSocialMeta';
 import {
     getCachedCompanyDetail,
     getCachedJobPosts,
@@ -83,13 +84,13 @@ export const Route = createFileRoute('/company/$id')({
                     name: 'robots',
                     content: isProd ? 'index,follow' : 'noindex,nofollow',
                 },
-                { property: 'og:title', content: title },
-                { property: 'og:description', content: description },
-                { property: 'og:url', content: canonical },
-                { property: 'og:type', content: 'website' },
-                ...(ogImage != null
-                    ? ogImageMeta(ogImage, `Jobs at ${company.name}`)
-                    : []),
+                ...pageSocialMeta({
+                    title,
+                    description,
+                    url: canonical,
+                    image: ogImage,
+                    imageAlt: `Jobs at ${company.name}`,
+                }),
             ],
             links: [{ rel: 'canonical', href: canonical }],
         };

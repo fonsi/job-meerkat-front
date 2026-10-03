@@ -1,4 +1,5 @@
 import {
+    NEWSLETTER_POPUP_COOLDOWN_MS,
     NEWSLETTER_POPUP_STORAGE_KEY,
     hasNewsletterPopupStorage,
     isNewsletterPopupExcludedPath,
@@ -23,15 +24,32 @@ describe('newsletterPopupStorage', () => {
         expect(hasNewsletterPopupStorage()).toBe(false);
     });
 
-    test('anyone with the key is discarded from seeing the popup', () => {
+    test('shows again after cooldown when dismissed and not subscribed', () => {
         writeNewsletterPopupStorage({
-            lastShownAt: 123,
+            lastShownAt: 1_700_000_000_000 - NEWSLETTER_POPUP_COOLDOWN_MS,
             subscribed: false,
         });
 
-        expect(hasNewsletterPopupStorage()).toBe(true);
+        expect(shouldShowNewsletterPopup('/')).toBe(true);
+        expect(shouldShowNewsletterPopup('/companies/')).toBe(true);
+    });
+
+    test('hides within cooldown after dismiss', () => {
+        writeNewsletterPopupStorage({
+            lastShownAt: 1_700_000_000_000 - NEWSLETTER_POPUP_COOLDOWN_MS + 1,
+            subscribed: false,
+        });
+
         expect(shouldShowNewsletterPopup('/')).toBe(false);
-        expect(shouldShowNewsletterPopup('/companies/')).toBe(false);
+    });
+
+    test('never shows after subscribe, even when cooldown elapsed', () => {
+        writeNewsletterPopupStorage({
+            lastShownAt: 0,
+            subscribed: true,
+        });
+
+        expect(shouldShowNewsletterPopup('/')).toBe(false);
     });
 
     test('markNewsletterPopupDismissed writes lastShownAt and keeps subscribed', () => {
@@ -55,15 +73,15 @@ describe('newsletterPopupStorage', () => {
         });
     });
 
-    test('corrupt storage still counts as having the key', () => {
+    test('corrupt storage is treated as dismissable after cooldown', () => {
         localStorage.setItem(NEWSLETTER_POPUP_STORAGE_KEY, 'not-json');
 
         expect(hasNewsletterPopupStorage()).toBe(true);
-        expect(shouldShowNewsletterPopup('/')).toBe(false);
         expect(readNewsletterPopupStorage()).toEqual({
             lastShownAt: 0,
             subscribed: false,
         });
+        expect(shouldShowNewsletterPopup('/')).toBe(true);
     });
 
     test.each([

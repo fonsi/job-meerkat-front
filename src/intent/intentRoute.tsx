@@ -8,6 +8,7 @@ import { IntentPage } from '@/pageComponents/intent/IntentPage';
 import { getSiteUrl } from '@/shared/environment/getSiteUrl';
 import { isProd } from '@/shared/environment/isProd';
 import { Container } from '@/shared/layout/Container';
+import { pageSocialMeta } from '@/shared/seo/pageSocialMeta';
 
 export const intentRouteOptions = (slug: IntentSlug) => ({
     loader: async () => loadIntentPageData(slug),
@@ -22,35 +23,24 @@ export const intentRouteOptions = (slug: IntentSlug) => ({
             intent.kind === 'companies'
                 ? `${resultCount} companies`
                 : `${resultCount} open roles`;
+        const description = `${intent.description} Currently ${countHint}.`;
+        const canonical = `${getSiteUrl()}${intent.path}`;
 
         return {
             meta: [
                 { title: intent.title },
-                {
-                    name: 'description',
-                    content: `${intent.description} Currently ${countHint}.`,
-                },
+                { name: 'description', content: description },
                 {
                     name: 'robots',
                     content: isProd ? 'index,follow' : 'noindex,nofollow',
                 },
-                { property: 'og:title', content: intent.title },
-                {
-                    property: 'og:description',
-                    content: intent.description,
-                },
-                {
-                    property: 'og:url',
-                    content: `${getSiteUrl()}${intent.path}`,
-                },
-                { property: 'og:type', content: 'website' },
+                ...pageSocialMeta({
+                    title: intent.title,
+                    description: intent.description,
+                    url: canonical,
+                }),
             ],
-            links: [
-                {
-                    rel: 'canonical',
-                    href: `${getSiteUrl()}${intent.path}`,
-                },
-            ],
+            links: [{ rel: 'canonical', href: canonical }],
         };
     },
 });

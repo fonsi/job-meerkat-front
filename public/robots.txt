@@ -4,3 +4,5 @@ Allow: /
 
 Disallow: /*index.txt
 Disallow: /*favicon.*
+
+Sitemap: https://jobmeerkat.com/sitemap.xml

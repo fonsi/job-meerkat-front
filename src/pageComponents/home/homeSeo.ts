@@ -16,6 +16,11 @@ export const buildHomeJsonLd = (siteUrl: string) => {
                 name: 'Jobmeerkat',
                 url: `${site}/`,
                 logo: `${site}/logo-black.svg`,
+                sameAs: [
+                    'https://www.threads.net/@jobmeerkat',
+                    'https://x.com/jobmeerkat',
+                    'https://www.linkedin.com/company/jobmeerkat',
+                ],
             },
             {
                 '@type': 'WebSite',

@@ -78,11 +78,18 @@ describe('renderJobPostHtml', () => {
             'https://jobmeerkat.com/jobpost/staff-devops-phantom',
         );
         expect(html).toContain('property="og:title"');
+        expect(html).toContain('property="og:site_name" content="Jobmeerkat"');
         expect(html).toContain(
             'property="og:image" content="https://cdn.example.com/company/co-1/jobpost/job-1/og.png"',
         );
         expect(html).toContain('property="og:image:width" content="1200"');
         expect(html).toContain('property="og:image:height" content="630"');
+        expect(html).toContain(
+            'name="twitter:card" content="summary_large_image"',
+        );
+        expect(html).toContain(
+            'name="twitter:image" content="https://cdn.example.com/company/co-1/jobpost/job-1/og.png"',
+        );
         expect(html).toContain('application/ld+json');
         expect(html).toContain('"@type":"JobPosting"');
         expect(html).toContain('Staff DevOps Engineer');

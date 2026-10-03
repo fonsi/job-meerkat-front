@@ -14,6 +14,12 @@ export const Route = createFileRoute('/newsletter/settings/')({
 
         return { token: raw.trim() };
     },
+    head: () => ({
+        meta: [
+            { title: 'Newsletter settings | Jobmeerkat' },
+            { name: 'robots', content: 'noindex,nofollow' },
+        ],
+    }),
     component: SettingsRoute,
 });
 

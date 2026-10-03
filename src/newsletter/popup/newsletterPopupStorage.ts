@@ -1,5 +1,8 @@
 export const NEWSLETTER_POPUP_STORAGE_KEY = 'jobmeerkat:newsletter-popup';
 
+/** Re-prompt dismissed visitors after this window; subscribed users never see it again. */
+export const NEWSLETTER_POPUP_COOLDOWN_MS = 7 * 24 * 60 * 60 * 1000;
+
 export type NewsletterPopupStorage = {
     lastShownAt: number;
     subscribed: boolean;
@@ -75,8 +78,15 @@ export const isNewsletterPopupExcludedPath = (pathname: string): boolean => {
     );
 };
 
-export const shouldShowNewsletterPopup = (pathname: string): boolean => {
-    if (hasNewsletterPopupStorage()) return false;
+export const shouldShowNewsletterPopup = (
+    pathname: string,
+    now = Date.now(),
+): boolean => {
     if (isNewsletterPopupExcludedPath(pathname)) return false;
-    return true;
+
+    const state = readNewsletterPopupStorage();
+    if (state == null) return true;
+    if (state.subscribed) return false;
+
+    return now - state.lastShownAt >= NEWSLETTER_POPUP_COOLDOWN_MS;
 };

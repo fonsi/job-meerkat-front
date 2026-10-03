@@ -14,6 +14,12 @@ export const Route = createFileRoute('/newsletter/confirm/')({
 
         return { token: raw.trim() };
     },
+    head: () => ({
+        meta: [
+            { title: 'Confirm newsletter | Jobmeerkat' },
+            { name: 'robots', content: 'noindex,nofollow' },
+        ],
+    }),
     component: ConfirmRoute,
 });
 

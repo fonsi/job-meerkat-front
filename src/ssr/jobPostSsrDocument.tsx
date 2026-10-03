@@ -79,6 +79,7 @@ export const JobPostSsrDocument = ({ job, slug }: Props) => {
                 <meta property="og:description" content={description} />
                 <meta property="og:url" content={canonical} />
                 <meta property="og:type" content="website" />
+                <meta property="og:site_name" content="Jobmeerkat" />
                 {ogImage != null ? (
                     <>
                         <meta property="og:image" content={ogImage} />
@@ -93,6 +94,12 @@ export const JobPostSsrDocument = ({ job, slug }: Props) => {
                         <meta property="og:image:type" content="image/png" />
                         <meta property="og:image:alt" content={title} />
                     </>
+                ) : null}
+                <meta name="twitter:card" content="summary_large_image" />
+                <meta name="twitter:title" content={title} />
+                <meta name="twitter:description" content={description} />
+                {ogImage != null ? (
+                    <meta name="twitter:image" content={ogImage} />
                 ) : null}
                 <link rel="canonical" href={canonical} />
                 <link rel="icon" href="/logo-black.svg" type="image/svg+xml" />

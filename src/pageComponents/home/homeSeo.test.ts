@@ -11,6 +11,11 @@ describe('homeSeo', () => {
                     '@type': 'Organization',
                     name: 'Jobmeerkat',
                     url: 'https://jobmeerkat.com/',
+                    sameAs: [
+                        'https://www.threads.net/@jobmeerkat',
+                        'https://x.com/jobmeerkat',
+                        'https://www.linkedin.com/company/jobmeerkat',
+                    ],
                 },
                 {
                     '@type': 'WebSite',

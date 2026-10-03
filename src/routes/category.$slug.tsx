@@ -12,6 +12,7 @@ import {
 } from '@/shared/http/prerenderCache';
 import { Container } from '@/shared/layout/Container';
 import { NotFoundPage } from '@/shared/layout/NotFoundPage';
+import { pageSocialMeta } from '@/shared/seo/pageSocialMeta';
 
 async function loadCategoryPageData(slug: string) {
     const [categoryTree, jobPosts] = await Promise.all([
@@ -53,26 +54,21 @@ export const Route = createFileRoute('/category/$slug')({
             return {};
         }
 
+        const title = `${loaderData.category.name} open positions | Jobmeerkat`;
+        const description = `Explore top ${loaderData.category.name} jobs with JobMeerkat and discover remote opportunities with public salaries.`;
+        const canonical = `${getSiteUrl()}/category/${params.slug}/`;
+
         return {
             meta: [
-                {
-                    title: `${loaderData.category.name} open positions | Jobmeerkat`,
-                },
-                {
-                    name: 'description',
-                    content: `Explore top ${loaderData.category.name} jobs with JobMeerkat and discover remote opportunities with public salaries.`,
-                },
+                { title },
+                { name: 'description', content: description },
                 {
                     name: 'robots',
                     content: isProd ? 'index,follow' : 'noindex,nofollow',
                 },
+                ...pageSocialMeta({ title, description, url: canonical }),
             ],
-            links: [
-                {
-                    rel: 'canonical',
-                    href: `${getSiteUrl()}/category/${params.slug}/`,
-                },
-            ],
+            links: [{ rel: 'canonical', href: canonical }],
         };
     },
     component: CategoryRoute,

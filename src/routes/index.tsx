@@ -9,6 +9,7 @@ import {
     getCachedCompanies,
     getCachedJobPosts,
 } from '@/shared/http/prerenderCache';
+import { pageSocialMeta } from '@/shared/seo/pageSocialMeta';
 
 async function loadHomeData() {
     const [jobPosts, categoryTree, companies] = await Promise.all([
@@ -44,13 +45,11 @@ export const Route = createFileRoute('/')({
                     name: 'robots',
                     content: isProd ? 'index,follow' : 'noindex,nofollow',
                 },
-                { property: 'og:title', content: HOME_META.title },
-                {
-                    property: 'og:description',
-                    content: HOME_META.description,
-                },
-                { property: 'og:url', content: canonical },
-                { property: 'og:type', content: 'website' },
+                ...pageSocialMeta({
+                    title: HOME_META.title,
+                    description: HOME_META.description,
+                    url: canonical,
+                }),
             ],
             links: [{ rel: 'canonical', href: canonical }],
         };
