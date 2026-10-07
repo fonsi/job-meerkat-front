@@ -2,8 +2,8 @@ service: jobmeerkat-web
 
 frameworkVersion: '4'
 
-# HTML origin for /jobpost/{slug}. CloudFront wiring is manual:
-# docs/cloudfront-jobpost.md. Deploy prints the Function URL.
+# HTML origin for /jobpost/{slug} and /blog. CloudFront wiring is manual:
+# docs/cloudfront-jobpost.md and docs/cloudfront-blog.md. Deploy prints the Function URL.
 
 provider:
     name: aws
@@ -20,12 +20,14 @@ provider:
         NEXT_PUBLIC_ADSENSE_ID: ${env:NEXT_PUBLIC_ADSENSE_ID, ''}
         UMAMI_ID: ${env:UMAMI_ID, ''}
         JOB_POST_CACHE_BUCKET: ${sls:stage}-job-post-cache
+        BLOG_CACHE_BUCKET: ${sls:stage}-blog-cache
     iamRoleStatements:
         - Effect: Allow
           Action:
               - s3:GetObject
           Resource:
               - arn:aws:s3:::${sls:stage}-job-post-cache/jobpost/*
+              - arn:aws:s3:::${sls:stage}-blog-cache/*
 
 build:
     esbuild:
@@ -37,6 +39,6 @@ build:
 
 functions:
     jobPostPage:
-        handler: src/ssr/jobPostHandler.handler
-        description: SSR HTML for /jobpost/{slug}
+        handler: src/ssr/htmlPageHandler.handler
+        description: SSR HTML for /jobpost/{slug} and /blog
         url: true

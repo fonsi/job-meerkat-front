@@ -4,6 +4,8 @@ const JOBPOST_SLUG_PATH = /^\/jobpost\/([^/]+)\/?$/;
 
 export type FunctionUrlEvent = {
     rawPath?: string;
+    rawQueryString?: string;
+    queryStringParameters?: Record<string, string | undefined>;
     requestContext?: {
         http?: {
             method?: string;
@@ -19,6 +21,10 @@ export const getRawPathFromFunctionUrlEvent = (
 export const getHttpMethodFromFunctionUrlEvent = (
     event: FunctionUrlEvent,
 ): string => event.requestContext?.http?.method?.toUpperCase() ?? 'GET';
+
+export const getRawQueryStringFromFunctionUrlEvent = (
+    event: FunctionUrlEvent,
+): string => event.rawQueryString ?? '';
 
 export const parseJobPostSlugFromPath = (
     rawPath: string | undefined | null,

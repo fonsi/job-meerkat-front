@@ -97,6 +97,8 @@ export const Footer = () => (
     <StyledFooter>
         <StyledContainer>
             <StyledLinks>
+                <FooterLink href="/blog">Blog</FooterLink>
+                <Separator aria-hidden="true">|</Separator>
                 <FooterLink href="/newsletter/">Newsletter</FooterLink>
                 <Separator aria-hidden="true">|</Separator>
                 <FooterLink href="/terms/">Terms</FooterLink>

@@ -10,7 +10,15 @@ const OUTPUT_FILE = 'sitemap.xml';
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
 
-const staticUrls = ['/', '/companies/', '/newsletter/', '/privacy/', '/terms/'];
+const staticUrls = [
+    '/',
+    '/blog',
+    '/blog/sitemap.xml',
+    '/companies/',
+    '/newsletter/',
+    '/privacy/',
+    '/terms/',
+];
 
 const escapeXml = (input) =>
     input

@@ -1,5 +1,6 @@
 export const ASSETS_BASE_URL = 'https://assets.jobmeerkat.com';
 export const SITE_OG_IMAGE_URL = `${ASSETS_BASE_URL}/og.png`;
+export const BLOG_OG_IMAGE_URL = `${ASSETS_BASE_URL}/blog/og.png`;
 export const OG_IMAGE_WIDTH = '1200';
 export const OG_IMAGE_HEIGHT = '630';
 

@@ -100,6 +100,7 @@ export const Header = () => (
             </LogoContainer>
             <HeaderLinks>
                 <NavLink href="/companies/">Companies</NavLink>
+                <NavLink href="/blog">Blog</NavLink>
                 <NavLink href="/newsletter/">Newsletter</NavLink>
             </HeaderLinks>
         </Container>
