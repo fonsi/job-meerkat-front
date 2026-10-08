@@ -1,8 +1,8 @@
 import { companyOgImageUrl, SITE_OG_IMAGE_URL } from './ogImage';
 
 describe('ogImage', () => {
-    it('points the site card at the assets root', () => {
-        expect(SITE_OG_IMAGE_URL).toBe('https://assets.jobmeerkat.com/og.png');
+    it('points the site card at the brand OG on the site origin', () => {
+        expect(SITE_OG_IMAGE_URL).toMatch(/\/og\.png$/);
     });
 
     it('swaps a company logo path for the og card', () => {

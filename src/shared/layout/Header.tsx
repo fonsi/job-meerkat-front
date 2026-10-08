@@ -2,6 +2,7 @@
 
 import styled from 'styled-components';
 import { Colors, Device, PageGutter } from '@/shared/styles/constants';
+import { LogoLockup } from '../image/LogoLockup';
 import { LogoMark } from '../image/LogoMark';
 
 const StyledDiv = styled.div`
@@ -42,16 +43,26 @@ const StyledLink = styled.a`
     font-size: unset;
     line-height: 0;
 
-    svg {
+    .logo-mark {
         display: block;
         height: 28px;
         width: 28px;
     }
 
+    .logo-lockup {
+        display: none;
+        height: 28px;
+        width: auto;
+    }
+
     @media ${Device.tablet} {
-        svg {
+        .logo-mark {
+            display: none;
+        }
+
+        .logo-lockup {
+            display: block;
             height: 32px;
-            width: 32px;
         }
     }
 
@@ -95,7 +106,8 @@ export const Header = () => (
         <Container>
             <LogoContainer>
                 <StyledLink href="/" aria-label="Jobmeerkat home">
-                    <LogoMark />
+                    <LogoMark className="logo-mark" />
+                    <LogoLockup className="logo-lockup" />
                 </StyledLink>
             </LogoContainer>
             <HeaderLinks>

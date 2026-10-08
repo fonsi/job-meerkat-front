@@ -15,7 +15,8 @@ export const buildHomeJsonLd = (siteUrl: string) => {
                 '@id': `${site}/#organization`,
                 name: 'Jobmeerkat',
                 url: `${site}/`,
-                logo: `${site}/logo-black.svg`,
+                logo: `${site}/logo.svg`,
+
                 sameAs: [
                     'https://www.threads.net/@jobmeerkat',
                     'https://x.com/jobmeerkat',

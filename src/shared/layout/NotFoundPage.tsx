@@ -1,13 +1,29 @@
 'use client';
 
 import styled from 'styled-components';
+import { Mascot } from '@/shared/image/Mascot';
 import { Container } from '@/shared/layout/Container';
 import { PageHeader } from '@/shared/layout/PageHeader';
 import { Colors } from '@/shared/styles/constants';
 
 const Wrap = styled.div`
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
     margin-bottom: 48px;
     max-width: 560px;
+`;
+
+const MascotWrap = styled.div`
+    margin: 8px 0 4px;
+    max-width: 140px;
+    width: 100%;
+
+    img {
+        display: block;
+        height: auto;
+        width: 100%;
+    }
 `;
 
 const HomeLink = styled.a`
@@ -40,6 +56,9 @@ const HomeLink = styled.a`
 export const NotFoundPage = () => (
     <Container>
         <Wrap>
+            <MascotWrap>
+                <Mascot pose="sad" alt="" />
+            </MascotWrap>
             <PageHeader
                 title="Page not found"
                 description="This page does not exist or may have been removed. Check the URL or return to the home page."

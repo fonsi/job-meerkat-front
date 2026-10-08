@@ -4,8 +4,24 @@
  * or the first paint shows giant logos and browser-default typography.
  */
 export const CRITICAL_CSS = `
+@font-face {
+  font-family: "Dela Gothic One";
+  src: url("/brand/fonts/DelaGothicOne-latin.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
 :root {
   --dela-gothic-one: "Dela Gothic One", Verdana, Arial, Helvetica, sans-serif;
+  --jm-night: #111111;
+  --jm-lime: #D6FF3F;
+  --jm-white: #FFFFFF;
+  --jm-fur: #E9B872;
+  --jm-fur-shade: #C98F45;
+  --jm-cream: #FBE7C2;
+  --jm-mask-brown: #2A1F17;
+  --jm-nose: #151010;
+  --jm-outline: #0B0B0B;
 }
 html {
   max-width: 100vw;
@@ -17,9 +33,10 @@ body {
   overflow-x: hidden;
   font-family: Verdana, Arial, Helvetica, sans-serif;
   font-size: 14px;
+
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #111;
+  background-color: #111111;
   color: #fefefe;
 }
 *,
@@ -29,7 +46,7 @@ body {
 }
 .app-shell {
   align-items: center;
-  background-color: #111;
+  background-color: #111111;
   color: #fefefe;
   display: flex;
   flex-direction: column;
@@ -41,7 +58,7 @@ body {
 }
 .app-shell > div:first-child {
   align-items: center;
-  background-color: #111;
+  background-color: #111111;
   border-bottom: 1px solid #666;
   box-sizing: border-box;
   color: #fefefe;
@@ -61,17 +78,26 @@ body {
 .app-shell > div:first-child nav {
   font-size: 13px;
 }
-.app-shell > div:first-child a svg {
+.app-shell > div:first-child a img.logo-mark {
+  display: block;
   height: 28px;
   width: 28px;
+}
+.app-shell > div:first-child a img.logo-lockup {
+  display: none;
+  height: 28px;
+  width: auto;
 }
 @media (min-width: 768px) {
   .app-shell > div:first-child nav {
     font-size: 14px;
   }
-  .app-shell > div:first-child a svg {
+  .app-shell > div:first-child a img.logo-mark {
+    display: none;
+  }
+  .app-shell > div:first-child a img.logo-lockup {
+    display: block;
     height: 32px;
-    width: 32px;
   }
 }
 @media (min-width: 1024px) {
@@ -217,4 +243,5 @@ body {
     text-align: left;
   }
 }
+
 `.trim();

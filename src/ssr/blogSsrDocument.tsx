@@ -120,17 +120,10 @@ export const BlogSsrDocument = (props: Props) => {
                 <meta name="twitter:description" content={description} />
                 <meta name="twitter:image" content={ogImage} />
                 <link rel="canonical" href={canonical} />
-                <link rel="icon" href="/logo-black.svg" type="image/svg+xml" />
-                <link rel="preconnect" href="https://fonts.googleapis.com" />
-                <link
-                    rel="preconnect"
-                    href="https://fonts.gstatic.com"
-                    crossOrigin="anonymous"
-                />
-                <link
-                    rel="stylesheet"
-                    href="https://fonts.googleapis.com/css2?family=Dela+Gothic+One&display=swap"
-                />
+                <link rel="icon" href="/favicon.ico" sizes="any" />
+                <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+                <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
                 {isProd && GOOGLE_ADSENSE_ACCOUNT ? (
                     <meta
                         name="google-adsense-account"

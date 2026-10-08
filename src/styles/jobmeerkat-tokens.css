@@ -1,0 +1,11 @@
+:root {
+  --jm-night: #111111; /* brand background */
+  --jm-lime: #D6FF3F; /* accent, lens rings, badge */
+  --jm-white: #FFFFFF; /* text, sclera */
+  --jm-fur: #E9B872; /* mascot fur */
+  --jm-fur-shade: #C98F45; /* mascot back limbs (side view) */
+  --jm-cream: #FBE7C2; /* belly, muzzle */
+  --jm-mask-brown: #2A1F17; /* eye mask, inner ears, tail tip */
+  --jm-nose: #151010; /* nose */
+  --jm-outline: #0B0B0B; /* mascot outline (8.5 units) */
+}

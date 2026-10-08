@@ -111,9 +111,9 @@ describe('renderJobPostHtml', () => {
 
         expect(html).toContain('Page not found | Jobmeerkat');
         expect(html).toContain('noindex,nofollow');
-        expect(html).toContain(
-            'property="og:image" content="https://assets.jobmeerkat.com/og.png"',
-        );
+        expect(html).toContain('property="og:image" content="');
+        expect(html).toContain('/og.png"');
+
         expect(html).toContain('This page does not exist');
     });
 });

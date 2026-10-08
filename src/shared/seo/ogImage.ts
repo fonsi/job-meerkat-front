@@ -1,5 +1,9 @@
+import { getSiteUrl } from '@/shared/environment/getSiteUrl';
+
 export const ASSETS_BASE_URL = 'https://assets.jobmeerkat.com';
-export const SITE_OG_IMAGE_URL = `${ASSETS_BASE_URL}/og.png`;
+
+/** Brand default OG — served from the site (`public/og.png`). Upload the same file to CDN when ready. */
+export const SITE_OG_IMAGE_URL = `${getSiteUrl().replace(/\/$/, '')}/og.png`;
 export const BLOG_OG_IMAGE_URL = `${ASSETS_BASE_URL}/blog/og.png`;
 export const OG_IMAGE_WIDTH = '1200';
 export const OG_IMAGE_HEIGHT = '630';

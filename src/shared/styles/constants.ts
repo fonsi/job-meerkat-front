@@ -1,12 +1,15 @@
+/** Brand palette — mirrors `--jm-*` in jobmeerkat-tokens.css. */
 export const Colors = {
-    brokenBlack: '#111',
+    brokenBlack: '#111111', // --jm-night
     brokenWhite: '#fefefe',
     darkGrey: '#222',
     mediumGrey: '#999',
     lightGrey: '#ddd',
-    white: '#fff',
+    white: '#FFFFFF', // --jm-white
     red: '#f33',
-    accent: '#D6FF3F',
+    accent: '#D6FF3F', // --jm-lime
+    fur: '#E9B872', // --jm-fur
+    cream: '#FBE7C2', // --jm-cream
 };
 
 /** Horizontal page inset — keep Header, Footer, Container, and heroes in sync. */
