@@ -1,5 +1,4 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { sortCompaniesByName } from '@/company/company';
 import { CompaniesPage } from '@/pageComponents/company/CompaniesPage';
 import { getSiteUrl } from '@/shared/environment/getSiteUrl';
 import { isProd } from '@/shared/environment/isProd';
@@ -8,8 +7,7 @@ import { Container } from '@/shared/layout/Container';
 import { pageSocialMeta } from '@/shared/seo/pageSocialMeta';
 
 async function loadCompaniesData() {
-    const companies = await getCachedCompanies();
-    return sortCompaniesByName({ companies });
+    return getCachedCompanies();
 }
 
 export const Route = createFileRoute('/companies')({
