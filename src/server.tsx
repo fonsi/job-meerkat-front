@@ -1,6 +1,8 @@
 import ReactDOMServer from 'react-dom/server';
 import { ServerStyleSheet } from 'styled-components';
+import { renderSsrHtmlResponse } from '@tanstack/react-router/ssr/server';
 import {
+    createServerEntry,
     createStartHandler,
     defineHandlerCallback,
     StartServer,
@@ -9,43 +11,33 @@ import {
 /**
  * String SSR + styled-components ServerStyleSheet so all component CSS is emitted
  * in <head> (avoids late JS-injected styles and layout shift from streaming SSR).
+ *
+ * `renderSsrHtmlResponse` (TanStack Start >= 1.169) adds the doctype, injects the
+ * router's hydration scripts, picks the SSR status and cleans up the request,
+ * replacing the removed `serverSsr.takeBufferedHtml()` bookkeeping.
  */
 const styledSsrHandler = defineHandlerCallback(
-    async ({ router, responseHeaders }) => {
+    ({ router, responseHeaders }) => {
         const sheet = new ServerStyleSheet();
-        try {
-            let html = ReactDOMServer.renderToString(
-                sheet.collectStyles(<StartServer router={router} />),
-            );
-            router.serverSsr?.setRenderFinished();
-            const injectedHtml = router.serverSsr?.takeBufferedHtml();
-            if (injectedHtml) {
-                html = html.replace('</body>', () => `${injectedHtml}</body>`);
-            }
-            const styleTags = sheet.getStyleTags();
-            if (styleTags) {
-                html = html.replace('</head>', () => `${styleTags}</head>`);
-            }
-            return new Response(`<!DOCTYPE html>${html}`, {
-                status:
-                    router._serverResult?.type === 'render'
-                        ? router._serverResult.status
-                        : 200,
-                headers: responseHeaders,
-            });
-        } catch (error) {
-            console.error('Render to string error:', error);
-            return new Response('Internal Server Error', {
-                status: 500,
-                headers: responseHeaders,
-            });
-        } finally {
-            router.serverSsr?.cleanup();
-            sheet.seal();
-        }
+
+        return renderSsrHtmlResponse({
+            router,
+            responseHeaders,
+            render: () => {
+                const html = ReactDOMServer.renderToString(
+                    sheet.collectStyles(<StartServer router={router} />),
+                );
+                const styleTags = sheet.getStyleTags();
+                return styleTags
+                    ? html.replace('</head>', () => `${styleTags}</head>`)
+                    : html;
+            },
+        }).finally(() => sheet.seal());
     },
 );
 
 const fetch = createStartHandler(styledSsrHandler);
 
-export default { fetch };
+// Since TanStack Start 1.169 (stable), `createStartHandler` rethrows errors;
+// `createServerEntry` keeps the request scope and turns them into responses.
+export default createServerEntry({ fetch });
