@@ -28,6 +28,15 @@ provider:
           Resource:
               - arn:aws:s3:::${sls:stage}-job-post-cache/jobpost/*
               - arn:aws:s3:::${sls:stage}-blog-cache/*
+        # Without s3:ListBucket, S3 answers GetObject on a missing key with
+        # 403 AccessDenied instead of 404 NoSuchKey, so unknown or archived
+        # slugs surfaced as 500s. With it, missing keys map to a 404 page.
+        - Effect: Allow
+          Action:
+              - s3:ListBucket
+          Resource:
+              - arn:aws:s3:::${sls:stage}-job-post-cache
+              - arn:aws:s3:::${sls:stage}-blog-cache
 
 build:
     esbuild:

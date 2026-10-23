@@ -22,7 +22,7 @@ Copy the Function URL from the CLI output (`https://<id>.lambda-url.eu-west-1.on
    - Cache policy: cache on URL path (no cookies). Honor origin `Cache-Control`
 3. **What the Lambda sends**
    - Found job: `200`, `Cache-Control: public, max-age=60, s-maxage=300`
-   - Missing job / bad path: **`404`** with the noindex not-found HTML
+   - Missing job / bad path: **`404`** with the noindex not-found HTML, `Cache-Control: public, max-age=60, s-maxage=60`
    - Upstream failure: `500`, `Cache-Control: no-store`
 
 ## SPA custom errors
@@ -33,6 +33,6 @@ Do **not** use those custom errors once this origin returns 404. Keep the SPA fa
 
 ## Job JSON
 
-The Lambda reads `jobpost/{slug}.json` from the private `${stage}-job-post-cache` bucket with `GetObject`. It does not call the API. Canonicals, the sitemap, and JSON-LD use `/jobpost/{slug}`.
+The Lambda reads `jobpost/{slug}.json` from the private `${stage}-job-post-cache` bucket with `GetObject`. It does not call the API. Its role also has `s3:ListBucket` on the cache buckets: without it, S3 answers a missing key with `403 AccessDenied` instead of `404 NoSuchKey`, and unknown or archived slugs render as `500` instead of `404`. Canonicals, the sitemap, and JSON-LD use `/jobpost/{slug}`.
 
 `/job/?slug=` redirects to `/jobpost/{slug}`. A CloudFront Function can 301 that query URL before it hits S3 if crawlers still request it.
