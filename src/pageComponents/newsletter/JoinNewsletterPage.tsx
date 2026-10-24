@@ -1,11 +1,12 @@
 'use client';
 
-import { FormEvent, useState } from 'react';
 import { Link } from '@tanstack/react-router';
 import styled, { keyframes } from 'styled-components';
 import { trackNewsletterSent } from '@/newsletter/analytics/trackNewsletterPopup';
-import { subscribeNewsletter } from '@/newsletter/http/newsletterApi';
 import { markNewsletterPopupSubscribed } from '@/newsletter/popup/newsletterPopupStorage';
+import { NewsletterHoneypot } from '@/newsletter/subscribe/NewsletterHoneypot';
+import { NewsletterSubscribeError } from '@/newsletter/subscribe/NewsletterSubscribeError';
+import { useNewsletterSubscribe } from '@/newsletter/subscribe/useNewsletterSubscribe';
 import { delaGothicVarName } from '@/shared/font/constants';
 import { Colors, Device } from '@/shared/styles/constants';
 
@@ -277,23 +278,21 @@ const BENEFITS = [
 ] as const;
 
 export const JoinNewsletterPage = () => {
-    const [email, setEmail] = useState('');
-    const [submitted, setSubmitted] = useState(false);
-    const [loading, setLoading] = useState(false);
-
-    const onSubmit = async (event: FormEvent) => {
-        event.preventDefault();
-        setLoading(true);
-
-        try {
-            await subscribeNewsletter(email.trim());
+    const {
+        email,
+        setEmail,
+        honeypot,
+        setHoneypot,
+        loading,
+        submitted,
+        failed,
+        onSubmit,
+    } = useNewsletterSubscribe({
+        onSuccess: () => {
             markNewsletterPopupSubscribed();
             trackNewsletterSent();
-            setSubmitted(true);
-        } finally {
-            setLoading(false);
-        }
-    };
+        },
+    });
 
     return (
         <Page>
@@ -328,10 +327,15 @@ export const JoinNewsletterPage = () => {
                                     disabled={loading}
                                     onChange={(e) => setEmail(e.target.value)}
                                 />
+                                <NewsletterHoneypot
+                                    value={honeypot}
+                                    onChange={setHoneypot}
+                                />
                                 <SubmitButton type="submit" disabled={loading}>
                                     {loading ? 'Sending…' : 'Send me jobs'}
                                 </SubmitButton>
                             </SubscribeForm>
+                            <NewsletterSubscribeError visible={failed} />
                             <PrivacyNote>
                                 By subscribing you agree to our{' '}
                                 <Link reloadDocument to="/privacy/">

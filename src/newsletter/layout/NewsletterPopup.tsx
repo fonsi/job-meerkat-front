@@ -1,6 +1,6 @@
 'use client';
 
-import { FormEvent, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import styled, { keyframes } from 'styled-components';
 import { Link, useRouterState } from '@tanstack/react-router';
@@ -9,13 +9,15 @@ import {
     trackNewsletterSent,
     trackNewsletterShown,
 } from '@/newsletter/analytics/trackNewsletterPopup';
-import { subscribeNewsletter } from '@/newsletter/http/newsletterApi';
 import {
     isNewsletterPopupExcludedPath,
     markNewsletterPopupDismissed,
     markNewsletterPopupSubscribed,
     shouldShowNewsletterPopup,
 } from '@/newsletter/popup/newsletterPopupStorage';
+import { NewsletterHoneypot } from '@/newsletter/subscribe/NewsletterHoneypot';
+import { NewsletterSubscribeError } from '@/newsletter/subscribe/NewsletterSubscribeError';
+import { useNewsletterSubscribe } from '@/newsletter/subscribe/useNewsletterSubscribe';
 import { delaGothicVarName } from '@/shared/font/constants';
 import { Close } from '@/shared/image/icons/Close';
 import { Colors } from '@/shared/styles/constants';
@@ -234,12 +236,24 @@ export const NewsletterPopup = () => {
         select: (state) => state.location.pathname,
     });
     const [open, setOpen] = useState(false);
-    const [email, setEmail] = useState('');
-    const [loading, setLoading] = useState(false);
-    const [submitted, setSubmitted] = useState(false);
     const [mounted, setMounted] = useState(false);
     const shownThisSessionRef = useRef(false);
     const shownAtRef = useRef<number | null>(null);
+    const {
+        email,
+        setEmail,
+        honeypot,
+        setHoneypot,
+        loading,
+        submitted,
+        failed,
+        onSubmit,
+    } = useNewsletterSubscribe({
+        onSuccess: () => {
+            markNewsletterPopupSubscribed(shownAtRef.current ?? Date.now());
+            trackNewsletterSent();
+        },
+    });
 
     useEffect(() => {
         setMounted(true);
@@ -284,20 +298,6 @@ export const NewsletterPopup = () => {
             trackNewsletterDismissed();
         }
         setOpen(false);
-    };
-
-    const onSubmit = async (event: FormEvent) => {
-        event.preventDefault();
-        setLoading(true);
-
-        try {
-            await subscribeNewsletter(email.trim());
-            markNewsletterPopupSubscribed(shownAtRef.current ?? Date.now());
-            trackNewsletterSent();
-            setSubmitted(true);
-        } finally {
-            setLoading(false);
-        }
     };
 
     if (!mounted || !open) return null;
@@ -352,9 +352,14 @@ export const NewsletterPopup = () => {
                                     onChange={(e) => setEmail(e.target.value)}
                                 />
                             </Field>
+                            <NewsletterHoneypot
+                                value={honeypot}
+                                onChange={setHoneypot}
+                            />
                             <SubmitButton type="submit" disabled={loading}>
                                 {loading ? 'Sending…' : 'Send me jobs'}
                             </SubmitButton>
+                            <NewsletterSubscribeError visible={failed} />
                         </PopupForm>
                         <PrivacyNote>
                             By subscribing you agree to our{' '}

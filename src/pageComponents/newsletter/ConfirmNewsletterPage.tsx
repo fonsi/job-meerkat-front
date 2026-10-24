@@ -1,6 +1,6 @@
 'use client';
 
-import { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from '@tanstack/react-router';
 import {
     trackNewsletterConfirmed,
@@ -12,6 +12,7 @@ import {
     subscribeNewsletter,
 } from '@/newsletter/http/newsletterApi';
 import { markNewsletterPopupSubscribed } from '@/newsletter/popup/newsletterPopupStorage';
+import { NewsletterSubscribeError } from '@/newsletter/subscribe/NewsletterSubscribeError';
 import { Button } from '@/shared/layout/Button';
 import {
     Form,
@@ -20,6 +21,7 @@ import {
     Input,
     Label,
 } from '@/shared/layout/Form';
+import { confirmFailureCopy } from './confirmFailureCopy';
 import {
     NewsletterBanner,
     NewsletterContainer,
@@ -37,10 +39,18 @@ export const ConfirmNewsletterPage = ({ token }: Props) => {
     const [email, setEmail] = useState('');
     const [resent, setResent] = useState(false);
     const [resending, setResending] = useState(false);
+    const [resendFailed, setResendFailed] = useState(false);
     const [loading, setLoading] = useState(!!token);
+    // Stripping the token from the URL after a failure re-runs this effect
+    // with no token; keep the real failure instead of overwriting it with
+    // "missing" (and tracking a second, wrong Umami event).
+    const tokenFailureHandled = useRef(false);
 
     useEffect(() => {
         if (!token) {
+            if (tokenFailureHandled.current) {
+                return;
+            }
             setError('missing');
             setLoading(false);
             trackNewsletterConfirmFailed('missing');
@@ -68,6 +78,7 @@ export const ConfirmNewsletterPage = ({ token }: Props) => {
                     return;
                 }
 
+                tokenFailureHandled.current = true;
                 const tokenError = parseTokenError(err);
                 const reason = tokenError ?? 'unknown';
                 trackNewsletterConfirmFailed(reason);
@@ -90,9 +101,12 @@ export const ConfirmNewsletterPage = ({ token }: Props) => {
     const onResend = async (event: FormEvent) => {
         event.preventDefault();
         setResending(true);
+        setResendFailed(false);
         try {
             await subscribeNewsletter(email.trim());
             setResent(true);
+        } catch {
+            setResendFailed(true);
         } finally {
             setResending(false);
         }
@@ -107,13 +121,11 @@ export const ConfirmNewsletterPage = ({ token }: Props) => {
     }
 
     if (error) {
+        const copy = confirmFailureCopy(error);
         return (
             <NewsletterContainer>
-                <NewsletterTitle>Confirmation link expired</NewsletterTitle>
-                <NewsletterText>
-                    This confirmation link has expired or is invalid. Enter your
-                    email to receive a new one.
-                </NewsletterText>
+                <NewsletterTitle>{copy.title}</NewsletterTitle>
+                <NewsletterText>{copy.text}</NewsletterText>
 
                 {resent ? (
                     <NewsletterBanner $variant="success">
@@ -138,6 +150,7 @@ export const ConfirmNewsletterPage = ({ token }: Props) => {
                                 {resending ? 'Sending…' : 'Resend confirmation'}
                             </Button>
                         </FormFooter>
+                        <NewsletterSubscribeError visible={resendFailed} />
                     </Form>
                 )}
 
