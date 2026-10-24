@@ -1,11 +1,12 @@
 'use client';
 
-import { FormEvent, useState } from 'react';
 import { Link } from '@tanstack/react-router';
 import styled, { css } from 'styled-components';
 import { trackNewsletterSent } from '@/newsletter/analytics/trackNewsletterPopup';
-import { subscribeNewsletter } from '@/newsletter/http/newsletterApi';
 import { markNewsletterPopupSubscribed } from '@/newsletter/popup/newsletterPopupStorage';
+import { NewsletterHoneypot } from '@/newsletter/subscribe/NewsletterHoneypot';
+import { NewsletterSubscribeError } from '@/newsletter/subscribe/NewsletterSubscribeError';
+import { useNewsletterSubscribe } from '@/newsletter/subscribe/useNewsletterSubscribe';
 import { Colors } from '@/shared/styles/constants';
 
 type Props = {
@@ -147,23 +148,21 @@ export const NewsletterInlineSubscribe = ({
     submitLabel = 'Send me jobs',
     compact = false,
 }: Props) => {
-    const [email, setEmail] = useState('');
-    const [submitted, setSubmitted] = useState(false);
-    const [loading, setLoading] = useState(false);
-
-    const onSubmit = async (event: FormEvent) => {
-        event.preventDefault();
-        setLoading(true);
-
-        try {
-            await subscribeNewsletter(email.trim());
+    const {
+        email,
+        setEmail,
+        honeypot,
+        setHoneypot,
+        loading,
+        submitted,
+        failed,
+        onSubmit,
+    } = useNewsletterSubscribe({
+        onSuccess: () => {
             markNewsletterPopupSubscribed();
             trackNewsletterSent();
-            setSubmitted(true);
-        } finally {
-            setLoading(false);
-        }
-    };
+        },
+    });
 
     return (
         <Card $compact={compact} data-newsletter-subscribe="">
@@ -184,6 +183,10 @@ export const NewsletterInlineSubscribe = ({
                             onChange={(e) => setEmail(e.target.value)}
                             data-newsletter-email=""
                         />
+                        <NewsletterHoneypot
+                            value={honeypot}
+                            onChange={setHoneypot}
+                        />
                         <SubmitButton
                             type="submit"
                             disabled={loading}
@@ -191,6 +194,7 @@ export const NewsletterInlineSubscribe = ({
                         >
                             {loading ? 'Sending…' : submitLabel}
                         </SubmitButton>
+                        <NewsletterSubscribeError visible={failed} />
                     </Form>
                     <PrivacyNote>
                         By subscribing you agree to our{' '}

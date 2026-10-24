@@ -1,3 +1,9 @@
+import {
+    NEWSLETTER_HONEYPOT_ATTR,
+    NEWSLETTER_HONEYPOT_FIELD,
+    NEWSLETTER_SUBSCRIBE_ERROR_ATTR,
+} from '../subscribe/newsletterSubscribe';
+
 export const NEWSLETTER_SUBSCRIBE_ROOT_ATTR = 'data-newsletter-subscribe';
 export const NEWSLETTER_SUBSCRIBE_FIELDS_ATTR = 'data-newsletter-fields';
 export const NEWSLETTER_SUBSCRIBE_FORM_ATTR = 'data-newsletter-form';
@@ -17,6 +23,7 @@ export const buildNewsletterInlineSubscribeSsrScript = (
     );
     const storageKey = JSON.stringify(STORAGE_KEY);
     const sentEvent = JSON.stringify(SENT_EVENT);
+    const honeypotField = JSON.stringify(NEWSLETTER_HONEYPOT_FIELD);
 
     // Prefer remove()/display over [hidden]: styled-components `display:flex`
     // on the form beats the UA `[hidden]{display:none}` rule.
@@ -28,6 +35,8 @@ var form=root.querySelector('[${NEWSLETTER_SUBSCRIBE_FORM_ATTR}]');
 var emailInput=root.querySelector('[${NEWSLETTER_SUBSCRIBE_EMAIL_ATTR}]');
 var submitBtn=root.querySelector('[${NEWSLETTER_SUBSCRIBE_SUBMIT_ATTR}]');
 var success=root.querySelector('[${NEWSLETTER_SUBSCRIBE_SUCCESS_ATTR}]');
+var honeypot=root.querySelector('[${NEWSLETTER_HONEYPOT_ATTR}]');
+var errorEl=root.querySelector('[${NEWSLETTER_SUBSCRIBE_ERROR_ATTR}]');
 if(!fields||!form||!emailInput||!submitBtn||!success)return;
 form.addEventListener('submit',function(event){
 event.preventDefault();
@@ -36,10 +45,14 @@ if(!email)return;
 var label=submitBtn.textContent;
 submitBtn.disabled=true;
 submitBtn.textContent='Sending…';
+if(errorEl)errorEl.hidden=true;
+var payload={email:email};
+var trap=honeypot?(honeypot.value||'').trim():'';
+if(trap)payload[${honeypotField}]=trap;
 fetch(${endpoint},{
 method:'POST',
 headers:{'Content-Type':'application/json'},
-body:JSON.stringify({email:email})
+body:JSON.stringify(payload)
 }).then(function(res){
 if(!res.ok)throw new Error('subscribe_failed');
 try{
@@ -57,6 +70,7 @@ success.style.display='';
 }).catch(function(){
 submitBtn.disabled=false;
 submitBtn.textContent=label;
+if(errorEl)errorEl.hidden=false;
 });
 });
 })();`;

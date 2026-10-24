@@ -5,12 +5,17 @@ import {
     NewsletterPreferencesResponse,
     NewsletterTokenError,
 } from '../newsletter';
+import { NEWSLETTER_HONEYPOT_FIELD } from '../subscribe/newsletterSubscribe';
 
-export const subscribeNewsletter = (email: string) =>
-    apiRequest<{ ok: true }, { email: string }>({
+export const subscribeNewsletter = (email: string, honeypot = '') =>
+    apiRequest<{ ok: true }, { email: string; [key: string]: string }>({
         path: '/newsletter/subscribe',
         method: Method.POST,
-        data: { email },
+        data: {
+            email,
+            // Only bots fill the honeypot; real users send just the email.
+            ...(honeypot ? { [NEWSLETTER_HONEYPOT_FIELD]: honeypot } : {}),
+        },
         // Subscribe waits on email send; retries multiply confirm emails.
         retries: 0,
     });
